@@ -9,7 +9,7 @@ Build a local, replayable Rummikub-style puzzle game for PC and tablet. Each puz
 ## Working assumptions
 
 - Use modern JavaScript modules, HTML, and CSS with no build step or package manager. Render tiles as HTML elements. No Three.js or application server is needed for the game itself.
-- Start with numbers 1–13 in four suits/colours and no jokers. A valid row is either at least three consecutive numbers of one suit or three/four equal numbers of distinct suits. Existing board rows may be rearranged freely; the 30-point opening rule does not apply to these endgame puzzles.
+- Use numbers 1–13 in four colours (black, blue, red, and orange), with two physical copies of each number-colour combination: 104 numbered tiles. Each physical tile must have a distinct identity, even when its number and colour match another tile. The standard set also includes two wild jokers, for 106 tiles in total; the first playable version uses only the 104 numbered tiles, with jokers deferred. A valid row is either at least three consecutive numbers of one colour or three/four equal numbers of distinct colours. Existing board rows may be rearranged freely; the 30-point opening rule does not apply to these endgame puzzles.
 - Every published puzzle must have at least one solution that empties the rack. Multiple solutions are acceptable.
 - Progress and settings live on the device. A seed identifies each puzzle for replay or sharing.
 - The same app serves PC and tablet. Mouse, keyboard, and touch are first-class input methods.
@@ -64,6 +64,7 @@ Work from the first unchecked item in the current phase. Check an item only when
 ## Decisions
 
 - Use native JavaScript modules instead of TypeScript/Vite because this machine has Python but no Node or npm. Keep the project free of build dependencies.
+- Match the standard numbered-tile inventory: two copies of each value 1–13 in black, blue, red, and orange (104 numbered tiles). Track the copies as distinct physical tiles. The standard set's two jokers bring its total to 106, but joker support remains deferred for the first playable version.
 
 ## Deferred ideas
 
