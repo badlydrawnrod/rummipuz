@@ -1,0 +1,812 @@
+[
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 4,
+      "difficultyTier": 1,
+      "seed": "review-a"
+    },
+    "result": {
+      "status": "ready",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 4,
+        "difficultyTier": 1,
+        "seed": "review-a",
+        "rack": [
+          "black-6-1",
+          "red-6-1"
+        ],
+        "board": [
+          [
+            "orange-3-1",
+            "orange-4-2",
+            "orange-5-2",
+            "orange-6-2"
+          ],
+          [
+            "blue-8-1",
+            "blue-9-1",
+            "blue-10-1",
+            "blue-11-2"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "blue-8-1",
+              "blue-9-1",
+              "blue-10-1",
+              "blue-11-2"
+            ],
+            [
+              "black-6-1",
+              "red-6-1",
+              "orange-6-2"
+            ],
+            [
+              "orange-3-1",
+              "orange-4-2",
+              "orange-5-2"
+            ]
+          ]
+        },
+        "rating": {
+          "rackSize": 2,
+          "boardRows": 2,
+          "competingPlacements": 0,
+          "rearrangement": 1,
+          "rowsTouched": [
+            0
+          ]
+        }
+      },
+      "attempts": 4,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 3,
+        "limit": 0,
+        "excluded": 0,
+        "mismatch": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 4,
+      "difficultyTier": 1,
+      "seed": "review-b"
+    },
+    "result": {
+      "status": "ready",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 4,
+        "difficultyTier": 1,
+        "seed": "review-b",
+        "rack": [
+          "black-4-1",
+          "blue-9-1",
+          "red-4-1"
+        ],
+        "board": [
+          [
+            "orange-1-1",
+            "orange-2-1",
+            "orange-3-2",
+            "orange-4-1"
+          ],
+          [
+            "blue-10-2",
+            "blue-11-2",
+            "blue-12-2",
+            "blue-13-1"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "blue-9-1",
+              "blue-10-2",
+              "blue-11-2",
+              "blue-12-2",
+              "blue-13-1"
+            ],
+            [
+              "black-4-1",
+              "red-4-1",
+              "orange-4-1"
+            ],
+            [
+              "orange-1-1",
+              "orange-2-1",
+              "orange-3-2"
+            ]
+          ]
+        },
+        "rating": {
+          "rackSize": 3,
+          "boardRows": 2,
+          "competingPlacements": 1,
+          "rearrangement": 1,
+          "rowsTouched": [
+            0
+          ]
+        }
+      },
+      "attempts": 1,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 0,
+        "limit": 0,
+        "excluded": 0,
+        "mismatch": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 4,
+      "difficultyTier": 2,
+      "seed": "review-a"
+    },
+    "result": {
+      "status": "ready",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 4,
+        "difficultyTier": 2,
+        "seed": "review-a",
+        "rack": [
+          "blue-13-2",
+          "red-13-1",
+          "red-5-2",
+          "orange-13-1",
+          "black-13-1"
+        ],
+        "board": [
+          [
+            "blue-10-1",
+            "blue-11-2",
+            "blue-12-2"
+          ],
+          [
+            "black-1-1",
+            "black-2-2",
+            "black-3-1",
+            "black-4-2",
+            "black-5-1"
+          ],
+          [
+            "orange-1-1",
+            "orange-2-2",
+            "orange-3-1",
+            "orange-4-2",
+            "orange-5-1"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "blue-10-1",
+              "blue-11-2",
+              "blue-12-2"
+            ],
+            [
+              "black-1-1",
+              "black-2-2",
+              "black-3-1",
+              "black-4-2"
+            ],
+            [
+              "black-5-1",
+              "red-5-2",
+              "orange-5-1"
+            ],
+            [
+              "black-13-1",
+              "blue-13-2",
+              "red-13-1",
+              "orange-13-1"
+            ],
+            [
+              "orange-1-1",
+              "orange-2-2",
+              "orange-3-1",
+              "orange-4-2"
+            ]
+          ]
+        },
+        "rating": {
+          "rackSize": 5,
+          "boardRows": 3,
+          "competingPlacements": 1,
+          "rearrangement": 2,
+          "rowsTouched": [
+            1,
+            2
+          ]
+        }
+      },
+      "attempts": 2,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 1,
+        "limit": 0,
+        "excluded": 0,
+        "mismatch": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 4,
+      "difficultyTier": 2,
+      "seed": "review-b"
+    },
+    "result": {
+      "status": "ready",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 4,
+        "difficultyTier": 2,
+        "seed": "review-b",
+        "rack": [
+          "orange-4-1",
+          "black-13-1",
+          "orange-13-1",
+          "red-13-1"
+        ],
+        "board": [
+          [
+            "blue-10-2",
+            "blue-11-2",
+            "blue-12-1"
+          ],
+          [
+            "red-1-2",
+            "red-2-2",
+            "red-3-1",
+            "red-4-2"
+          ],
+          [
+            "black-1-2",
+            "black-2-2",
+            "black-3-1",
+            "black-4-2"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "blue-10-2",
+              "blue-11-2",
+              "blue-12-1"
+            ],
+            [
+              "black-1-2",
+              "black-2-2",
+              "black-3-1"
+            ],
+            [
+              "black-4-2",
+              "red-4-2",
+              "orange-4-1"
+            ],
+            [
+              "black-13-1",
+              "red-13-1",
+              "orange-13-1"
+            ],
+            [
+              "red-1-2",
+              "red-2-2",
+              "red-3-1"
+            ]
+          ]
+        },
+        "rating": {
+          "rackSize": 4,
+          "boardRows": 3,
+          "competingPlacements": 0,
+          "rearrangement": 2,
+          "rowsTouched": [
+            1,
+            2
+          ]
+        }
+      },
+      "attempts": 1,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 0,
+        "limit": 0,
+        "excluded": 0,
+        "mismatch": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 4,
+      "difficultyTier": 3,
+      "seed": "review-a"
+    },
+    "result": {
+      "status": "ready",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 4,
+        "difficultyTier": 3,
+        "seed": "review-a",
+        "rack": [
+          "red-13-1",
+          "black-13-1",
+          "orange-6-1",
+          "blue-3-1"
+        ],
+        "board": [
+          [
+            "black-1-2",
+            "black-2-1",
+            "black-3-1",
+            "black-4-2",
+            "black-5-2",
+            "black-6-2"
+          ],
+          [
+            "blue-4-1",
+            "blue-5-2",
+            "blue-6-2"
+          ],
+          [
+            "orange-8-1",
+            "orange-9-2",
+            "orange-10-1",
+            "orange-11-1",
+            "orange-12-1",
+            "orange-13-1"
+          ],
+          [
+            "red-1-2",
+            "red-2-1",
+            "red-3-2",
+            "red-4-2",
+            "red-5-1",
+            "red-6-1"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "red-1-2",
+              "red-2-1",
+              "red-3-2",
+              "red-4-2",
+              "red-5-1",
+              "red-6-1"
+            ],
+            [
+              "black-1-2",
+              "black-2-1",
+              "black-3-1",
+              "black-4-2",
+              "black-5-2"
+            ],
+            [
+              "black-6-2",
+              "blue-6-2",
+              "orange-6-1"
+            ],
+            [
+              "black-13-1",
+              "red-13-1",
+              "orange-13-1"
+            ],
+            [
+              "blue-3-1",
+              "blue-4-1",
+              "blue-5-2"
+            ],
+            [
+              "orange-8-1",
+              "orange-9-2",
+              "orange-10-1",
+              "orange-11-1",
+              "orange-12-1"
+            ]
+          ]
+        },
+        "rating": {
+          "rackSize": 4,
+          "boardRows": 4,
+          "competingPlacements": 1,
+          "rearrangement": 3,
+          "rowsTouched": [
+            0,
+            1,
+            2
+          ]
+        }
+      },
+      "attempts": 2,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 1,
+        "limit": 0,
+        "excluded": 0,
+        "mismatch": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 4,
+      "difficultyTier": 3,
+      "seed": "review-b"
+    },
+    "result": {
+      "status": "ready",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 4,
+        "difficultyTier": 3,
+        "seed": "review-b",
+        "rack": [
+          "blue-6-1",
+          "black-13-2",
+          "orange-13-2",
+          "red-4-1",
+          "black-10-1"
+        ],
+        "board": [
+          [
+            "black-11-2",
+            "black-12-1",
+            "black-13-1"
+          ],
+          [
+            "black-1-2",
+            "black-2-2",
+            "black-3-2",
+            "black-4-1",
+            "black-5-2",
+            "black-6-1"
+          ],
+          [
+            "orange-1-2",
+            "orange-2-1",
+            "orange-3-1",
+            "orange-4-1",
+            "orange-5-2",
+            "orange-6-2"
+          ],
+          [
+            "red-1-1",
+            "red-2-1",
+            "red-3-2"
+          ],
+          [
+            "blue-9-1",
+            "blue-10-1",
+            "blue-11-1",
+            "blue-12-2",
+            "blue-13-2"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "black-10-1",
+              "black-11-2",
+              "black-12-1",
+              "black-13-1"
+            ],
+            [
+              "red-1-1",
+              "red-2-1",
+              "red-3-2",
+              "red-4-1"
+            ],
+            [
+              "black-1-2",
+              "black-2-2",
+              "black-3-2",
+              "black-4-1",
+              "black-5-2"
+            ],
+            [
+              "black-6-1",
+              "blue-6-1",
+              "orange-6-2"
+            ],
+            [
+              "black-13-2",
+              "blue-13-2",
+              "orange-13-2"
+            ],
+            [
+              "blue-9-1",
+              "blue-10-1",
+              "blue-11-1",
+              "blue-12-2"
+            ],
+            [
+              "orange-1-2",
+              "orange-2-1",
+              "orange-3-1",
+              "orange-4-1",
+              "orange-5-2"
+            ]
+          ]
+        },
+        "rating": {
+          "rackSize": 5,
+          "boardRows": 5,
+          "competingPlacements": 2,
+          "rearrangement": 3,
+          "rowsTouched": [
+            1,
+            2,
+            4
+          ]
+        }
+      },
+      "attempts": 1,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 0,
+        "limit": 0,
+        "excluded": 0,
+        "mismatch": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 4,
+      "difficultyTier": 4,
+      "seed": "review-a"
+    },
+    "result": {
+      "status": "ready",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 4,
+        "difficultyTier": 4,
+        "seed": "review-a",
+        "rack": [
+          "black-8-1",
+          "blue-5-1",
+          "red-10-1",
+          "red-11-1",
+          "black-9-2",
+          "black-7-2"
+        ],
+        "board": [
+          [
+            "red-8-2",
+            "red-9-2",
+            "red-10-2"
+          ],
+          [
+            "blue-7-2",
+            "blue-8-1",
+            "blue-9-2",
+            "blue-10-2"
+          ],
+          [
+            "orange-7-1",
+            "orange-8-1",
+            "orange-9-2",
+            "orange-10-1"
+          ],
+          [
+            "red-2-2",
+            "red-3-2",
+            "red-4-1",
+            "red-5-2"
+          ],
+          [
+            "black-2-1",
+            "black-3-2",
+            "black-4-2",
+            "black-5-2"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "red-8-2",
+              "red-9-2",
+              "red-10-2",
+              "red-11-1"
+            ],
+            [
+              "black-2-1",
+              "black-3-2",
+              "black-4-2"
+            ],
+            [
+              "black-5-2",
+              "blue-5-1",
+              "red-5-2"
+            ],
+            [
+              "black-7-2",
+              "black-8-1",
+              "black-9-2"
+            ],
+            [
+              "blue-7-2",
+              "blue-8-1",
+              "blue-9-2"
+            ],
+            [
+              "blue-10-2",
+              "red-10-1",
+              "orange-10-1"
+            ],
+            [
+              "red-2-2",
+              "red-3-2",
+              "red-4-1"
+            ],
+            [
+              "orange-7-1",
+              "orange-8-1",
+              "orange-9-2"
+            ]
+          ]
+        },
+        "rating": {
+          "rackSize": 6,
+          "boardRows": 5,
+          "competingPlacements": 1,
+          "rearrangement": 4,
+          "rowsTouched": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      },
+      "attempts": 5,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 3,
+        "limit": 0,
+        "excluded": 1,
+        "mismatch": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 4,
+      "difficultyTier": 4,
+      "seed": "review-b"
+    },
+    "result": {
+      "status": "ready",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 4,
+        "difficultyTier": 4,
+        "seed": "review-b",
+        "rack": [
+          "red-9-1",
+          "blue-11-2",
+          "red-10-2",
+          "black-6-1",
+          "red-8-2"
+        ],
+        "board": [
+          [
+            "orange-11-2",
+            "orange-12-2",
+            "orange-13-2"
+          ],
+          [
+            "black-8-2",
+            "black-9-1",
+            "black-10-1",
+            "black-11-1"
+          ],
+          [
+            "blue-2-1",
+            "blue-3-1",
+            "blue-4-2",
+            "blue-5-1",
+            "blue-6-2"
+          ],
+          [
+            "orange-8-1",
+            "orange-9-2",
+            "orange-10-2",
+            "orange-11-1"
+          ],
+          [
+            "red-2-2",
+            "red-3-1",
+            "red-4-2",
+            "red-5-1",
+            "red-6-1"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "orange-8-1",
+              "orange-9-2",
+              "orange-10-2",
+              "orange-11-1",
+              "orange-12-2",
+              "orange-13-2"
+            ],
+            [
+              "black-6-1",
+              "blue-6-2",
+              "red-6-1"
+            ],
+            [
+              "black-8-2",
+              "black-9-1",
+              "black-10-1"
+            ],
+            [
+              "black-11-1",
+              "blue-11-2",
+              "orange-11-2"
+            ],
+            [
+              "blue-2-1",
+              "blue-3-1",
+              "blue-4-2",
+              "blue-5-1"
+            ],
+            [
+              "red-2-2",
+              "red-3-1",
+              "red-4-2",
+              "red-5-1"
+            ],
+            [
+              "red-8-2",
+              "red-9-1",
+              "red-10-2"
+            ]
+          ]
+        },
+        "rating": {
+          "rackSize": 5,
+          "boardRows": 5,
+          "competingPlacements": 0,
+          "rearrangement": 4,
+          "rowsTouched": [
+            0,
+            1,
+            2,
+            4
+          ]
+        }
+      },
+      "attempts": 1,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 0,
+        "limit": 0,
+        "excluded": 0,
+        "mismatch": 0
+      }
+    }
+  }
+]

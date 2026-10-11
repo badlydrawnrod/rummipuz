@@ -2,18 +2,22 @@ import { classifyRow } from './rules.js';
 import { createGameState } from './state.js';
 import { ratePuzzle, TIER_BOUNDS } from './difficulty.js';
 
-export const RATED_GENERATOR_VERSION = 3;
+export const RATED_GENERATOR_VERSION = 4;
 
-/** Generate only puzzles with a proven requested tier; retain revision 2 separately. */
-export function generatePuzzle({ version = 1, generatorVersion = 3, difficultyTier = 1, seed } = {}) {
-  if (version !== 1 || generatorVersion !== 3 || !Number.isInteger(difficultyTier)
+// Sampling envelopes stay inside the tier policy's full size bounds. Smaller
+// boards reduce incidental copy choices and the cost of minimum-R proofs.
+const REVIEWED_BOUNDS = [null, [2, 3, 2, 3], [4, 5, 3, 4], [4, 6, 4, 5], [5, 7, 4, 5]];
+
+/** Generate proven tiers; revision 3 replay retains its original envelope. */
+export function generatePuzzle({ version = 1, generatorVersion = RATED_GENERATOR_VERSION, difficultyTier = 1, seed } = {}) {
+  if (version !== 1 || ![3, 4].includes(generatorVersion) || !Number.isInteger(difficultyTier)
       || difficultyTier < 1 || difficultyTier > 4 || typeof seed !== 'string'
       || seed.length < 1 || seed.length > 64 || /[^A-Za-z0-9_-]/.test(seed)) {
     throw new Error('Unsupported or malformed rated generation identity.');
   }
   const metadata = { version, generatorVersion, difficultyTier, seed };
   let randomState = 2166136261;
-  for (const char of `rummipuz:1:3:${difficultyTier}:${seed}`) {
+  for (const char of `rummipuz:1:${generatorVersion}:${difficultyTier}:${seed}`) {
     randomState = Math.imul(randomState ^ char.charCodeAt(0), 16777619) >>> 0;
   }
   const random = () => {
@@ -30,8 +34,11 @@ export function generatePuzzle({ version = 1, generatorVersion = 3, difficultyTi
     return array;
   };
   const rejected = { construction: 0, unsolvable: 0, limit: 0, excluded: 0, mismatch: 0 };
-  const [, rackMax, rowsMin, rowsMax] = TIER_BOUNDS[difficultyTier];
-  for (let attempts = 1; attempts <= 128; attempts += 1) {
+  const bounds = generatorVersion === 3 ? TIER_BOUNDS[difficultyTier] : REVIEWED_BOUNDS[difficultyTier];
+  const maxAttempts = generatorVersion === 3 ? 128 : 64;
+  const maxNodes = generatorVersion === 3 ? 100000 : 20000;
+  const [rackMin, rackMax, rowsMin, rowsMax] = bounds;
+  for (let attempts = 1; attempts <= maxAttempts; attempts += 1) {
     const colours = shuffle(['black', 'blue', 'red', 'orange']);
     const a = integer(4, 6);
     const b = integer(a + 5, 13);
@@ -86,7 +93,7 @@ export function generatePuzzle({ version = 1, generatorVersion = 3, difficultyTi
       const choice = choices[integer(0, choices.length - 1)];
       board.push(choice.values.map((v) => take(choice.colour, v)));
     }
-    const targetRack = integer(Math.max(rack.length, TIER_BOUNDS[difficultyTier][0]), rackMax);
+    const targetRack = integer(Math.max(rack.length, rackMin), rackMax);
     const extended = board.map((row) => [...row]);
     while (rack.length < targetRack) {
       const choices = [];
@@ -110,7 +117,7 @@ export function generatePuzzle({ version = 1, generatorVersion = 3, difficultyTi
     if (board.length !== targetRows || rack.length !== targetRack) { rejected.construction += 1; continue; }
     shuffle(board); shuffle(rack);
     const puzzle = { ...metadata, rack, board };
-    const rating = ratePuzzle(puzzle, { maxNodes: 100000 });
+    const rating = ratePuzzle(puzzle, { maxNodes });
     if (rating.status !== 'rated') { rejected[rating.status] += 1; continue; }
     if (rating.tier !== difficultyTier) { rejected.mismatch += 1; continue; }
     puzzle.solution = Object.freeze({ board: rating.board });
@@ -119,5 +126,5 @@ export function generatePuzzle({ version = 1, generatorVersion = 3, difficultyTi
     Object.freeze(rack); board.forEach(Object.freeze); Object.freeze(board);
     return { status: 'ready', puzzle: Object.freeze(puzzle), attempts, rejected };
   }
-  return { status: 'exhausted', puzzle: null, attempts: 128, rejected };
+  return { status: 'exhausted', puzzle: null, attempts: maxAttempts, rejected };
 }

@@ -10,6 +10,7 @@
     import { runSolverChecks } from './solver.js';
     import { runGeneratorChecks } from './generator.js';
     import { runDifficultyChecks } from './difficulty.js';
+    import { runReviewChecks } from './review.js';
     const results = document.querySelector('#results');
     try {
       const response = await fetch('../puzzles/sample.json');
@@ -19,9 +20,13 @@
       if (!fixturesResponse.ok) throw new Error(`Generation fixture request failed: ${fixturesResponse.status}`);
       const ratedResponse = await fetch('./fixtures/generated-v3.json');
       if (!ratedResponse.ok) throw new Error(`Rated fixture request failed: ${ratedResponse.status}`);
+      const reviewedResponse = await fetch('./fixtures/generated-v4.json');
+      const handResponse = await fetch('./fixtures/reviewed-v4.json');
+      if (!reviewedResponse.ok || !handResponse.ok) throw new Error('Review fixture request failed.');
       const passed = [...runCoreChecks(sample), ...runSolverChecks(sample),
         ...runGeneratorChecks(await fixturesResponse.json()),
-        ...runDifficultyChecks(sample, await ratedResponse.json())];
+        ...runDifficultyChecks(sample, await ratedResponse.json()),
+        ...runReviewChecks(await reviewedResponse.json(), await handResponse.json())];
       results.textContent = `${passed.length} checks passed.\n\n${passed.join('\n')}`;
     } catch (error) {
       results.textContent = error.stack;
