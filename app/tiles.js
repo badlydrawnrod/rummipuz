@@ -24,8 +24,8 @@ export function renderTileLegend(list) {
   }
 }
 
-// Rendering only: these list items become selectable in the controls step.
-export function renderTileRow(tileIds, list) {
+// Optional controls use physical IDs; the display mapping stays the same.
+export function renderTileRow(tileIds, list, controls = null) {
   const document = list.ownerDocument;
   const tiles = tileIds.map((id) => {
     const tile = parseTile(id);
@@ -33,12 +33,32 @@ export function renderTileRow(tileIds, list) {
     return tile;
   });
   list.replaceChildren();
-  for (const { id, colour, value } of tiles) {
+  function addGap(index) {
+    const slot = document.createElement('li');
+    slot.className = 'placement-slot';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'placement';
+    button.dataset.destination = JSON.stringify({ ...controls.location, index });
+    button.setAttribute('aria-label', `Place in ${controls.label}, position ${index + 1}`);
+    button.textContent = '+';
+    button.disabled = controls.locked || !controls.selected;
+    slot.append(button);
+    list.append(slot);
+  }
+  for (const [index, { id, colour, value }] of tiles.entries()) {
+    if (controls && !controls.locked) addGap(index);
     const appearance = colours[colour];
-    const tile = document.createElement('li');
+    const tile = document.createElement(controls ? 'button' : 'li');
     tile.className = `tile tile-${colour}`;
     tile.dataset.tileId = id;
     tile.setAttribute('aria-label', `${appearance.label} ${value}`);
+    if (controls) {
+      tile.type = 'button';
+      tile.draggable = !controls.locked;
+      tile.disabled = controls.locked;
+      tile.setAttribute('aria-pressed', String(id === controls.selected));
+    }
     for (const [className, text] of [
       ['tile-value', value],
       ['tile-symbol', appearance.symbol],
@@ -50,6 +70,12 @@ export function renderTileRow(tileIds, list) {
       part.setAttribute('aria-hidden', 'true');
       tile.append(part);
     }
-    list.append(tile);
+    if (controls) {
+      const slot = document.createElement('li');
+      slot.className = 'tile-slot';
+      slot.append(tile);
+      list.append(slot);
+    } else list.append(tile);
   }
+  if (controls && !controls.locked) addGap(tiles.length);
 }

@@ -12,6 +12,7 @@
     import { runDifficultyChecks } from './difficulty.js';
     import { runReviewChecks } from './review.js';
     import { runAppearanceChecks } from './appearance.js';
+    import { runPlayChecks } from './play.js';
     import { runWorkerLifecycleChecks, runWorkerChecks } from './worker.js';
     const results = document.querySelector('#results');
     try {
@@ -35,6 +36,7 @@
         ...runDifficultyChecks(sample, ratedFixtures),
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
         ...await runWorkerLifecycleChecks(),
+        ...runPlayChecks(sample),
         ...runAppearanceChecks(await stylesResponse.text())];
       results.textContent = `${passed.length} checks passed. Testing real module workers…`;
       passed.push(...await runWorkerChecks(sample,

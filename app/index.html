@@ -39,7 +39,7 @@
         <h1 id="page-title">Make room for<br>every tile.</h1>
         <p class="lead">Rearrange the board. Empty your rack.<br>Leave every row in a valid group or run.</p>
         <button id="open-sample" type="button">Open sample puzzle <span aria-hidden="true">→</span></button>
-        <p class="preview-note">Sample preview · tile movement is coming next.</p>
+        <p class="preview-note">Playable sample · select and place, or drag tiles.</p>
       </section>
 
       <section id="puzzle" class="puzzle" aria-labelledby="puzzle-title" hidden>
@@ -49,6 +49,18 @@
         </div>
         <p id="load-status" role="status" aria-live="polite"></p>
         <div id="puzzle-content" hidden>
+          <p id="selection-status" role="status"></p>
+          <div class="play-actions">
+            <button id="undo-move" type="button" disabled>Undo</button>
+            <button id="reset-puzzle" type="button" disabled>Reset</button>
+            <button id="check-puzzle" type="button">Check</button>
+            <button id="cancel-selection" type="button" disabled>Cancel selection</button>
+          </div>
+          <div id="reset-confirmation" class="reset-confirmation" role="group" aria-labelledby="reset-question" hidden>
+            <p id="reset-question">Restart this puzzle?</p>
+            <button id="confirm-reset" type="button">Restart</button>
+            <button id="keep-playing" type="button">Keep playing</button>
+          </div>
           <div class="tile-key">
             <p id="tile-key-description">Each colour has its own symbol and name on every tile.</p>
             <ul id="tile-legend" class="tile-legend" aria-label="Tile colours" aria-describedby="tile-key-description"></ul>
@@ -56,6 +68,7 @@
           <section class="board" aria-labelledby="board-title">
             <h3 id="board-title">Board</h3>
             <div id="board-rows"></div>
+            <button id="new-row" class="placement new-row" type="button" data-destination='{"area":"new-row"}' disabled>New row</button>
           </section>
           <section class="rack" aria-labelledby="rack-title">
             <h3 id="rack-title">Your rack</h3>

@@ -125,7 +125,7 @@ export function runAppearanceChecks(styles) {
         `${mode}/${palette}: ${colour} tile and legend text meets 4.5:1 contrast`);
       }
     }
-    for (const [foreground, background] of [['focus', 'page'], ['line', 'page'], ['tile-border', 'tile']]) {
+    for (const [foreground, background] of [['focus', 'page'], ['line', 'page'], ['tile-border', 'tile'], ['selection', 'tile']]) {
       assert(contrast(tokens[foreground], tokens[background]) >= 3,
         `${mode}: ${foreground} on ${background} meets 3:1 non-text contrast`);
     }

@@ -1,4 +1,5 @@
-import { renderTileLegend, renderTileRow } from './tiles.js';
+import { renderTileLegend } from './tiles.js';
+import { initialisePlay } from './play.js';
 import { createGameState } from './state.js';
 import { initialiseAppearance, initialiseTilePalette } from './appearance.js';
 
@@ -21,31 +22,6 @@ const content = document.querySelector('#puzzle-content');
 let sample = null;
 renderTileLegend(document.querySelector('#tile-legend'));
 
-function renderPuzzle(puzzle) {
-  const board = document.querySelector('#board-rows');
-  board.replaceChildren();
-  puzzle.board.forEach((tiles, index) => {
-    const container = document.createElement('div');
-    container.className = 'board-row';
-    container.tabIndex = 0;
-    container.setAttribute('role', 'region');
-    container.setAttribute('aria-label', `Board row ${index + 1}`);
-    const label = document.createElement('p');
-    label.className = 'board-row-label';
-    label.textContent = `Row ${index + 1}`;
-    const list = document.createElement('ul');
-    list.className = 'tile-row';
-    list.setAttribute('aria-label', `Tiles in row ${index + 1}`);
-    renderTileRow(tiles, list);
-    container.append(label, list);
-    board.append(container);
-  });
-  renderTileRow(puzzle.rack, document.querySelector('#rack-tiles'));
-  document.querySelector('#rack-count').textContent = puzzle.rack.length;
-  document.querySelector('#replay-code').textContent =
-    `rummipuz:${puzzle.version}:${puzzle.generatorVersion}:${puzzle.difficultyTier}:${puzzle.seed}`;
-}
-
 openButton.addEventListener('click', async () => {
   puzzleSection.hidden = false;
   openButton.disabled = true;
@@ -54,11 +30,12 @@ openButton.addEventListener('click', async () => {
     if (!sample) {
       const response = await fetch(new URL('./puzzles/sample.json', import.meta.url));
       if (!response.ok) throw new Error(`Sample request failed: ${response.status}`);
-      sample = createGameState(await response.json());
+      const state = createGameState(await response.json());
+      sample = initialisePlay({ content, status, state });
     }
-    renderPuzzle(sample);
     content.hidden = false;
-    status.textContent = 'Sample loaded. Tile movement is not yet available.';
+    status.textContent = sample.snapshot().completed
+      ? 'Puzzle complete! Every tile is placed in a valid row.' : 'Sample ready. Select a tile to start.';
     openButton.textContent = 'View sample puzzle';
     puzzleSection.scrollIntoView({ block: 'start' });
     const heading = document.querySelector('#puzzle-title');
