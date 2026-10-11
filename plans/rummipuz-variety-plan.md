@@ -1,6 +1,6 @@
 # Revision-6 puzzle variety plan
 
-**Status:** Planning only, 11 October 2026. Revision 5 remains the default; no runtime, difficulty rule, replay result, or offline asset changes are made by this plan. The user reported repetitive Expert starting boards and requested a plan covering appropriate variants across all tiers.
+**Status:** Family/policy specification complete, 11 October 2026; independent fixture design is next. [rummipuz-revision-6-specification.md](rummipuz-revision-6-specification.md) now fixes the tier matrix, catalogue dispositions, Easy witness predicates, necessary-mechanism certification, semantic signatures, and release gates. Its precise requirements supersede the initial proposals below where more specific. Revision 5 remains the runtime default; no runtime, old replay, or offline asset changes are made. The user reported repetitive Expert starting boards and requested a correction across all tiers.
 
 ## Problem and intended outcome
 
@@ -89,11 +89,11 @@ Report family frequencies, board compositions, rack/row/length ranges, duplicate
 
 ## Work sequence and acceptance
 
-1. **Specify families and revision-6 policy.** Turn the catalogue into a tier matrix, define the Easy predicates and semantic signatures, and confirm quotas/bounds. Done when every catalogue entry has an investigation disposition and the planned release has enough distinct, plausible families per tier. No existing policy changes at runtime.
+1. **Specify families and revision-6 policy — complete.** See [the specification](rummipuz-revision-6-specification.md): all catalogue entries have tier dispositions, primary release sets target 3/4/5/6 different mechanisms, Easy predicates and signatures are exact, and output quotas use two predeclared 256-seed blocks per tier. Eligibility remains subject to the next step's independent fixture proofs. No existing policy changes at runtime.
 2. **Construct and independently audit fixtures.** Provide exact physical inventories, conserved hand solutions, minimum `R`, and all-solution structural results. Include simpler-alternative counterexamples for rejected designs and duplicate-origin cases. Done when the release targets are supported by proved fixtures, not merely motif descriptions. Extend/reuse the independent Python oracle while preserving revision-5 audit results.
 3. **Implement explicit revision 6.** Add parameterised family construction, deterministic selection, revision-specific rating, replay/worker support, and metadata. Keep revision 5 as the default. Done when candidates pass all required proofs, old golden outputs remain exact, and worker cancellation/failure/resume semantics remain intact. Increment offline release and include any new runtime assets.
 4. **Audit accepted output and preparation cost.** Run the fixed multi-seed sample, independent small-inventory comparisons, old replay regressions, and worker/offline checks. Measure frequencies, repetition, node costs, failure rates, median/p95/max timings and main-thread responsiveness by tier **and family**, including desktop/tablet runs. Done when quotas pass, required families are not lost to rejection, and preparation is acceptable on both devices; document any slow outliers and exhausted seeds.
 5. **Review samples with the user and tune.** Supply reproducible codes, starting layouts, spoiler-hidden explanations and verified hand solutions. Cover every core family and meaningful overlay, plus short consecutive same-tier sequences so repetition is visible. Done when Easy remains approachable and the higher tiers offer visibly and mentally different problems. Re-audit after tuning; review mechanisms rather than only the number of samples that work.
 6. **Switch the approved default.** Only after sample approval, make revision 6 supply fresh Start/Next; preserve old replay/saved sessions, update documentation and offline release, and verify actual-worker flow plus the precache-only package. Whole-session/browser/offline verification remains separately required.
 
-The next work is specification and fixture design. This planning change does not implement revision 6 or switch the default.
+The next work is independent fixture design and proof against the completed specification. This specification change does not implement revision 6 or switch the default.
