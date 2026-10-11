@@ -4,7 +4,7 @@
 
 Build a local, replayable Rummikub-style puzzle game for PC and tablet. Each puzzle starts with a valid board and a rack; the player wins by placing every rack tile while leaving every board row valid. Players can select a starting difficulty, and completed puzzles lead to progressively harder ones. Puzzles are generated on demand, with no daily limit.
 
-**Status:** Phase 1 in progress; rules specification, puzzle data format, and player flow complete. App implementation has not started.
+**Status:** Phase 1 complete: rules, puzzle data format, player flow, and initial difficulty/progression policy defined. App implementation has not started.
 
 ## Working assumptions
 
@@ -20,14 +20,14 @@ Record any changes to these assumptions under **Decisions** before implementing 
 
 Work from the first unchecked item in the current phase. Check an item only when its acceptance condition is met. At the end of a work session, update **Current position** with the next action and any blocker or decision. Keep this file with the project so a later session can continue without reconstructing the plan.
 
-**Current position:** Phase 1 rules, puzzle data format, and PC/tablet player flow are complete. Next: fix the initial difficulty tiers and progression policy. No blockers. Review the sample's provisional tier assignment against those tiers.
+**Current position:** Phase 1 is complete. Next: start Phase 2 by creating the static HTML/CSS/JavaScript app and local Python HTTP-server run instructions. No blockers. The sample is assigned to Tier 1 (Easy); review generation targets with actual puzzles in Phase 3.
 
 ## Phase 1 — Define the game
 
 - [x] Write a compact rules specification for valid groups, runs, duplicate physical tiles, tile movement, and the win condition. **Done when:** examples cover normal and edge cases. See [rummipuz-rules.md](rummipuz-rules.md).
 - [x] Define the puzzle data format: version, seed, rack, board rows, difficulty tier, and optional solution metadata. **Done when:** one sample puzzle can be represented unambiguously. See [rummipuz-puzzle-format.md](rummipuz-puzzle-format.md) and [sample-puzzle.json](sample-puzzle.json).
 - [x] Define the player flow: choose difficulty, play, undo/reset, check/win, next puzzle, replay, and change difficulty. **Done when:** there is a screen-by-screen outline for PC and tablet. See [rummipuz-player-flow.md](rummipuz-player-flow.md).
-- [ ] Fix the initial difficulty tiers and progression policy. **Done when:** the starting tier and the conditions for moving up are explicit.
+- [x] Fix the initial difficulty tiers and progression policy. **Done when:** the starting tier and the conditions for moving up are explicit. See [rummipuz-difficulty.md](rummipuz-difficulty.md).
 
 ## Phase 2 — Build the game foundation
 
@@ -41,7 +41,7 @@ Work from the first unchecked item in the current phase. Check an item only when
 - [ ] Build a solver that determines whether all rack tiles can be used while all board tiles remain in valid rows. **Done when:** it can return a complete solution or report none.
 - [ ] Build a seeded generator that produces valid starting boards and racks, then uses the solver to reject unsolvable candidates. **Done when:** the same seed always reproduces the same puzzle.
 - [ ] Rate candidate puzzles using features tied to human difficulty: rack size, number of rows touched, required rearrangement, and competing placements. **Done when:** generated samples fall into distinct starting tiers.
-- [ ] Review sample puzzles by hand and tune the tiers. **Done when:** the early tier teaches simple placements and later tiers require meaningful board rearrangement, without long generation delays.
+- [ ] Review sample puzzles by hand and tune the tiers. **Done when:** the starting tier teaches one-row rearrangement and later tiers require coordinated changes across more rows, without long generation delays.
 - [ ] Move generation/solving off the UI thread if it causes visible pauses. **Done when:** interaction remains responsive while preparing the next puzzle.
 
 ## Phase 4 — Build the PC and tablet interface
@@ -68,6 +68,7 @@ Work from the first unchecked item in the current phase. Check an item only when
 - Runs must appear in ascending numerical order; group colour order is unrestricted. Temporary invalid rows are allowed while rearranging. Any puzzle tile may temporarily return to the rack, including original board tiles; winning requires every puzzle tile on the board exactly once. Empty rows are ignored as layout placeholders. These rules are specified in [rummipuz-rules.md](rummipuz-rules.md).
 - Store immutable starting puzzles as versioned JSON, using canonical colour/value/copy tile IDs and ordered rack/row arrays. Replay identifiers must preserve format version, generator version, difficulty tier, and seed so generation changes do not silently change a puzzle. Keep live saved-game state separate. See [rummipuz-puzzle-format.md](rummipuz-puzzle-format.md).
 - Use select-then-place controls alongside mouse/touch dragging, with keyboard access to the same destinations. Completion is explicit through Check. Keep one active saved session, replacing it only after a new puzzle is ready. Replay codes use `rummipuz:<version>:<generatorVersion>:<difficultyTier>:<seed>`; repeated completions of the same identity earn no additional progression credit. See [rummipuz-player-flow.md](rummipuz-player-flow.md).
+- Exclude puzzles requiring no board rearrangement. Use four tiers: Easy, Medium, Hard, and Expert, with Easy as the default and all tiers selectable immediately. Rate tiers by the minimum number of original rows that a solution must rearrange (exactly 1, 2, 3, or at least 4 respectively), with explicit rack/board-size bounds. Three distinct completions at the chosen tier qualify Next for a one-tier promotion; Expert continues without a limit. Preserve per-tier credit across manual changes and replay. See [rummipuz-difficulty.md](rummipuz-difficulty.md).
 
 ## Deferred ideas
 

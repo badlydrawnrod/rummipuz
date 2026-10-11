@@ -1,6 +1,6 @@
 # Rummipuz player flow — PC and tablet
 
-This outlines the first playable interface using the [rules](rummipuz-rules.md) and [puzzle format](rummipuz-puzzle-format.md). Difficulty names, the default starting tier, and promotion thresholds are defined in the next planning step.
+This outlines the first playable interface using the [rules](rummipuz-rules.md) and [puzzle format](rummipuz-puzzle-format.md). [Difficulty and progression](rummipuz-difficulty.md) defines Easy, Medium, Hard, and Expert, the Easy default, and promotion after three distinct completions at the chosen tier.
 
 ## Screens and transitions
 
@@ -38,7 +38,7 @@ Row feedback updates after each move: a valid marker, or a short reason such as 
 - **Check** evaluates the entire position without changing it. Unfinished feedback lists remaining rack tiles and invalid rows. An internal tile-conservation error produces an error message and a **Reset puzzle** recovery action; it cannot produce completion.
 - Completion occurs on **Check** when the rack is empty, all nonempty rows are valid, and all tiles are conserved. When a move reaches a valid empty-rack state, show “Ready to check” and keep Check prominent. There is no hidden requirement to match the supplied solution.
 - On completion, record the puzzle identity once, show Completed, and stop board editing. **Replay this puzzle** restores its original position with an empty undo history. Re-completing a recorded puzzle does not add another completion or advance progression again.
-- **Next puzzle** prepares a fresh puzzle at the progression policy's proposed tier, showing that tier before the player proceeds. There is no daily limit. Difficulty changes are always available; exact promotion rules belong to the next planning step.
+- **Next puzzle** prepares a fresh puzzle at the progression policy's proposed tier, showing that tier before the player proceeds. Three distinct completions at the chosen tier qualify for the next tier; Expert continues indefinitely. Difficulty changes are always available. See [difficulty and progression](rummipuz-difficulty.md) for replay credit and manual-selection behaviour.
 
 ## Changing puzzles and replaying
 

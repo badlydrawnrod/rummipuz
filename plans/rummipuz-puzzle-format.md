@@ -9,7 +9,7 @@ A puzzle is a UTF-8 JSON object describing an immutable starting position. Rules
 | `version` | Integer, exactly `1` | Puzzle format and rules version. Reject unsupported versions rather than guessing their meaning. |
 | `generatorVersion` | Positive integer | Deterministic generator revision; increment when generation changes could change a replayed puzzle. |
 | `seed` | Nonempty string, 1–64 ASCII letters, digits, `_` or `-` | Case-sensitive random seed input, kept as a string without trimming or numeric conversion. |
-| `difficultyTier` | Positive integer | Requested starting tier. Tier names, supported range, and rating thresholds will be defined in the later difficulty step. |
+| `difficultyTier` | Integer from `1` to `4` | Requested starting tier: Easy, Medium, Hard, or Expert. See [difficulty and progression](rummipuz-difficulty.md) for rating criteria. |
 | `rack` | Nonempty array of tile IDs | Initial rack, in display order. |
 | `board` | Nonempty array of nonempty arrays of tile IDs | Initial board rows, in display order; each inner array gives left-to-right tile order. Every starting row must be valid. |
 | `solution` | Optional object | A verified complete arrangement; omit when not stored. It is not the only accepted answer. |
@@ -40,4 +40,4 @@ A generator revision must define its random algorithm and candidate traversal or
 
 Before accepting a puzzle, check field types and versions, canonical IDs, tile uniqueness, nonempty starting locations, and starting-row validity. Validate any supplied solution for row validity and exact tile conservation. Without supplied solution metadata, the solver must establish solvability before a generated puzzle is published; structural validity alone does not prove solvability. The runtime must also reject unsupported generator revisions or tiers when asked to generate a replay.
 
-[sample-puzzle.json](sample-puzzle.json) contains eleven tiles: a blue 1–6 run using copy 1, a blue 3–5 run using copy 2, and red/black 6 in the rack. The solution takes `blue-6-1` from the first run to form a three-colour group with the rack tiles, leaving blue 1–5 and the second run valid. This demonstrates physical duplicates, row ordering, rearrangement, and optional solution metadata without fixing difficulty thresholds; its tier 1 assignment is provisional until tiers are defined.
+[sample-puzzle.json](sample-puzzle.json) contains eleven tiles: a blue 1–6 run using copy 1, a blue 3–5 run using copy 2, and red/black 6 in the rack. The solution takes `blue-6-1` from the first run to form a three-colour group with the rack tiles, leaving blue 1–5 and the second run valid. This demonstrates physical duplicates, row ordering, rearrangement, and optional solution metadata. It is Tier 1 (Easy): exactly one original row must be rearranged, as explained in [difficulty and progression](rummipuz-difficulty.md).
