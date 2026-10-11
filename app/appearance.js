@@ -2,8 +2,8 @@ const modes = new Set(['system', 'light', 'dark', 'high-contrast']);
 const labels = { light: 'Classic / Light', dark: 'Dark', 'high-contrast': 'High Contrast' };
 
 // Presentation only: no puzzle, history, or storage access.
-export function initialiseAppearance({ root, select, status, media }) {
-  let mode = 'system';
+export function initialiseAppearance({ root, select, status, media, initialMode = 'system', onChange = () => {} }) {
+  let mode = modes.has(initialMode) ? initialMode : 'system';
 
   function apply() {
     const theme = mode === 'system' ? (media.matches ? 'dark' : 'light') : mode;
@@ -21,6 +21,7 @@ export function initialiseAppearance({ root, select, status, media }) {
     }
     mode = select.value;
     apply();
+    onChange(mode);
   }
 
   function onDeviceChange() {
@@ -36,8 +37,8 @@ export function initialiseAppearance({ root, select, status, media }) {
   };
 }
 
-export function initialiseTilePalette({ root, select, status }) {
-  let palette = 'standard';
+export function initialiseTilePalette({ root, select, status, initialPalette = 'standard', onChange = () => {} }) {
+  let palette = ['standard', 'alternative'].includes(initialPalette) ? initialPalette : 'standard';
 
   function apply() {
     root.dataset.palette = palette;
@@ -54,6 +55,7 @@ export function initialiseTilePalette({ root, select, status }) {
     }
     palette = select.value;
     apply();
+    onChange(palette);
   }
 
   select.addEventListener('change', onSelection);

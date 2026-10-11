@@ -2,18 +2,29 @@ import { renderTileLegend } from './tiles.js';
 import { initialisePlay } from './play.js';
 import { checkState, createGameState } from './state.js';
 import { createProgressStore } from './progress.js';
+import { createPreferencesStore } from './preferences.js';
 import { initialiseAppearance, initialiseTilePalette } from './appearance.js';
 
+const preferences = createPreferencesStore({
+  onNotice: (message) => {
+    document.querySelector('#appearance-note').textContent = message || 'Applies immediately. Choices are saved on this device.';
+  },
+});
+const savedPreferences = preferences.snapshot();
 initialiseAppearance({
   root: document.documentElement,
   select: document.querySelector('#appearance-mode'),
   status: document.querySelector('#appearance-status'),
   media: window.matchMedia('(prefers-color-scheme: dark)'),
+  initialMode: savedPreferences.appearance,
+  onChange: (mode) => preferences.setAppearance(mode),
 });
 initialiseTilePalette({
   root: document.documentElement,
   select: document.querySelector('#tile-palette'),
   status: document.querySelector('#palette-status'),
+  initialPalette: savedPreferences.palette,
+  onChange: (palette) => preferences.setPalette(palette),
 });
 
 const openButton = document.querySelector('#open-sample');
