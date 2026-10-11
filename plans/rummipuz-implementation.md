@@ -4,7 +4,7 @@
 
 Build a local, replayable Rummikub-style puzzle game for PC and tablet. Each puzzle starts with a valid board and a rack; the player wins by placing every rack tile while leaving every board row valid. Players can select a starting difficulty, and completed puzzles lead to progressively harder ones. Puzzles are generated on demand, with no daily limit.
 
-**Status:** Phases 1–3 implementation complete. Phase 4 readable tile interface work is next; real-browser worker verification remains pending.
+**Status:** Phases 1–3 implementation complete. Phase 4 readable board/rack tiles implemented. Appearance settings are next; real-browser interface and worker verification remain pending.
 
 ## Working assumptions
 
@@ -20,7 +20,7 @@ Record any changes to these assumptions under **Decisions** before implementing 
 
 Work from the first unchecked item in the current phase. Check an item only when its acceptance condition is met. At the end of a work session, update **Current position** with the next action and any blocker or decision. Keep this file with the project so a later session can continue without reconstructing the plan.
 
-**Current position:** `app/puzzle-service.js` runs generation, solving, and rating asynchronously in dedicated module workers via `app/puzzle-worker.js`. Abort terminates synchronous search; disposal cancels all pending tasks, late results are ignored, and worker errors reject without a main-thread fallback. Results regain deep immutability after structured cloning. Generation preserves revisions 2/3/4; revision 1 remains a stored fixture. All 290 checks passed in a fresh native-module runtime, including 15 lifecycle/race checks and 11 real worker-thread checks executing the actual module, verifying deterministic replay, cancellation, and main-thread heartbeat progress. `/checks/` includes those real-worker checks for browsers. No browser was connected in this environment, so native worker verification is complete but actual browser/tablet execution remains pending. The app is still a static sample preview; session/UI wiring comes in subsequent interface work. Next: Phase 4 readable board/rack tiles and accessible interface work, using the worker service whenever preparing puzzles; verify browser worker behavior when a browser is available. No implementation blockers.
+**Current position:** Phase 4 readable tile rendering is implemented in the sample preview: fixed-size 64 × 94 px HTML tiles with 34 px numbers, distinct symbols, 12 px colour names, and accessible labels. A shared legend, visible row numbers, and labelled keyboard-focusable board/rack scroll regions support reading without colour alone. Physical IDs remain attached to individual list items; no move controls are wired yet. Native-module rendering verification covered all 104 physical tiles, matching copies, legend consistency, and empty rows; all 264 existing pure-module checks passed. Calculated tile text contrast is at least 6.37:1 against the ivory tile background. No browser is connected, so visual layout, tablet readability, and actual browser worker execution remain unverified. The previous worker implementation passed 290 checks, including lifecycle and actual native worker-thread checks; those worker checks were not rerun for this rendering change. Next: Phase 4 appearance settings (Classic / Light, Dark, High Contrast, System), followed by the independent alternative tile palette. Use the worker service whenever preparing generated puzzles. No implementation blockers.
 
 ## Phase 1 — Define the game
 
@@ -46,7 +46,7 @@ Work from the first unchecked item in the current phase. Check an item only when
 
 ## Phase 4 — Build the PC and tablet interface
 
-- [ ] Draw the board and rack with readable HTML tiles. **Done when:** numbers and suits are distinguishable without relying only on colour.
+- [x] Draw the board and rack with readable HTML tiles. **Done when:** numbers and suits are distinguishable without relying only on colour. Implemented with large numbers, four distinct symbols, visible colour names, accessible labels, and a matching legend. Native rendering and contrast verification passed; browser/tablet visual verification remains pending.
 - [ ] Add appearance settings: Classic / Light (cream background, green board, ivory tiles), Dark (charcoal background, deep green board, muted ivory tiles), High Contrast (plain backgrounds, strong borders, bold numbers, clear selection outlines, minimal decoration), and System (automatically follow the device's light/dark preference; default setting). **Done when:** changes apply immediately without altering the puzzle or undo history; System reacts to device preference changes, and tiles, controls, feedback, and focus indicators meet WCAG AA contrast requirements in every mode.
 - [ ] Add an alternative tile palette for colour-vision differences as a separate setting usable with any appearance mode. **Done when:** the palette works across Light, Dark, and High Contrast; symbols and colour names remain visible, and logical tile colours, identities, and rules are unchanged.
 - [ ] Add mouse drag and click-to-select/place controls. **Done when:** the full puzzle can be completed comfortably on a PC.

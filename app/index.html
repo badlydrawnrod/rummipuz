@@ -30,13 +30,19 @@
         </div>
         <p id="load-status" role="status" aria-live="polite"></p>
         <div id="puzzle-content" hidden>
+          <div class="tile-key">
+            <p id="tile-key-description">Each colour has its own symbol and name on every tile.</p>
+            <ul id="tile-legend" class="tile-legend" aria-label="Tile colours" aria-describedby="tile-key-description"></ul>
+          </div>
           <section class="board" aria-labelledby="board-title">
             <h3 id="board-title">Board</h3>
             <div id="board-rows"></div>
           </section>
           <section class="rack" aria-labelledby="rack-title">
             <h3 id="rack-title">Your rack</h3>
-            <ul id="rack-tiles" class="tile-row" aria-label="Rack tiles"></ul>
+            <div class="rack-scroll" tabindex="0" role="region" aria-label="Rack tiles">
+              <ul id="rack-tiles" class="tile-row" aria-label="Tiles in your rack"></ul>
+            </div>
           </section>
           <p class="seed-label">Replay code <code id="replay-code"></code></p>
         </div>

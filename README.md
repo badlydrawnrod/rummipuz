@@ -1,6 +1,6 @@
 # Rummipuz
 
-A local Rummikub-style puzzle game for PC and tablet. The current foundation opens a validated sample board and rack, shows all four difficulty descriptions, and provides the rules. Pure rules, reversible moves, a solver, seeded generation with proven tiers, and cancellable worker execution are implemented. Play controls and progress saving are still planned. This is not yet a playable game.
+A local Rummikub-style puzzle game for PC and tablet. The current foundation opens a validated sample board and rack, shows readable tiles with distinct symbols and colour names, all four difficulty descriptions, and the rules. Pure rules, reversible moves, a solver, seeded generation with proven tiers, and cancellable worker execution are implemented. Play controls and progress saving are still planned. This is not yet a playable game.
 
 ## Run on a PC
 
@@ -25,7 +25,7 @@ Use the HTTP server rather than opening `index.html` as a file: native JavaScrip
 
 3. Find the PC's local IPv4 address in its network settings, for example `192.168.1.25`.
 4. On the tablet, open `http://192.168.1.25:8000`, substituting the actual PC address. Keep the PC awake and the server running. If needed, permit incoming TCP port 8000 on the PC's private-network firewall; guest Wi-Fi/client isolation can prevent device-to-device access.
-5. Open the sample, expand **How to play**, and check portrait and landscape. Longer board rows scroll horizontally without shrinking the tiles.
+5. Open the sample, compare the tile symbols and names with the legend, expand **How to play**, and check portrait and landscape. Longer board rows and the rack scroll horizontally without shrinking the tiles; focus their scroll areas with Tab to scroll using the keyboard.
 
 The `--directory app` option serves only the public app files, rather than repository metadata and configuration. Local HTTP is sufficient for this preview. PWA installation and offline support are not implemented yet; tablet PWA use will require HTTPS, as described in the implementation plan.
 
