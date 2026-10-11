@@ -43,6 +43,7 @@ export function runOverflowChecks() {
         return events({ hidden: false, style: {}, attributes: {},
           setAttribute(name, value) { this.attributes[name] = value; },
           append(...nodes) { this.children = nodes; },
+          replaceWith(node) { this.replacement = node; this.replacements = (this.replacements ?? 0) + 1; },
           getBoundingClientRect: () => ({ width: 48 }),
           get clientWidth() { return width; },
         });
@@ -128,6 +129,9 @@ export function runOverflowChecks() {
   assert(!h.later.hidden, 'Adding tiles refreshes overflow after a move');
   assert(h.observer.observed.length === 2, 'Resize observation covers both the viewport wrapper and tile content');
   h.controls.dispose();
+  assert(h.wrapper.replacement === h.scroller, 'Disposal removes arrow wrappers so a reused rack cannot accumulate old controls');
+  h.controls.dispose();
+  assert(h.wrapper.replacements === 1, 'Repeated overflow disposal leaves the restored scroller intact');
   assert(h.observer.disconnected && !h.frames.size && !h.timers.size && !h.view.listenerCount && !h.scroller.listenerCount &&
     !h.earlier.listenerCount && !h.later.listenerCount, 'Re-render cleanup removes observers, frames and event handlers');
 

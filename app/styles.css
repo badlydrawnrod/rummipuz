@@ -183,3 +183,20 @@ footer { padding-block: 28px; }
 :root[data-theme="high-contrast"] .tile-value { font-weight: 900; }
 :root[data-theme="high-contrast"] button { border: 2px solid var(--line); border-radius: 0; }
 :root[data-theme="high-contrast"] :focus-visible { outline-width: 4px; }
+
+/* Puzzle preparation controls share the existing typography and palette. */
+.puzzle-navigation { margin-top: 1.5rem; }
+.puzzle-navigation label { display: block; margin: .8rem 0 .4rem; }
+.puzzle-navigation select, .puzzle-navigation input {
+  font: inherit;
+  color: var(--text);
+  background: var(--page);
+  border: 2px solid currentColor;
+  border-radius: .4rem;
+  padding: .65rem;
+  min-height: 48px;
+  max-width: 100%;
+}
+.puzzle-navigation input { width: min(100%, 32rem); }
+.puzzle-navigation button { margin: .4rem .4rem .4rem 0; }
+.puzzle-navigation p { max-width: 42rem; }

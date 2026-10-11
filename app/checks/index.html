@@ -12,6 +12,7 @@
     import { runDifficultyChecks } from './difficulty.js';
     import { runReviewChecks } from './review.js';
     import { runAppearanceChecks } from './appearance.js';
+    import { runPuzzleFlowChecks, runPuzzleFlowWorkerChecks } from './puzzle-flow.js';
     import { runPlayChecks } from './play.js';
     import { runProgressChecks } from './progress.js';
     import { runPreferenceChecks } from './preferences.js';
@@ -42,12 +43,14 @@
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
         ...await runWorkerLifecycleChecks(),
         ...runPlayChecks(sample),
+        ...await runPuzzleFlowChecks(sample),
         ...runProgressChecks(sample),
         ...runPreferenceChecks(),
         ...runAppearanceChecks(styles), ...runTouchChecks(sample, styles), ...runOverflowChecks()];
       results.textContent = `${passed.length} checks passed. Testing real module workers…`;
       passed.push(...await runWorkerChecks(sample,
         [candidateFixtures[0], ratedFixtures[0], reviewedFixtures[0]]));
+      passed.push(...await runPuzzleFlowWorkerChecks(sample));
       results.textContent = `${passed.length} checks passed.\n\n${passed.join('\n')}`;
     } catch (error) {
       results.textContent = error.stack;

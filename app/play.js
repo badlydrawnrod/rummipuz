@@ -17,6 +17,11 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   const newRow = find('#new-row');
   const cancel = find('#cancel-selection');
   const check = find('#check-puzzle');
+  const listeners = [];
+  const listen = (target, type, handler) => {
+    target.addEventListener(type, handler);
+    listeners.push(() => target.removeEventListener(type, handler));
+  };
   let touch;
   let rowOverflow = [];
   const rackOverflow = createOverflowControls(find('.rack-scroll'), 'rack');
@@ -151,32 +156,32 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     }
   }
 
-  content.addEventListener('click', onClick);
-  content.addEventListener('dragstart', onDragStart);
-  content.addEventListener('dragover', onDragOver);
-  content.addEventListener('drop', onDrop);
-  content.addEventListener('dragend', onDragEnd);
-  content.addEventListener('keydown', onKeyDown);
-  undo.addEventListener('click', () => {
+  listen(content, 'click', onClick);
+  listen(content, 'dragstart', onDragStart);
+  listen(content, 'dragover', onDragOver);
+  listen(content, 'drop', onDrop);
+  listen(content, 'dragend', onDragEnd);
+  listen(content, 'keydown', onKeyDown);
+  listen(undo, 'click', () => {
     session.undo(); resetPanel.hidden = true; render();
     (undo.disabled ? check : undo).focus();
     status.textContent = 'Move undone.';
   });
-  cancel.addEventListener('click', () => { session.cancel(); paintSelection(); });
-  reset.addEventListener('click', () => {
+  listen(cancel, 'click', () => { session.cancel(); paintSelection(); });
+  listen(reset, 'click', () => {
     if (session.snapshot().completed) {
-      session.reset(); render(); status.textContent = 'Sample restarted.'; check.focus();
+      session.reset(); render(); status.textContent = 'Puzzle restarted.'; check.focus();
     } else {
       resetPanel.hidden = false;
       find('#confirm-reset').focus();
     }
   });
-  find('#keep-playing').addEventListener('click', () => { resetPanel.hidden = true; reset.focus(); });
-  find('#confirm-reset').addEventListener('click', () => {
+  listen(find('#keep-playing'), 'click', () => { resetPanel.hidden = true; reset.focus(); });
+  listen(find('#confirm-reset'), 'click', () => {
     session.reset(); resetPanel.hidden = true; render(); check.focus();
     status.textContent = 'Puzzle reset to its starting position.';
   });
-  check.addEventListener('click', () => {
+  listen(check, 'click', () => {
     const result = session.check();
     resetPanel.hidden = true;
     render();
@@ -187,5 +192,11 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   });
   touch = initialiseTouch({ content, status, session, paintSelection, afterMove });
   render();
-  return session;
+  return { ...session, dispose() {
+    touch.dispose();
+    listeners.forEach((remove) => remove());
+    rowOverflow.forEach((controls) => controls.dispose());
+    rackOverflow.dispose();
+    resetPanel.hidden = true;
+  } };
 }

@@ -111,6 +111,7 @@ export function createOverflowControls(scroller, label) {
   return {
     refresh,
     dispose() {
+      if (disposed) return;
       disposed = true;
       view.cancelAnimationFrame(frame);
       view.clearTimeout(settleTimer);
@@ -119,6 +120,7 @@ export function createOverflowControls(scroller, label) {
       view.removeEventListener('resize', refresh);
       earlier.removeEventListener('click', onEarlier);
       later.removeEventListener('click', onLater);
+      wrapper.replaceWith(scroller);
     },
   };
 }

@@ -39,16 +39,44 @@
         <h1 id="page-title">Make room for<br>every tile.</h1>
         <p class="lead">Rearrange the board. Empty your rack.<br>Leave every row in a valid group or run.</p>
         <button id="open-sample" type="button">Open sample puzzle <span aria-hidden="true">→</span></button>
-        <p class="preview-note">Playable sample · select and place, or drag tiles.</p>
+        <p class="preview-note">Select and place, or drag tiles.</p>
+        <div class="puzzle-navigation">
+          <label for="difficulty-choice">Difficulty for a new puzzle</label>
+          <select id="difficulty-choice">
+            <option value="1">Easy</option><option value="2">Medium</option>
+            <option value="3">Hard</option><option value="4">Expert</option>
+          </select>
+          <p id="difficulty-credit" role="status"></p>
+          <button id="start-puzzle" type="button">Start puzzle</button>
+          <form id="replay-form">
+            <label for="replay-input">Replay code</label>
+            <input id="replay-input" type="text" maxlength="110" placeholder="rummipuz:1:4:1:seed" spellcheck="false" autocapitalize="none" autocomplete="off">
+            <button id="play-replay" type="submit">Play replay</button>
+          </form>
+          <div id="replace-confirmation" class="reset-confirmation" hidden>
+            <p>Leave this puzzle and start another? The current arrangement will be replaced once the new puzzle is ready.</p>
+            <button id="replace-puzzle" type="button">Start another</button>
+            <button id="cancel-replace" type="button">Keep playing</button>
+          </div>
+          <p id="preparation-status" role="status" aria-live="polite"></p>
+          <button id="cancel-preparation" type="button" hidden>Cancel preparation</button>
+          <button id="retry-preparation" type="button" hidden>Retry</button>
+        </div>
         <p id="progress-status" class="preview-note" role="status"></p>
       </section>
 
       <section id="puzzle" class="puzzle" aria-labelledby="puzzle-title" hidden>
         <div class="puzzle-heading">
-          <div><p class="eyebrow">SAMPLE PUZZLE</p><h2 id="puzzle-title">Easy · rework one row</h2></div>
+          <div><p class="eyebrow">YOUR PUZZLE</p><h2 id="puzzle-title">Easy · rework one row</h2></div>
           <p class="rack-count"><strong id="rack-count">0</strong> tiles in rack</p>
         </div>
         <p id="load-status" role="status" aria-live="polite"></p>
+        <div class="play-actions">
+          <button id="next-puzzle" type="button" hidden>Next Puzzle</button>
+          <button id="change-difficulty" type="button">Change difficulty</button>
+          <button id="open-replay" type="button">Replay puzzle</button>
+        </div>
+        <p id="next-description" role="status" hidden></p>
         <div id="puzzle-content" hidden>
           <p id="selection-status" role="status"></p>
           <div class="play-actions">
@@ -78,6 +106,7 @@
             </div>
           </section>
           <p class="seed-label">Replay code <code id="replay-code"></code></p>
+          <button id="copy-replay" type="button">Copy replay code</button>
         </div>
       </section>
 
