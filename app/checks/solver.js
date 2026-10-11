@@ -49,8 +49,8 @@ export function runSolverChecks(sample) {
       'black-6-1', 'black-12-1', 'blue-12-1', 'red-12-1']],
     ['Hard structural example', [...run('blue', 1, 6), ...run('red', 1, 6), ...run('orange', 7, 12),
       ...run('orange', 1, 3), 'black-6-1', 'blue-12-1', 'red-12-1', 'orange-4-1']],
-    ['Expert structural example', [...run('blue', 1, 6), ...run('red', 1, 6), ...run('orange', 7, 12),
-      ...run('black', 7, 12), 'black-6-1', 'blue-12-1', ...run('red', 9, 11)]],
+    ['Expert structural example', [...run('blue', 1, 6), ...run('red', 1, 6), ...run('orange', 8, 13),
+      ...run('black', 8, 13), 'black-6-1', 'blue-13-1', ...run('red', 10, 12)]],
     ['entire 104-tile inventory', ['black', 'blue', 'red', 'orange'].flatMap((c) =>
       [...run(c, 1, 13), ...run(c, 1, 13, 2)])],
   ]) solved(position(inventory), `solve ${name}`);

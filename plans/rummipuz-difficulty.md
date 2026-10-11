@@ -33,7 +33,7 @@ Within each tier, include a mix of rack and board sizes within these bounds. Do 
 - **Medium structural example:** board rows are blue 1–6, red 1–6, and orange 9–11; rack is black 6, black 12, blue 12, and red 12. Form a group of blue/red/black 6, leaving blue and red 1–5 runs; form a second group of black/blue/red 12; preserve orange 9–11. Black 6 requires both blue 6 and red 6 because no other 6 is present and black 4–5 or 7–8 are unavailable. Both original runs must be rearranged, giving `R = 2`, four rack tiles, and three starting rows.
 - **Hard structural example:** board rows are blue 1–6, red 1–6, orange 7–12, and orange 1–3; rack is black 6, blue 12, red 12, and orange 4. Form blue/red/black 6 and blue/red/orange 12 groups, leaving blue and red 1–5 and orange 7–11 runs; extend orange 1–3 with orange 4. Black 6 forces both blue and red runs to change. Blue/red 12 cannot form runs or a group without the sole orange 12, forcing the third run to change. Thus `R = 3`, with four rack tiles and four starting rows.
 
-An **Expert structural example** has board rows blue 1–6, red 1–6, orange 7–12, and black 7–12; rack tiles are black 6, blue 12, red 9, red 10, and red 11. Form blue/red/black 6 and blue/orange/black 12 groups, leaving blue/red 1–5 and orange/black 7–11 runs; form a red 9–11 run from the remaining rack tiles. Black 6 cannot form a black run because black 5 is absent, so it forces both original blue/red runs to change. Blue 12 cannot form a blue run because blue 11 is absent, so it forces both original orange/black runs to change. Thus `R = 4`, with five rack tiles and four starting rows.
+An **Expert structural example** has board rows blue 1–6, red 1–6, orange 8–13, and black 8–13; rack tiles are black 6, blue 13, red 10, red 11, and red 12. Form blue/red/black 6 and blue/orange/black 13 groups, leaving blue/red 1–5 and orange/black 8–12 runs; form a red 10–12 run from the remaining rack tiles. Black 6 cannot form a black run because black 5 and black 7 are absent, so it forces both original blue/red runs to change. Blue 13 cannot form a blue run because blue 12 is absent, so it forces both original orange/black runs to change. Thus `R = 4`, with five rack tiles and four starting rows. The earlier 7–12 example allowed black 6 to extend its existing black run and did not force four rows to change.
 
 ## Completion credit and promotion
 
@@ -66,5 +66,13 @@ If storage is unavailable, apply the same rules in memory for the current sessio
 | Complete three distinct Expert puzzles | Next remains Expert; more puzzles remain available. |
 | With Easy selected and two Easy credits, complete a first-time Medium replay | Medium earns one credit; next generated puzzle stays Easy. |
 | With Medium selected, manually choose Easy after earning three Easy credits | The explicit new puzzle is Easy; its Completed panel proposes Medium for Next. |
+
+## Implemented rating proof
+
+`ratePuzzle` validates the starting puzzle, then tests zero changed rows, one changed row, and so on. For each count, it tries every choice of original rows to preserve. `solvePreservingRows` treats those rows as indivisible blocks of physical IDs, enumerates every legal group/run, and exhausts compatible block combinations plus remaining free tiles. Blocks may merge into a single valid row or gain extensions; matching physical copies remain separate. Failed search states are memoized by free face counts and remaining block identities.
+
+The first complete witness, after all smaller changed-row counts have been ruled out, proves the exact minimum `R`. Zero rearrangement or a size mismatch produces `excluded`; exhaustion of the shared node budget produces inconclusive `limit` with no tier. A rated result reports the actual tier, independently of the requested tier. Revision-3 generation accepts only exact requested-tier matches.
+
+Rating features record rack size, board rows, minimum rearrangement, one minimum witness's changed-row indices, and competing placements as the number of initially valid rack-tile insertion gaps. The proof suite compares minimum `R` against an independent exhaustive physical-tile partition search and verifies the four structural examples. The corrected Expert example separates low and high runs so a rack tile cannot simply extend the high run.
 
 Phase 3 must review the tier limits and generation speed using actual puzzles. Any later change that alters deterministic generation requires a generator-version increment under the puzzle-format replay contract.
