@@ -82,7 +82,7 @@ A stronger Medium example starts with blue 1–7, red 1–7, and orange 10–12;
 
 The existing Hard example has a two-row 6 group and a separate one-row 12 extraction. Its witness has `C = 2` and no non-endpoint rows, so it fails revision-5 Hard despite `R = 3`. The existing Expert example has two separate two-row endpoint groups, so it likewise fails despite `R = 4`.
 
-For a future Hard construction, the structural target is three changed rows linked through shared final sets, with at least two source rows split or converted rather than peeled at their ends. Expert extends that connected structure to at least four rows and three non-endpoint rows. These are design targets, not yet verified puzzle fixtures. The next Phase 6 step supplies full hand-derived patterns and reviews their alternative solutions; merely drawing a connected witness does not establish acceptance.
+For a future Hard construction, the structural target is three changed rows linked through shared final sets, with at least two source rows split or converted rather than peeled at their ends. Expert extends that connected structure to at least four rows and three non-endpoint rows. Verified hand-derived fixtures now demonstrate these targets in the [revision-5 pattern review](rummipuz-revision-5-patterns.md), including group/run exchanges, forced joins, and a duplicate-copy variant. An independent exhaustive physical-tile audit checks every complete partition, including solutions changing more than minimum `R`. These are construction designs, not generated revision-5 puzzles; merely drawing a connected witness does not establish acceptance.
 
 ### Proving that easier solutions are unavailable
 
