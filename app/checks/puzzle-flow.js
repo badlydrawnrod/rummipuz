@@ -51,7 +51,7 @@ export async function runPuzzleFlowChecks(sample) {
   progress.setChosenDifficulty(4);
   ready = await flow.prepare({ kind: 'next' });
   assert(ready.chosenTier === 4, 'Expert Next continues indefinitely');
-  for (const revision of [2, 3, 4]) {
+  for (const revision of [2, 3, 4, 5]) {
     ready = await flow.prepare({ kind: 'replay', code: `rummipuz:1:${revision}:1:Case_Sensitive` });
     assert(ready.chosenTier === null && ready.state.generatorVersion === revision && ready.state.seed === 'Case_Sensitive', `Replay preserves revision ${revision} without changing chosen tier`);
   }
@@ -120,7 +120,7 @@ export async function runPuzzleFlowWorkerChecks(sample, workerFactory) {
       assert(JSON.stringify(replay.state) === JSON.stringify(next.state) && replay.chosenTier === null,
         `Tier-${tier} replay reproduces the exact generated puzzle`);
     }
-    for (const revision of [2, 3]) {
+    for (const revision of [2, 3, 5]) {
       const replay = await flow.prepare({ kind: 'replay', code: `rummipuz:1:${revision}:1:replay-flow` });
       assert(replay.state.generatorVersion === revision && replay.chosenTier === null,
         `Playable replay supports generator revision ${revision}`);

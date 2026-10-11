@@ -1,3 +1,4 @@
+import { generateStructuralPuzzle } from './generator-v5.js';
 import { classifyRow } from './rules.js';
 import { createGameState } from './state.js';
 import { ratePuzzle, TIER_BOUNDS } from './difficulty.js';
@@ -8,8 +9,9 @@ export const RATED_GENERATOR_VERSION = 4;
 // boards reduce incidental copy choices and the cost of minimum-R proofs.
 const REVIEWED_BOUNDS = [null, [2, 3, 2, 3], [4, 5, 3, 4], [4, 6, 4, 5], [5, 7, 4, 5]];
 
-/** Generate proven tiers; revision 3 replay retains its original envelope. */
+/** Generate proven tiers; default revision 4 and old replay remain unchanged. */
 export function generatePuzzle({ version = 1, generatorVersion = RATED_GENERATOR_VERSION, difficultyTier = 1, seed } = {}) {
+  if (generatorVersion === 5) return generateStructuralPuzzle({ version, generatorVersion, difficultyTier, seed });
   if (version !== 1 || ![3, 4].includes(generatorVersion) || !Number.isInteger(difficultyTier)
       || difficultyTier < 1 || difficultyTier > 4 || typeof seed !== 'string'
       || seed.length < 1 || seed.length > 64 || /[^A-Za-z0-9_-]/.test(seed)) {
