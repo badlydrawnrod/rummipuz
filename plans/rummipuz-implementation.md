@@ -4,7 +4,7 @@
 
 Build a local, replayable Rummikub-style puzzle game for PC and tablet. Each puzzle starts with a valid board and a rack; the player wins by placing every rack tile while leaving every board row valid. Players can select a starting difficulty, and completed puzzles lead to progressively harder ones. Puzzles are generated on demand, with no daily limit.
 
-**Status:** Phases 1 and 2 complete. Solver implementation is next.
+**Status:** Phases 1 and 2 complete. Phase 3 solver complete; seeded generation is next.
 
 ## Working assumptions
 
@@ -20,7 +20,7 @@ Record any changes to these assumptions under **Decisions** before implementing 
 
 Work from the first unchecked item in the current phase. Check an item only when its acceptance condition is met. At the end of a work session, update **Current position** with the next action and any blocker or decision. Keep this file with the project so a later session can continue without reconstructing the plan.
 
-**Current position:** Pure modules in `app/rules.js` and `app/state.js` classify rows, validate puzzles and solutions, track physical tiles, detect wins, and implement immutable tile moves with snapshot undo and reset to the original layout. Moves use pre-move insertion gaps, permit temporary invalid rows, and retain empty source rows. All 80 core checks passed in a native-module JavaScript runtime, including exact restoration of a 200-move sequence; a browser runner is available at `/checks/`. Sample loading remains a static preview; play controls are scheduled for Phase 4. The user previously confirmed the app foundation on PC and tablet. Next: implement the Phase 3 solver. No blockers or changed assumptions. The sample is Tier 1 (Easy).
+**Current position:** Pure rules/state modules and reversible moves are complete. `app/solver.js` now searches deterministic face-count partitions into all available groups and run intervals, assigns physical IDs, and verifies each complete witness with `checkState`. It reports `solved`, proven `unsolvable`, or inconclusive `limit` when a supplied node budget is exhausted; no difficulty proof or move sequence is claimed. All 116 checks (80 core, 36 solver) passed in a native-module JavaScript runtime, including independent exhaustive comparison across 511 small inventories and the full 104-tile set; the browser runner at `/checks/` runs both suites. Sample loading remains a static preview; play controls are scheduled for Phase 4. Next: implement a seeded generator with a defined random algorithm/traversal order and reject candidates without a proven solution. Difficulty rating and worker execution remain later steps. No blockers or changed assumptions. The sample is Tier 1 (Easy).
 
 ## Phase 1 — Define the game
 
@@ -38,7 +38,7 @@ Work from the first unchecked item in the current phase. Check an item only when
 
 ## Phase 3 — Create and rate puzzles
 
-- [ ] Build a solver that determines whether all rack tiles can be used while all board tiles remain in valid rows. **Done when:** it can return a complete solution or report none.
+- [x] Build a solver that determines whether all rack tiles can be used while all board tiles remain in valid rows. **Done when:** it can return a complete solution or report none. Implemented in `app/solver.js`; 36 focused solver checks passed, including exhaustive comparison with an independent physical-tile subset search.
 - [ ] Build a seeded generator that produces valid starting boards and racks, then uses the solver to reject unsolvable candidates. **Done when:** the same seed always reproduces the same puzzle.
 - [ ] Rate candidate puzzles using features tied to human difficulty: rack size, number of rows touched, required rearrangement, and competing placements. **Done when:** generated samples fall into distinct starting tiers.
 - [ ] Review sample puzzles by hand and tune the tiers. **Done when:** the starting tier teaches one-row rearrangement and later tiers require coordinated changes across more rows, without long generation delays.
