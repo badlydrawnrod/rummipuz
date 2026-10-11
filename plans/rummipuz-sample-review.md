@@ -1,6 +1,136 @@
 # Sample review and generation tuning
 
-This is an agent's hand analysis of puzzle arrangements and instructional structure, followed by rule/conservation checks. It is not an observed learner playtest or a tablet performance test. Eight revision-4 puzzles were inspected, with solutions derived through explicit endpoint transfers and rack placements rather than copied from the solver's witness. The canonical starting puzzles are in `app/checks/fixtures/generated-v4.json`; independently derived physical-ID solutions are in `app/checks/fixtures/reviewed-v4.json`.
+This records agent hand analysis and verification separately from player feedback. The user approved the revision-5 samples on 11 October 2026 and requested that the review step be marked complete; no tuning was requested. The earlier revision-4 review follows unchanged. Neither hand analysis nor structural proofs establish observed human difficulty.
+
+## Revision-5 user review — prepared 11 October 2026
+
+**Status:** Complete. On 11 October 2026, the user reported “It worked well” and requested that the sample-review step be marked complete. The samples are approved without further tuning. Revision 4 remains the default until the separate default-switch step. No agent-side browser access was used and no runtime/interface changes were made.
+
+The [saved sample set](revision-5-sample-review.json) contains the full identities, exact generated results, replay codes, and separately hand-derived physical-ID solutions. Selection uses `review-v5-0` and `review-v5-1` at Easy, Medium, and Hard; Expert uses `review-v5-0` and `review-v5-2` to include both available families. This is a deliberately small family-coverage set, not a random difficulty survey. Easy's second sample reverses the endpoint direction; it does not introduce another structural family.
+
+### Play first, then open explanations
+
+Use the game's existing replay control to paste each full code and load its puzzle. These are explicit revision-5 replays; Start and Next still generate revision 4. An unfinished session may require the existing replacement confirmation. Review replays use ordinary saved-session and completion-credit behaviour: completing a previously uncompleted code can earn credit at its recorded tier. Copy your current replay code first if you want to return to that puzzle; it does not preserve an unfinished layout or undo history.
+
+Try A–F in order, then H before G to compare Expert without and with duplicates. Keep the explanations closed until you have tried the puzzle. Approximate solving time, resets/undo, or getting stuck are useful observations, not pass/fail limits.
+
+| Label | Tier | Full replay code | Rack / starting rows |
+| --- | --- | --- | --- |
+| A | Easy | `rummipuz:1:5:1:review-v5-0` | 2 / 2 |
+| B | Easy | `rummipuz:1:5:1:review-v5-1` | 2 / 2 |
+| C | Medium | `rummipuz:1:5:2:review-v5-0` | 4 / 3 |
+| D | Medium | `rummipuz:1:5:2:review-v5-1` | 4 / 3 |
+| E | Hard | `rummipuz:1:5:3:review-v5-0` | 4 / 4 |
+| F | Hard | `rummipuz:1:5:3:review-v5-1` | 7 / 4 |
+| G | Expert | `rummipuz:1:5:4:review-v5-0` | 6 / 5 |
+| H | Expert | `rummipuz:1:5:4:review-v5-2` | 6 / 4 |
+
+### Hand-derived explanations — spoilers
+
+Rows below are numbered from the initial board, starting at one. Ranges denote ascending runs; listed colours at one value denote a group. Each final layout uses all puzzle tiles and leaves an empty rack. Preserve physical copies from their named source rows; the JSON resolves every ID, including duplicate faces whose copy labels vary independently by value.
+
+<details>
+<summary>A — Easy, high endpoint</summary>
+
+Start: red 5–10; red 7–9. Rack: black 10, blue 10.
+
+Donate red 10 from row 1 to a red/black/blue 10 group. Final rows: red 5–9 from row 1; unchanged red 7–9 from row 2; the 10 group. The rack tiles have no same-colour neighbours and cannot form a two-tile group. Only one red 10 exists, forcing its extraction. One original row changes by endpoint removal. Matching red 7–9 copies allow additional arrangements, but this route keeps the smaller original run intact.
+
+</details>
+
+<details>
+<summary>B — Easy, low endpoint</summary>
+
+Start: orange 2–7; orange 3–5. Rack: black 2, red 2.
+
+Donate orange 2 from row 1. Final rows: orange 3–7 from row 1; unchanged orange 3–5 from row 2; orange/black/red 2. Black and red 2 force the sole orange 2 into their group. This is the same introductory idea as A at the other end. Review whether the duplicate faces distract from an otherwise approachable move.
+
+</details>
+
+<details>
+<summary>C — Medium, split and forced join</summary>
+
+Start: orange 7–13; blue 1–3; orange 4–6. Rack: black/red 10 and black/red 4.
+
+Both rack pairs require their orange partners. Removing orange 10 splits row 1 into orange 7–9 and 11–13. Removing orange 4 from row 3 strands orange 5–6: join those two tiles to orange 7–9. Final rows: orange 5–9; orange 11–13; orange/black/red 4; orange/black/red 10; unchanged blue 1–3. Rows 1 and 3 are connected through the joined run; both require more than endpoint extraction. There is exactly one complete physical partition. The need to repair the short remainder supplies the linked decision.
+
+</details>
+
+<details>
+<summary>D — Medium, two interior splits</summary>
+
+Start: blue 11–13; orange 2–8; black 2–8. Rack: blue 10, red 5, black 10, red 10.
+
+Red 5 cannot enter a red run and requires orange/black 5. Extract both middle tiles, leaving orange 2–4 and 6–8 and black 2–4 and 6–8. Make the blue/black/red 10 group from the other rack tiles; preserve blue 11–13. These seven final rows are the unique complete partition. Extending blue 11–13 with blue 10 is tempting but strands black/red 10. Two changed rows meet in the 5 group and both split into surviving runs. Compare this obvious shared extraction with C's repair dependency rather than assuming they feel equally difficult.
+
+</details>
+
+<details>
+<summary>E — Hard, groups become runs</summary>
+
+Start: orange/blue/black 9; orange/blue/black 10; red 2–4; blue/black/orange 8. Rack: orange/black 7 and orange/black 11.
+
+The rack endpoints have no complete groups available. Break the 8, 9, and 10 groups into their colours. Final rows: orange 7–11; black 7–11; blue 8–10; unchanged red 2–4. Each coloured run shares tiles from all three original groups. All three groups change and form one connected component. This is the only complete partition. Account for the blue leftovers as well as the two colours with rack endpoints.
+
+</details>
+
+<details>
+<summary>F — Hard, group/run exchange with two repairs</summary>
+
+Start: orange 6–8; black/red/orange 4; blue 10–12; black/red/orange 5. Rack: black 7, orange 9, red 3, red 7, orange 10, black 3, orange 3.
+
+Rack black/red 7 require orange 7 from row 1. Orange 8 joins rack orange 9–10. Orange 6 must join orange 3–5, drawing orange 4 and 5 from both original groups. Their black/red leftovers join the corresponding rack 3s. Final rows: orange 3–6; orange 8–10; black 3–5; red 3–5; orange/black/red 7; unchanged blue 10–12.
+
+The initially legal black/red/orange 3 group cannot remain in a complete solution because it strands orange 6. Rows 1, 2, and 4 connect through orange 3–6; all three are non-endpoint rearrangements. The unique partition combines an interior extraction, group conversion, and repairs on both sides. Review whether this takes more thought than E, or whether the larger rack mainly adds visual work.
+
+</details>
+
+<details>
+<summary>G — Expert, duplicate variant</summary>
+
+Start: red 6–8; black/red/blue 6; red/black/blue 8; blue/red/black 7; red/black/blue 9. Rack: red 10, red 5, black 5, red 11, red 4, black 10.
+
+Leave row 1 intact. Break the four groups into black 5–10, red 4–11, and blue 6–9. Together with preserved red 6–8 these are the four final rows. The red tiles in the long run come from the groups, using the other physical copies from those in row 1. The full inventory permits 80 physical partitions, including different red-copy assignments and run divisions. Every solution still connects at least the four changed groups; some also change the duplicate run. The minimum is four.
+
+The duplicate row offers alternatives, but the central conversion remains similar to H. Physical-copy alternatives alone may not add meaningful human difficulty: report whether this feels more demanding, equally easy, or merely busier.
+
+</details>
+
+<details>
+<summary>H — Expert, four-group chain</summary>
+
+Start: blue/orange/black 5; black/blue/orange 3; orange/blue/black 6; black/orange/blue 4. Rack: blue 1, black 7, blue 2, blue 8, black 2, blue 7.
+
+Break the four groups by colour. Final rows: black 2–7; blue 1–8; orange 3–6. Rack endpoints have no available group completion and must enter runs. Runs may be divided differently: eight complete partitions exist, all changing and connecting the four original groups with four non-endpoint rows.
+
+This clears the Expert structural gate, but the conversion is similar to E with one more source group. Once that idea is learned, H may feel little harder. This is a specific human-calibration concern to resolve before approval, rather than a reason to call the structural proof incorrect.
+
+</details>
+
+### Verification and provisional judgement
+
+The native [replay check](checks/review_v5_samples.mjs) passed 42 assertions: exact saved output and repeated deterministic replay, conserved winning hand solutions, minimum changed-row counts, eight samples, and default revision 4. The independent [Python review audit](checks/review_v5_samples.py) verified both the hand solutions and production witnesses, enumerating all 108 physical partitions with zero easier structural counterexamples. Partition counts A–H are 8, 8, 1, 1, 1, 1, 80, and 8. Hand-solution component sizes/non-endpoint counts are respectively (1,0), (1,0), (2,2), (2,2), (3,3), (3,3), (4,4), and (4,4). These verify the documented gates, including all alternative copy assignments; they do not measure human effort.
+
+Reproduce from the repository root, with Node available for the first command:
+
+```bash
+node plans/checks/review_v5_samples.mjs
+PYTHONDONTWRITEBYTECODE=1 python3 plans/checks/review_v5_samples.py
+```
+
+The agent derived the final layouts from the inspected starts using the documented construction ideas, then validated the explicit physical solutions. No stored solver witness was used to choose those layouts. Native checks ran through the available Node runtime; no browser, touch session, or offline launch was attempted. Runtime assets and offline release `v2` are unchanged.
+
+Provisional assessment: Easy retains a clear single-row route. Medium introduces splits and a forced join; F adds a more involved repair chain than E. Expert's universal four-row gate is sound, but its group-conversion core may become easy once E is learned. All seven families are covered; unlimited fresh seeds still draw from that small family set. No generator or threshold tuning is justified solely by this hand analysis. The user subsequently approved the samples overall without requesting stronger alternatives or other tuning. The limited family set remains a documented design limitation; detailed per-sample human-difficulty measurements were not supplied.
+
+### Feedback and approval record — approved 11 October 2026
+
+For A–H, record whether it was straightforward, appropriately challenging, or frustrating; roughly how long it took; the idea or choice that required thought; and whether it felt repetitive after earlier samples. In particular: are A/B approachable, do C/D differ meaningfully, does F add thought beyond E, and do G/H deserve Expert after learning the group-conversion idea? Report any easy alternative you found using the replay code and your final layout.
+
+**User feedback:** “It worked well. Mark that step as complete.” The user approved the sample review overall; no individual puzzle ratings, solving times, or device details were supplied. **Tuning:** None requested or made, so the verified criteria, constructions, and proofs are unchanged. **Sample approval:** Accepted; Phase 6’s fifth step is complete. **Release/default decision:** Revision 4 remains the current default. Making approved revision 5 the default is the separate sixth step, to perform when instructed with its focused play-flow, replay/session compatibility, documentation, and offline-package checks. Outstanding Phase 5 whole-session verification remains separate.
+
+## Earlier revision-4 review
+
+Eight revision-4 puzzles were inspected, with solutions derived through explicit endpoint transfers and rack placements rather than copied from the solver's witness. The canonical starting puzzles are in `app/checks/fixtures/generated-v4.json`; independently derived physical-ID solutions are in `app/checks/fixtures/reviewed-v4.json`.
 
 ## Review findings and sampling decision
 
