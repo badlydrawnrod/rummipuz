@@ -8,12 +8,16 @@
   <script type="module">
     import { runCoreChecks } from './core.js';
     import { runSolverChecks } from './solver.js';
+    import { runGeneratorChecks } from './generator.js';
     const results = document.querySelector('#results');
     try {
       const response = await fetch('../puzzles/sample.json');
       if (!response.ok) throw new Error(`Fixture request failed: ${response.status}`);
       const sample = await response.json();
-      const passed = [...runCoreChecks(sample), ...runSolverChecks(sample)];
+      const fixturesResponse = await fetch('./fixtures/generated-v2.json');
+      if (!fixturesResponse.ok) throw new Error(`Generation fixture request failed: ${fixturesResponse.status}`);
+      const passed = [...runCoreChecks(sample), ...runSolverChecks(sample),
+        ...runGeneratorChecks(await fixturesResponse.json())];
       results.textContent = `${passed.length} checks passed.\n\n${passed.join('\n')}`;
     } catch (error) {
       results.textContent = error.stack;

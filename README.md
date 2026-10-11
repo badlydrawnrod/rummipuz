@@ -1,6 +1,6 @@
 # Rummipuz
 
-A local Rummikub-style puzzle game for PC and tablet. The current foundation opens a validated sample board and rack, shows all four difficulty descriptions, and provides the rules. Pure rules, state checking, reversible tile moves, undo/reset, and a complete-arrangement solver are implemented. Play controls, generation, and progress saving are still planned. This is not yet a playable game.
+A local Rummikub-style puzzle game for PC and tablet. The current foundation opens a validated sample board and rack, shows all four difficulty descriptions, and provides the rules. Pure rules, state checking, reversible tile moves, undo/reset, a complete-arrangement solver, and seeded candidate generation are implemented. Difficulty rating, play controls, and progress saving are still planned. This is not yet a playable game.
 
 ## Run on a PC
 
@@ -34,7 +34,8 @@ The `--directory app` option serves only the public app files, rather than repos
 - `app/index.html`, `styles.css`, `main.js`, and `tiles.js`: buildless static app and native browser modules.
 - `app/rules.js` and `state.js`: pure row classification, puzzle validation, tile tracking, win detection, reversible moves, and undo/reset.
 - `app/solver.js`: pure deterministic search for a complete valid arrangement of every puzzle tile.
-- `app/checks/`: dependency-free core and solver checks, including rule edge cases, tile conservation, and comparison with an independent exhaustive solver.
+- `app/generator.js`: seeded, solver-verified candidate generation with versioned replay behavior.
+- `app/checks/`: dependency-free core, solver, and generator checks, including an independent exhaustive solver and saved generation replay fixtures.
 - `app/puzzles/sample.json`: public runtime copy of `plans/sample-puzzle.json`; keep these files identical when updating the fixture.
 - `plans/`: rules, data format, player flow, difficulty policy, and the implementation checklist.
 
@@ -42,7 +43,7 @@ Follow [the implementation plan](plans/rummipuz-implementation.md) for the next 
 
 ## Core modules and checks
 
-These native modules have no browser, storage, or random-number dependency:
+These native modules have no browser, storage, or external dependency. The generator owns a deterministic seeded random stream:
 
 | API | Result |
 | --- | --- |
@@ -55,6 +56,7 @@ These native modules have no browser, storage, or random-number dependency:
 | `undoMove(state)` | New frozen state restoring the preceding layout and removing its history entry; returns the input when history is empty. |
 | `resetGame(state)` | New frozen state restoring `initial` and clearing history, preserving puzzle metadata and inventory. Can recover a corrupt live layout when the original layout is intact. |
 | `solveState(state, { maxNodes = Infinity })` | `{ status, board, nodes }`, where status is `solved`, `unsolvable`, or `limit`. A solved board contains every original tile exactly once in valid rows; otherwise board is `null`. Throws for malformed/nonconserved states or invalid budgets. |
+| `generateCandidate({ version = 1, generatorVersion = 2, difficultyTier = 1, seed })` | `{ status, puzzle, attempts, rejected }`. Status is `candidate` for an immutable solver-verified puzzle or `exhausted` with a null puzzle. Unsupported identities throw. Requested tier size bounds are enforced; rearrangement difficulty remains unproven. |
 
 Insertion indices are gaps in the destination **before** removal, from zero through its length. Moving within the same location adjusts the gap after removal; gaps immediately before/after the selected tile return the input without adding history. Moves permit temporary invalid rows and retain empty source rows as layout placeholders. Undo restores tile order and row layout exactly. All returned positions and history snapshots are immutable. Reset confirmation, selection, and completion records belong to the future interface/session layer.
 
@@ -62,4 +64,6 @@ Keep the original inventory when constructing later positions; never derive a ne
 
 The solver enumerates every available run interval and three/four-colour group, then searches for an exact partition using face counts, the most constrained remaining face, and memoized failed positions. Physical copy IDs are assigned deterministically to the result, which is verified through `checkState`. Current tile placement and stored solution metadata do not influence the search; temporary invalid rows are accepted when inventory is conserved. It returns a final arrangement, rather than a move sequence or difficulty rating. Search is synchronous and exhaustive by default. A finite node budget bounds search work; `limit` is inconclusive and must never be used as proof of unsolvability or tier membership. Worker execution and difficulty proofs remain later plan items.
 
-With the same Python server running, open [http://127.0.0.1:8000/checks/](http://127.0.0.1:8000/checks/). The page reports all checks or the first failure. The suites contain 116 checks (80 core and 36 solver), including a 200-move conservation/undo sequence and independent exhaustive comparison for all 511 nonempty subsets of a nine-tile inventory. They also cover the full 104-tile set, structural examples for every tier, unsolvable positions, and search limits. The exported `runCoreChecks(sample)` and `runSolverChecks(sample)` functions run in a native-module JavaScript runtime. No Node installation or package manager is needed for the browser runner.
+The generator uses revision 2 so it cannot collide with the existing revision-1 sample fixture. Its FNV-1a/Mulberry32 algorithm, candidate traversal, and fixed rejection budgets are specified in [the generation contract](plans/rummipuz-generator.md). It returns unpublished candidates: size bounds and solvability do not prove the requested tier. Rating must exclude puzzles requiring no rearrangement and prove tier membership before publication. The current app continues to display only the hand-authored sample.
+
+With the same Python server running, open [http://127.0.0.1:8000/checks/](http://127.0.0.1:8000/checks/). The page reports all checks or the first failure. The suites contain 167 checks (80 core, 36 solver, 51 generator), including a 200-move conservation/undo sequence, independent exhaustive comparison for all 511 nonempty subsets of a nine-tile inventory, and saved generation fixtures for every requested tier. They also cover the full 104-tile set, unsolvable positions, search limits, seed validation, size bounds, and generation independent of previous requests. Exported `runCoreChecks(sample)`, `runSolverChecks(sample)`, and `runGeneratorChecks(fixtures)` run in a native-module JavaScript runtime. No Node installation or package manager is needed for the browser runner.

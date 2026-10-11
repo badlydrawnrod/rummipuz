@@ -34,7 +34,7 @@ The union of the initial `rack` and `board` is the puzzle inventory. Every ID mu
 
 Reproduction uses the tuple `(version, generatorVersion, difficultyTier, seed)`, not a seed interpreted independently of its generation context. A future replay/share control must preserve all four values; the text encoding for sharing belongs to the player-flow implementation. Identical inputs must produce identical initial rack and board ordering, regardless of device or previous puzzles. Solution metadata is optional and does not affect puzzle identity.
 
-A generator revision must define its random algorithm and candidate traversal order before generated puzzles are published. Preserve old revisions for replay, or retain the full puzzle JSON when a revision is unavailable. A stored puzzle can always be replayed directly from its starting position without running the generator. The sample below is a hand-authored fixture for the intended generator revision 1; it does not claim that a generator already exists or reproduces this seed.
+A generator revision must define its random algorithm and candidate traversal order before generated puzzles are published. Preserve old revisions for replay, or retain the full puzzle JSON when a revision is unavailable. A stored puzzle can always be replayed directly from its starting position without running the generator. Revision 1 is reserved for the hand-authored sample fixture below and has no procedural generator. [Revision 2](rummipuz-generator.md) produces solver-verified, unpublished candidates; requested difficulty still needs proof before publication.
 
 ## Validation and sample
 

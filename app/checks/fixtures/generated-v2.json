@@ -1,0 +1,616 @@
+[
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 2,
+      "difficultyTier": 1,
+      "seed": "replay-contract"
+    },
+    "result": {
+      "status": "candidate",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 2,
+        "difficultyTier": 1,
+        "seed": "replay-contract",
+        "rack": [
+          "orange-6-2",
+          "blue-1-1",
+          "black-1-1",
+          "orange-2-2"
+        ],
+        "board": [
+          [
+            "black-2-2",
+            "black-3-1",
+            "black-4-1",
+            "black-5-2",
+            "black-6-1",
+            "black-7-2"
+          ],
+          [
+            "black-2-1",
+            "black-3-2",
+            "black-4-2",
+            "black-5-1",
+            "black-6-2"
+          ],
+          [
+            "blue-2-1",
+            "blue-3-2",
+            "blue-4-2",
+            "blue-5-2",
+            "blue-6-2"
+          ],
+          [
+            "red-4-2",
+            "red-5-2",
+            "red-6-1",
+            "red-7-1"
+          ],
+          [
+            "blue-2-2",
+            "blue-3-1",
+            "blue-4-1",
+            "blue-5-1",
+            "blue-6-1"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "black-2-1",
+              "blue-2-1",
+              "orange-2-2"
+            ],
+            [
+              "red-4-2",
+              "red-5-2",
+              "red-6-1",
+              "red-7-1"
+            ],
+            [
+              "black-6-1",
+              "blue-6-1",
+              "orange-6-2"
+            ],
+            [
+              "blue-1-1",
+              "blue-2-2",
+              "blue-3-1"
+            ],
+            [
+              "blue-3-2",
+              "blue-4-1",
+              "blue-5-1"
+            ],
+            [
+              "blue-4-2",
+              "blue-5-2",
+              "blue-6-2"
+            ],
+            [
+              "black-1-1",
+              "black-2-2",
+              "black-3-1"
+            ],
+            [
+              "black-3-2",
+              "black-4-1",
+              "black-5-1"
+            ],
+            [
+              "black-4-2",
+              "black-5-2",
+              "black-6-2",
+              "black-7-2"
+            ]
+          ]
+        }
+      },
+      "attempts": 12,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 11,
+        "limit": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 2,
+      "difficultyTier": 2,
+      "seed": "replay-contract"
+    },
+    "result": {
+      "status": "candidate",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 2,
+        "difficultyTier": 2,
+        "seed": "replay-contract",
+        "rack": [
+          "black-5-2",
+          "blue-11-1",
+          "blue-2-2",
+          "blue-3-2"
+        ],
+        "board": [
+          [
+            "red-1-1",
+            "red-2-1",
+            "red-3-2",
+            "red-4-2",
+            "red-5-2"
+          ],
+          [
+            "orange-2-1",
+            "orange-3-1",
+            "orange-4-1",
+            "orange-5-1",
+            "orange-6-1",
+            "orange-7-1",
+            "orange-8-1",
+            "orange-9-2"
+          ],
+          [
+            "red-2-2",
+            "red-3-1",
+            "red-4-1",
+            "red-5-1",
+            "red-6-2",
+            "red-7-1"
+          ],
+          [
+            "orange-6-2",
+            "orange-7-2",
+            "orange-8-2",
+            "orange-9-1"
+          ],
+          [
+            "blue-4-1",
+            "blue-5-1",
+            "blue-6-2",
+            "blue-7-2",
+            "blue-8-2"
+          ],
+          [
+            "blue-8-1",
+            "blue-9-2",
+            "blue-10-1"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "black-5-2",
+              "blue-5-1",
+              "red-5-1"
+            ],
+            [
+              "blue-2-2",
+              "blue-3-2",
+              "blue-4-1"
+            ],
+            [
+              "blue-8-1",
+              "blue-9-2",
+              "blue-10-1",
+              "blue-11-1"
+            ],
+            [
+              "blue-6-2",
+              "blue-7-2",
+              "blue-8-2"
+            ],
+            [
+              "red-1-1",
+              "red-2-1",
+              "red-3-1"
+            ],
+            [
+              "red-2-2",
+              "red-3-2",
+              "red-4-1"
+            ],
+            [
+              "red-4-2",
+              "red-5-2",
+              "red-6-2",
+              "red-7-1"
+            ],
+            [
+              "orange-2-1",
+              "orange-3-1",
+              "orange-4-1"
+            ],
+            [
+              "orange-5-1",
+              "orange-6-1",
+              "orange-7-1",
+              "orange-8-1",
+              "orange-9-1"
+            ],
+            [
+              "orange-6-2",
+              "orange-7-2",
+              "orange-8-2",
+              "orange-9-2"
+            ]
+          ]
+        }
+      },
+      "attempts": 9,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 8,
+        "limit": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 2,
+      "difficultyTier": 3,
+      "seed": "replay-contract"
+    },
+    "result": {
+      "status": "candidate",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 2,
+        "difficultyTier": 3,
+        "seed": "replay-contract",
+        "rack": [
+          "blue-11-2",
+          "red-3-2",
+          "orange-2-2",
+          "blue-12-2"
+        ],
+        "board": [
+          [
+            "black-5-2",
+            "black-6-2",
+            "black-7-1",
+            "black-8-1",
+            "black-9-1",
+            "black-10-2"
+          ],
+          [
+            "blue-4-2",
+            "blue-5-1",
+            "blue-6-2",
+            "blue-7-1",
+            "blue-8-1",
+            "blue-9-1",
+            "blue-10-2",
+            "blue-11-1"
+          ],
+          [
+            "red-5-1",
+            "red-6-2",
+            "red-7-2",
+            "red-8-1",
+            "red-9-1",
+            "red-10-2",
+            "red-11-1",
+            "red-12-2"
+          ],
+          [
+            "red-4-1",
+            "red-5-2",
+            "red-6-1",
+            "red-7-1",
+            "red-8-2",
+            "red-9-2",
+            "red-10-1",
+            "red-11-2"
+          ],
+          [
+            "blue-3-2",
+            "blue-4-1",
+            "blue-5-2",
+            "blue-6-1",
+            "blue-7-2",
+            "blue-8-2",
+            "blue-9-2",
+            "blue-10-1"
+          ],
+          [
+            "orange-3-1",
+            "orange-4-2",
+            "orange-5-1",
+            "orange-6-1",
+            "orange-7-2",
+            "orange-8-2",
+            "orange-9-2",
+            "orange-10-1"
+          ],
+          [
+            "orange-2-1",
+            "orange-3-2",
+            "orange-4-1",
+            "orange-5-2",
+            "orange-6-2",
+            "orange-7-1"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "orange-2-1",
+              "orange-3-1",
+              "orange-4-1"
+            ],
+            [
+              "orange-2-2",
+              "orange-3-2",
+              "orange-4-2"
+            ],
+            [
+              "black-5-2",
+              "black-6-2",
+              "black-7-1"
+            ],
+            [
+              "black-8-1",
+              "black-9-1",
+              "black-10-2"
+            ],
+            [
+              "orange-5-1",
+              "orange-6-1",
+              "orange-7-1"
+            ],
+            [
+              "orange-5-2",
+              "orange-6-2",
+              "orange-7-2"
+            ],
+            [
+              "orange-8-2",
+              "orange-9-2",
+              "orange-10-1"
+            ],
+            [
+              "blue-3-2",
+              "blue-4-1",
+              "blue-5-1"
+            ],
+            [
+              "blue-4-2",
+              "blue-5-2",
+              "blue-6-1"
+            ],
+            [
+              "blue-6-2",
+              "blue-7-1",
+              "blue-8-1"
+            ],
+            [
+              "blue-7-2",
+              "blue-8-2",
+              "blue-9-1"
+            ],
+            [
+              "blue-9-2",
+              "blue-10-1",
+              "blue-11-1"
+            ],
+            [
+              "blue-10-2",
+              "blue-11-2",
+              "blue-12-2"
+            ],
+            [
+              "red-3-2",
+              "red-4-1",
+              "red-5-1"
+            ],
+            [
+              "red-5-2",
+              "red-6-1",
+              "red-7-1"
+            ],
+            [
+              "red-6-2",
+              "red-7-2",
+              "red-8-1"
+            ],
+            [
+              "red-8-2",
+              "red-9-1",
+              "red-10-1",
+              "red-11-1"
+            ],
+            [
+              "red-9-2",
+              "red-10-2",
+              "red-11-2",
+              "red-12-2"
+            ]
+          ]
+        }
+      },
+      "attempts": 1,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 0,
+        "limit": 0
+      }
+    }
+  },
+  {
+    "identity": {
+      "version": 1,
+      "generatorVersion": 2,
+      "difficultyTier": 4,
+      "seed": "replay-contract"
+    },
+    "result": {
+      "status": "candidate",
+      "puzzle": {
+        "version": 1,
+        "generatorVersion": 2,
+        "difficultyTier": 4,
+        "seed": "replay-contract",
+        "rack": [
+          "orange-3-1",
+          "black-4-2",
+          "black-7-2",
+          "black-2-1",
+          "orange-10-1",
+          "black-10-1",
+          "blue-10-1",
+          "orange-2-1",
+          "blue-2-2",
+          "blue-4-1"
+        ],
+        "board": [
+          [
+            "blue-9-2",
+            "red-9-2",
+            "orange-9-1",
+            "black-9-1"
+          ],
+          [
+            "blue-9-1",
+            "blue-10-2",
+            "blue-11-1",
+            "blue-12-1"
+          ],
+          [
+            "black-3-2",
+            "black-4-1",
+            "black-5-1",
+            "black-6-1",
+            "black-7-1",
+            "black-8-2",
+            "black-9-2"
+          ],
+          [
+            "black-8-1",
+            "blue-8-1",
+            "red-8-1"
+          ],
+          [
+            "orange-5-2",
+            "orange-6-1",
+            "orange-7-2",
+            "orange-8-1"
+          ],
+          [
+            "red-2-1",
+            "red-3-2",
+            "red-4-2",
+            "red-5-1",
+            "red-6-2",
+            "red-7-1",
+            "red-8-2",
+            "red-9-1"
+          ],
+          [
+            "orange-6-2",
+            "orange-7-1",
+            "orange-8-2",
+            "orange-9-2",
+            "orange-10-2"
+          ],
+          [
+            "blue-5-2",
+            "blue-6-1",
+            "blue-7-2"
+          ]
+        ],
+        "solution": {
+          "board": [
+            [
+              "black-3-2",
+              "red-3-2",
+              "orange-3-1"
+            ],
+            [
+              "black-2-1",
+              "blue-2-2",
+              "red-2-1",
+              "orange-2-1"
+            ],
+            [
+              "black-4-1",
+              "blue-4-1",
+              "red-4-2"
+            ],
+            [
+              "black-4-2",
+              "black-5-1",
+              "black-6-1"
+            ],
+            [
+              "black-10-1",
+              "blue-10-1",
+              "orange-10-1"
+            ],
+            [
+              "red-5-1",
+              "red-6-2",
+              "red-7-1",
+              "red-8-1",
+              "red-9-1"
+            ],
+            [
+              "black-7-1",
+              "black-8-1",
+              "black-9-1"
+            ],
+            [
+              "black-7-2",
+              "black-8-2",
+              "black-9-2"
+            ],
+            [
+              "blue-8-1",
+              "red-8-2",
+              "orange-8-1"
+            ],
+            [
+              "blue-5-2",
+              "blue-6-1",
+              "blue-7-2"
+            ],
+            [
+              "blue-9-1",
+              "red-9-2",
+              "orange-9-1"
+            ],
+            [
+              "blue-9-2",
+              "blue-10-2",
+              "blue-11-1",
+              "blue-12-1"
+            ],
+            [
+              "orange-5-2",
+              "orange-6-1",
+              "orange-7-1"
+            ],
+            [
+              "orange-6-2",
+              "orange-7-2",
+              "orange-8-2",
+              "orange-9-2",
+              "orange-10-2"
+            ]
+          ]
+        }
+      },
+      "attempts": 43,
+      "rejected": {
+        "construction": 0,
+        "unsolvable": 42,
+        "limit": 0
+      }
+    }
+  }
+]
