@@ -35,6 +35,71 @@ Within each tier, include a mix of rack and board sizes within these bounds. Do 
 
 An **Expert structural example** has board rows blue 1–6, red 1–6, orange 8–13, and black 8–13; rack tiles are black 6, blue 13, red 10, red 11, and red 12. Form blue/red/black 6 and blue/orange/black 13 groups, leaving blue/red 1–5 and orange/black 8–12 runs; form a red 10–12 run from the remaining rack tiles. Black 6 cannot form a black run because black 5 and black 7 are absent, so it forces both original blue/red runs to change. Blue 13 cannot form a blue run because blue 12 is absent, so it forces both original orange/black runs to change. Thus `R = 4`, with five rack tiles and four starting rows. The earlier 7–12 example allowed black 6 to extend its existing black run and did not force four rows to change.
 
+## Revision-5 structural difficulty policy — specified, not implemented
+
+Phase 6 adds structural requirements for newly generated revision-5 puzzles. Revisions 1–4 retain their existing identities and rating behaviour. The four tiers, exact minimum `R` requirements, full rack/board-size bounds above, and three-completion progression policy remain unchanged. Revision 4 stays the default until revision-5 samples are approved. The additional thresholds below are an initial design policy, not a measured human-difficulty scale; tuning them before publication must be recorded here and in the implementation plan.
+
+### Features of a complete solution
+
+Evaluate the actual physical IDs in a complete, valid, conserved final board. Ignore final row order and group colour order. Classify every original row as preserved or changed using the existing definition. Structural features describe the final arrangement, not a player's move sequence: temporary invalid rows, undo, or moving tiles through the rack do not affect them.
+
+**Connected changed rows (`C`).** Make a graph with one vertex for each changed original row. Connect two vertices when a final valid row contains at least one physical tile from each of those original rows. Let `C` be the number of vertices in the largest connected component, or zero when no rows change. Transitive connections count: if one original row contributes to two different final rows, it can link two otherwise separate rearrangements.
+
+Rack tiles are not graph vertices and do not connect components simply because they started in the same rack. Preserved original rows also do not connect components. A final row containing only rack tiles contributes no connection. Thus two independent two-row endpoint groups give `C = 2`, even though four rows change. Three changed source rows linked through two final sets give `C = 3`. This is a precise measure of shared final sets, not proof that a particular move order or reasoning dependency is forced.
+
+**Rows requiring more than endpoint extraction (`N`).** A changed original run is endpoint-only in a solution if there exists a contiguous core of at least three original physical tiles satisfying all these conditions:
+
+1. All original tiles in one final run are exactly that core, in consecutive order; the final run may also contain rack tiles or tiles from other original rows.
+2. Every other tile from the original run is exported to another final row, so only an original prefix, suffix, or both have been removed from the core.
+3. Neither exported end contains three or more consecutive original tiles that remain together in any other final run. Such a surviving run fragment is a split, rather than simple endpoint donation.
+
+Check every possible core; finding any core satisfying all three conditions makes that row endpoint-only for this conservative test. Every other changed original row counts once towards `N`. This includes every changed group, a run with no retained valid core, or a run split into multiple surviving run fragments. The test deliberately does not count a single interior extraction that leaves only one valid core and short exported fragments as complex merely because the extracted tile was originally in the middle.
+
+For example, blue 1–6 retaining blue 1–5 and donating 6 is endpoint-only. Blue 1–7 becoming blue 1–3, blue 5–7, and a group containing blue 4 counts towards `N`: both three-tile fragments survive as separate runs. Turning a three-colour group into tiles used in runs also counts. Removing two endpoints from one run still counts as endpoint-only if it retains a single valid core and neither exported end survives as another three-tile run fragment.
+
+A connected component's `N` is the number of its vertices that pass this non-endpoint test. Count original rows, not donated tiles, final sets, or pattern labels. A row contributing to several new sets still counts once. Connection and non-endpoint counts must be satisfied by the **same component of the same solution**; independent complex rows elsewhere cannot inflate a component's score.
+
+### Tier acceptance requirements
+
+All tiers first pass the existing solvability, inventory, size, and exact minimum-`R` checks. Apply these additional revision-5 gates:
+
+| Tier | Additional structural requirement |
+| --- | --- |
+| Easy | At least one solution changing exactly one row is endpoint-only (`N = 0`). This preserves a clear introductory route; other solutions may be more elaborate. |
+| Medium | Every complete solution has a connected component with at least two changed rows and at least one non-endpoint row in that component. |
+| Hard | Every complete solution has a connected component with at least three changed rows and at least two non-endpoint rows in that component. |
+| Expert | Every complete solution has a connected component with at least four changed rows and at least three non-endpoint rows in that component. |
+
+For Medium through Expert, the universal requirement includes solutions changing **more** than the minimum `R`. An easy endpoint route must not pass just because it touches extra rows. A candidate meeting the row-count tier but failing its structural gate is rejected for that requested tier; it is not silently relabelled. Do not increase board/rack bounds or promote a puzzle merely because generation struggles to find qualifying candidates. Revisit construction patterns and proof cost, and document any needed policy revision.
+
+### Examples and counterexamples
+
+The existing sample remains a suitable revision-5 Easy pattern: donate blue 6 from blue 1–6 to the rack's red/black 6 group, leaving blue 1–5 and the second blue run intact. The minimum `R` is one and an endpoint-only solution exists.
+
+The existing Medium example above changes two runs but only removes their 6 endpoints. Its witness has a connected component of size two with zero non-endpoint rows. That one easy witness is sufficient to reject it under the revision-5 Medium gate, regardless of any more complicated stored answer.
+
+A stronger Medium example starts with blue 1–7, red 1–7, and orange 10–12; the rack contains black 4, black 9, red 9, and orange 9. Use copy 1 for every tile. Form the blue/red/black 4 group, retain blue and red 1–3 and 5–7 as four runs, form the black/red/orange 9 group, and preserve orange 10–12. Black 4 has no possible black run or orange 4 partner: both blue 4 and red 4 must join it. Their source runs must both split around an interior tile; no same-colour 4 remains to repair either run. This forces `R = 2` and a shared two-row component with two non-endpoint rows. The extra 9 group is independent and supplies no structural credit. It fits the existing Medium size bounds. An independent exhaustive partition enumeration of this 21-tile, all-copy-1 inventory found exactly one final partition, ignoring row and group order, matching the arrangement above. Thus the example has no easier alternative. General physical-copy alternative searches remain a later implementation requirement.
+
+The existing Hard example has a two-row 6 group and a separate one-row 12 extraction. Its witness has `C = 2` and no non-endpoint rows, so it fails revision-5 Hard despite `R = 3`. The existing Expert example has two separate two-row endpoint groups, so it likewise fails despite `R = 4`.
+
+For a future Hard construction, the structural target is three changed rows linked through shared final sets, with at least two source rows split or converted rather than peeled at their ends. Expert extends that connected structure to at least four rows and three non-endpoint rows. These are design targets, not yet verified puzzle fixtures. The next Phase 6 step supplies full hand-derived patterns and reviews their alternative solutions; merely drawing a connected witness does not establish acceptance.
+
+### Proving that easier solutions are unavailable
+
+Keep the existing minimum-`R` proof, then perform a separate structural counterexample search. For Medium through Expert, ask whether **any** complete conserved arrangement lacks a component satisfying both of its thresholds. A found counterexample rejects the candidate. Only exhaustive failure of that search proves the structural gate. For Easy, search for an endpoint-only witness changing exactly one row; absence of such a witness excludes it from the revision-5 introductory pattern.
+
+Either enumerate all valid physical-tile partitions with sound pruning, or implement an equivalent constrained exact-cover search that proves absence of counterexamples. The current `ratePuzzle` and `solvePreservingRows` return a first witness and cannot establish these new gates without extension. Do not inspect just that witness, just minimum-`R` solutions, or a random sample of solutions.
+
+Physical-copy assignment matters to preservation, connections, and retained cores. Searches must explore distinct assignments or prove an equivalence reduction sound for **all** these features. The current face-count search's deterministic assignment of free copies alone is insufficient for a universal structural proof. Memoization/pruning must retain the origin and structural information needed by the counterexample predicate; a cache keyed only by remaining face counts cannot be assumed sound. Canonical row order and group colour order may remove duplicate arrangements because neither changes the predicate.
+
+Use fixed revision-specific traversal and node budgets, shared across the required proofs for a candidate. Budget exhaustion, cancellation, or unsupported proof logic is inconclusive and cannot publish a revision-5 puzzle. Record a complete witness, exact `R`, component membership and non-endpoint classifications for that witness, counterexample-search outcome, and proof-node counts for review. These witness features explain an accepted puzzle but do not replace the universal proof. Differential checks against an independent exhaustive physical-tile oracle on small inventories belong to the later implementation step.
+
+### Human review and calibration
+
+Provable gates establish tile conservation, solvability, minimum rearrangement, and the absence of solutions below the specified structural thresholds. They do not prove that people will find a puzzle difficult, that connections force a particular temporal dependency, or that there is only one solution.
+
+Review reproducible samples for whether the key idea is obvious, whether a decision changes options elsewhere, whether apparent alternatives are meaningful, whether patterns repeat, and whether extra tiles add reasoning rather than visual clutter. Initially legal rack placements, tile count, solver-node count, move count, and number of solutions are diagnostic observations, not tier gates or interchangeable human-difficulty scores. Player feedback may reveal easy routes that satisfy these structural gates; improve the documented criteria and construction before approving the new default. Easy should remain teachable, and the higher tiers should feel progressively more demanding in actual play.
+
 ## Completion credit and promotion
 
 Keep a completed-identity set and a completion-credit counter for each tier on the device. Identity is the full `(version, generatorVersion, difficultyTier, seed)` tuple. Each counter starts at zero and is capped at three.
