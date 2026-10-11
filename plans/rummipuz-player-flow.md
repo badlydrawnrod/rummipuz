@@ -22,13 +22,12 @@ All panels restore focus to their opening control when closed. Buttons and feedb
 
 Appearance preferences are saved on the device. System follows the device's light/dark preference, including changes while the app is open. All themes retain tile symbols and colour names, readable feedback, and visible focus indicators. The alternative palette works with every theme and changes display colours only; a tile labelled “Blue 6” retains its logical colour and physical identity. If storage is unavailable, changes still apply for the current session with the existing unsaved-progress notice.
 
-The default interaction is select, then place. Select a tile in the rack or board; highlight it without removing it from its source. Choose a visible insertion position before, between, or after tiles, an empty row, or **New row**. Rack insertion positions also allow any tile to return to the rack. A successful placement is one undoable move; selection alone is not a move.
+Gameplay supports mouse and touch; a dedicated keyboard gameplay flow is outside the scope. The default interaction is select, then place. Select a tile in the rack or board; highlight it without removing it from its source. Choose a visible insertion position before, between, or after tiles, an empty row, or **New row**. Rack insertion positions also allow any tile to return to the rack. A successful placement is one undoable move; selection alone is not a move.
 
 | Input | Select and place | Cancel or scroll |
 | --- | --- | --- |
 | Mouse | Click a tile, then an insertion position. Drag-and-drop is an optional equivalent for the same move. | Click the selected tile again or press Escape to clear selection. Wheel/scrollbars move the board viewport. |
 | Touch | Tap a tile, then a generous insertion target. Touch drag is also supported; tap-to-place always remains available. | Tap the selected tile again to clear selection. Swiping board whitespace scrolls without moving a tile. |
-| Keyboard | Tab reaches controls, tiles, and active insertion targets. Enter or Space selects a focused tile or places it at a focused target. After placement, focus follows the moved tile. **New row** and rack targets work through the same controls. | Escape clears selection or closes a panel. Undo, Reset, and Check are reachable buttons, so shortcuts are not required. |
 
 Dropping outside a destination or cancelling a drag leaves the state unchanged. Focus and selection identify a physical tile even when another tile has the same face. One move may leave invalid rows; the interface never blocks rearrangement solely because a row is temporarily invalid.
 
@@ -62,9 +61,8 @@ If local storage is unavailable, keep the current session playable and display �
 ## Walkthroughs for later interface verification
 
 1. **PC:** Start at a chosen tier → select/place or drag tiles → Undo → Reset and cancel → open Rules and return → Check an invalid position → finish and Check → inspect Completed → Next puzzle.
-2. **Keyboard:** Start → select a tile with Enter → navigate to a placement target → place → cancel selection with Escape → Undo → finish and Check, all with visible focus and no pointer.
-3. **Tablet:** Start in portrait → tap/place a tile → scroll the board → rotate to landscape without changing state → touch-drag another tile → Check → complete → change difficulty and start again.
-4. **Replay/resume:** Copy a code → open Replay and cancel → reject an invalid code without losing moves → replay a valid code → reload and Resume → complete the same puzzle twice and confirm only one completion is recorded.
-5. **Appearance:** Switch through Light, Dark, and High Contrast during play → enable the alternative palette with each theme → confirm tiles, feedback, and focus remain readable and moves/history are unchanged → select System and change the device preference → reload and confirm both settings are retained.
+2. **Tablet:** Start in portrait → tap/place a tile → scroll the board → rotate to landscape without changing state → touch-drag another tile → Check → complete → change difficulty and start again.
+3. **Replay/resume:** Copy a code → open Replay and cancel → reject an invalid code without losing moves → replay a valid code → reload and Resume → complete the same puzzle twice and confirm only one completion is recorded.
+4. **Appearance:** Switch through Light, Dark, and High Contrast during play → enable the alternative palette with each theme → confirm tiles, feedback, and focus remain readable and moves/history are unchanged → select System and change the device preference → reload and confirm both settings are retained.
 
 These are acceptance scenarios for later implementation, not claims that an interface already exists.
