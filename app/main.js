@@ -1,4 +1,5 @@
 import { renderTileRow } from './tiles.js';
+import { createGameState } from './state.js';
 
 const openButton = document.querySelector('#open-sample');
 const puzzleSection = document.querySelector('#puzzle');
@@ -36,7 +37,7 @@ openButton.addEventListener('click', async () => {
     if (!sample) {
       const response = await fetch(new URL('./puzzles/sample.json', import.meta.url));
       if (!response.ok) throw new Error(`Sample request failed: ${response.status}`);
-      sample = await response.json();
+      sample = createGameState(await response.json());
     }
     renderPuzzle(sample);
     content.hidden = false;

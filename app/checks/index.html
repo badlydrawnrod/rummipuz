@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rummipuz core checks</title>
+  <h1>Rummipuz core checks</h1>
+  <pre id="results" role="status">Running…</pre>
+  <script type="module">
+    import { runCoreChecks } from './core.js';
+    const results = document.querySelector('#results');
+    try {
+      const response = await fetch('../puzzles/sample.json');
+      if (!response.ok) throw new Error(`Fixture request failed: ${response.status}`);
+      const passed = runCoreChecks(await response.json());
+      results.textContent = `${passed.length} checks passed.\n\n${passed.join('\n')}`;
+    } catch (error) {
+      results.textContent = error.stack;
+      console.error(error);
+    }
+  </script>
+</html>

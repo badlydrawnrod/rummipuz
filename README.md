@@ -1,6 +1,6 @@
 # Rummipuz
 
-A local Rummikub-style puzzle game for PC and tablet. The current foundation opens a sample board and rack, shows all four difficulty descriptions, and provides the rules. Tile movement, checking, generation, and progress saving are still planned; this is not yet a playable game.
+A local Rummikub-style puzzle game for PC and tablet. The current foundation opens a validated sample board and rack, shows all four difficulty descriptions, and provides the rules. Pure rules and state checking are implemented; tile movement, the interactive Check control, generation, and progress saving are still planned. This is not yet a playable game.
 
 ## Run on a PC
 
@@ -32,7 +32,25 @@ The `--directory app` option serves only the public app files, rather than repos
 ## Project layout
 
 - `app/index.html`, `styles.css`, `main.js`, and `tiles.js`: buildless static app and native browser modules.
+- `app/rules.js` and `state.js`: pure row classification, puzzle validation, tile tracking, and win detection.
+- `app/checks/`: dependency-free core checks, including rule edge cases and tile conservation.
 - `app/puzzles/sample.json`: public runtime copy of `plans/sample-puzzle.json`; keep these files identical when updating the fixture.
 - `plans/`: rules, data format, player flow, difficulty policy, and the implementation checklist.
 
 Follow [the implementation plan](plans/rummipuz-implementation.md) for the next step.
+
+## Core modules and checks
+
+These native modules have no browser, storage, or random-number dependency:
+
+| API | Result |
+| --- | --- |
+| `parseTile(id)` | Decoded physical tile identity, colour, number, and copy; `null` for an invalid ID. |
+| `classifyRow(row)` | `{ valid, kind, reason }`, with kind `group`, `run`, `empty`, or `invalid`. |
+| `createGameState(puzzle)` | Detached, frozen initial state containing puzzle metadata, the original `inventory`, `rack`, and `board`; throws for malformed starting data or an invalid supplied solution. |
+| `getTileLocations(state)` | Map of physical IDs to location arrays: `{ area: 'rack', index }` or `{ area: 'board', row, index }`. Multiple locations expose duplicates. |
+| `checkState(state)` | `{ won, conserved, remainingRack, invalidRows, errors }`. Row indices are zero-based. Invalid temporary rows are unfinished positions; inventory failures are state errors. |
+
+Keep the original inventory when constructing later positions; never derive a new inventory from moved tiles. Win checking accepts any valid complete arrangement, independent of supplied solution metadata. Starting puzzles without solution metadata still require a future solver to prove solvability before publication.
+
+With the same Python server running, open [http://127.0.0.1:8000/checks/](http://127.0.0.1:8000/checks/). The page reports all checks or the first failure. The core suite currently contains 47 checks and can also run via its exported `runCoreChecks(sample)` function in a native-module JavaScript runtime. No Node installation or package manager is needed for the browser runner.
