@@ -1,3 +1,4 @@
+import { initialiseOffline } from './offline.js';
 import { renderTileLegend } from './tiles.js';
 import { initialisePlay } from './play.js';
 import { checkState } from './state.js';
@@ -6,6 +7,10 @@ import { createPuzzleService } from './puzzle-service.js';
 import { createPuzzleFlow, nextDifficulty, parseReplayCode, TIER_NAMES } from './puzzle-flow.js';
 import { createPreferencesStore } from './preferences.js';
 import { initialiseAppearance, initialiseTilePalette } from './appearance.js';
+
+void initialiseOffline({ onStatus: (message) => {
+  document.querySelector('#offline-status').textContent = message;
+} });
 
 const preferences = createPreferencesStore({
   onNotice: (message) => {

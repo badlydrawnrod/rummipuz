@@ -6,6 +6,10 @@
     <meta name="theme-color" content="#174c43">
     <meta name="description" content="Rummipuz — rearrange the board, empty your rack.">
     <title>Rummipuz</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="Rummipuz">
     <link rel="stylesheet" href="./styles.css">
     <script type="module" src="./main.js"></script>
   </head>
@@ -63,6 +67,7 @@
           <button id="retry-preparation" type="button" hidden>Retry</button>
         </div>
         <p id="progress-status" class="preview-note" role="status"></p>
+        <p id="offline-status" class="preview-note" role="status"></p>
       </section>
 
       <section id="puzzle" class="puzzle" aria-labelledby="puzzle-title" hidden>

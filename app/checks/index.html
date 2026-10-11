@@ -6,6 +6,7 @@
   <h1>Rummipuz core checks</h1>
   <pre id="results" role="status">Running…</pre>
   <script type="module">
+    import { runOfflineChecks, runOfflinePackageChecks } from './offline.js';
     import { runCoreChecks } from './core.js';
     import { runSolverChecks } from './solver.js';
     import { runGeneratorChecks } from './generator.js';
@@ -37,7 +38,12 @@
       const stylesResponse = await fetch('../styles.css');
       if (!stylesResponse.ok) throw new Error('Appearance stylesheet request failed.');
       const styles = await stylesResponse.text();
-      const passed = [...runCoreChecks(sample), ...runSolverChecks(sample),
+      const offlinePackage = await runOfflinePackageChecks(async (path) => {
+        const response = await fetch(new URL(path === './' ? '../index.html' : `../${path.slice(2)}`, import.meta.url));
+        if (!response.ok) throw new Error(`Offline package request failed: ${path}`);
+        return response.arrayBuffer();
+      });
+      const passed = [...await runOfflineChecks(), ...offlinePackage, ...runCoreChecks(sample), ...runSolverChecks(sample),
         ...runGeneratorChecks(candidateFixtures),
         ...runDifficultyChecks(sample, ratedFixtures),
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
