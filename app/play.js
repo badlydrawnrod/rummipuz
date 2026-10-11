@@ -7,8 +7,8 @@ import { createOverflowControls } from './overflow.js';
 
 const dragType = 'application/x-rummipuz-tile';
 
-export function initialisePlay({ content, status, state }) {
-  const session = createPlaySession(state);
+export function initialisePlay({ content, status, state, completed = false, onChange }) {
+  const session = createPlaySession(state, { completed, onChange });
   const document = content.ownerDocument;
   const find = (selector) => content.querySelector(selector);
   const resetPanel = find('#reset-confirmation');

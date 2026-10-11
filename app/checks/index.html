@@ -13,6 +13,7 @@
     import { runReviewChecks } from './review.js';
     import { runAppearanceChecks } from './appearance.js';
     import { runPlayChecks } from './play.js';
+    import { runProgressChecks } from './progress.js';
     import { runTouchChecks } from './touch.js';
     import { runOverflowChecks } from './overflow.js';
     import { runWorkerLifecycleChecks, runWorkerChecks } from './worker.js';
@@ -40,6 +41,7 @@
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
         ...await runWorkerLifecycleChecks(),
         ...runPlayChecks(sample),
+        ...runProgressChecks(sample),
         ...runAppearanceChecks(styles), ...runTouchChecks(sample, styles), ...runOverflowChecks()];
       results.textContent = `${passed.length} checks passed. Testing real module workers…`;
       passed.push(...await runWorkerChecks(sample,

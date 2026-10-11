@@ -1,6 +1,7 @@
 import { renderTileLegend } from './tiles.js';
 import { initialisePlay } from './play.js';
-import { createGameState } from './state.js';
+import { checkState, createGameState } from './state.js';
+import { createProgressStore } from './progress.js';
 import { initialiseAppearance, initialiseTilePalette } from './appearance.js';
 
 initialiseAppearance({
@@ -20,6 +21,15 @@ const puzzleSection = document.querySelector('#puzzle');
 const status = document.querySelector('#load-status');
 const content = document.querySelector('#puzzle-content');
 let sample = null;
+const progress = createProgressStore({
+  onNotice: (message) => { document.querySelector('#progress-status').textContent = message; },
+});
+const restored = progress.snapshot().active;
+if (restored) {
+  openButton.textContent = 'Resume puzzle';
+  document.querySelector('.preview-note').textContent =
+    `${['Easy', 'Medium', 'Hard', 'Expert'][restored.state.difficultyTier - 1]} · ${restored.state.rack.length} tiles in rack · ${restored.completed ? 'Completed' : 'Saved puzzle'}`;
+}
 renderTileLegend(document.querySelector('#tile-legend'));
 
 openButton.addEventListener('click', async () => {
@@ -28,15 +38,25 @@ openButton.addEventListener('click', async () => {
   status.textContent = 'Loading sample puzzle…';
   try {
     if (!sample) {
-      const response = await fetch(new URL('./puzzles/sample.json', import.meta.url));
-      if (!response.ok) throw new Error(`Sample request failed: ${response.status}`);
-      const state = createGameState(await response.json());
-      sample = initialisePlay({ content, status, state });
+      let state = restored?.state;
+      if (!state) {
+        const response = await fetch(new URL('./puzzles/sample.json', import.meta.url));
+        if (!response.ok) throw new Error(`Sample request failed: ${response.status}`);
+        state = createGameState(await response.json());
+      }
+      sample = initialisePlay({ content, status, state, completed: restored?.completed ?? false,
+        onChange: (snapshot) => progress.saveSession(snapshot) });
+      progress.saveSession(sample.snapshot());
+      const tier = state.difficultyTier;
+      document.querySelector('#puzzle-title').textContent =
+        `${['Easy', 'Medium', 'Hard', 'Expert'][tier - 1]} · ${['rework one row', 'connect changes across two rows', 'coordinate three rows', 'rebuild four or more rows'][tier - 1]}`;
     }
     content.hidden = false;
     status.textContent = sample.snapshot().completed
-      ? 'Puzzle complete! Every tile is placed in a valid row.' : 'Sample ready. Select a tile to start.';
-    openButton.textContent = 'View sample puzzle';
+      ? 'Puzzle complete! Every tile is placed in a valid row.'
+      : checkState(sample.snapshot().state).won ? 'Ready to check. Select Check to finish.'
+        : restored ? 'Puzzle resumed. Select a tile to continue.' : 'Sample ready. Select a tile to start.';
+    openButton.textContent = 'View puzzle';
     puzzleSection.scrollIntoView({ block: 'start' });
     const heading = document.querySelector('#puzzle-title');
     heading.tabIndex = -1;
