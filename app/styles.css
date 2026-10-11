@@ -102,6 +102,12 @@ h3 { font-size: 13px; margin: 0 0 16px; font-weight: 650; }
 .legend-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--tile-border); border-radius: 6px; background: var(--tile); font-size: 14px; font-weight: 650; }
 .legend-item > span:first-child { font-family: Arial, sans-serif; font-size: 20px; }
 .board-row { overflow-x: auto; padding: 8px 4px 16px; }
+.tile-scroll-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.tile-scroll-controls > .board-row, .tile-scroll-controls > .rack-scroll { flex: 1 1 auto; min-width: 0; }
+.scroll-arrow { flex: 0 0 48px; width: 48px; min-height: 48px; padding: 0; font-size: 32px; line-height: 1; }
+.board .scroll-arrow { color: var(--board); background: var(--board-text); }
+.board .scroll-arrow:hover { color: var(--board); background: var(--board-text); }
+.board .scroll-arrow:focus-visible { outline-color: var(--board-text); }
 .board-row-label { margin: 0 0 8px; font-size: 12px; font-weight: 650; }
 .board-row:focus-visible, .rack-scroll:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
 .tile-row { display: flex; gap: 8px; list-style: none; padding: 4px; margin: 0; width: max-content; min-width: 100%; }

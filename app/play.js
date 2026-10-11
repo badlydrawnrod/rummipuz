@@ -3,6 +3,7 @@ import { classifyRow, parseTile } from './rules.js';
 import { checkState } from './state.js';
 import { createPlaySession } from './play-session.js';
 import { initialiseTouch } from './touch.js';
+import { createOverflowControls } from './overflow.js';
 
 const dragType = 'application/x-rummipuz-tile';
 
@@ -17,6 +18,8 @@ export function initialisePlay({ content, status, state }) {
   const cancel = find('#cancel-selection');
   const check = find('#check-puzzle');
   let touch;
+  let rowOverflow = [];
+  const rackOverflow = createOverflowControls(find('.rack-scroll'), 'rack');
 
   function focusTile(id) {
     if (!id) return;
@@ -44,6 +47,8 @@ export function initialisePlay({ content, status, state }) {
     touch?.cancel();
     const { state, selected, completed } = session.snapshot();
     const board = find('#board-rows');
+    for (const controls of rowOverflow) controls.dispose();
+    rowOverflow = [];
     board.replaceChildren();
     state.board.forEach((tiles, index) => {
       const container = document.createElement('div');
@@ -62,10 +67,12 @@ export function initialisePlay({ content, status, state }) {
         label: `row ${index + 1}`, selected, locked: completed });
       container.append(label, list);
       board.append(container);
+      rowOverflow.push(createOverflowControls(container, `row ${index + 1}`));
     });
     renderTileRow(state.rack, find('#rack-tiles'), {
       location: { area: 'rack' }, label: 'rack', selected, locked: completed,
     });
+    rackOverflow.refresh();
     document.querySelector('#rack-count').textContent = state.rack.length;
     find('#replay-code').textContent =
       `rummipuz:${state.version}:${state.generatorVersion}:${state.difficultyTier}:${state.seed}`;

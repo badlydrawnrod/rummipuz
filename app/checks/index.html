@@ -14,6 +14,7 @@
     import { runAppearanceChecks } from './appearance.js';
     import { runPlayChecks } from './play.js';
     import { runTouchChecks } from './touch.js';
+    import { runOverflowChecks } from './overflow.js';
     import { runWorkerLifecycleChecks, runWorkerChecks } from './worker.js';
     const results = document.querySelector('#results');
     try {
@@ -39,7 +40,7 @@
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
         ...await runWorkerLifecycleChecks(),
         ...runPlayChecks(sample),
-        ...runAppearanceChecks(styles), ...runTouchChecks(sample, styles)];
+        ...runAppearanceChecks(styles), ...runTouchChecks(sample, styles), ...runOverflowChecks()];
       results.textContent = `${passed.length} checks passed. Testing real module workers…`;
       passed.push(...await runWorkerChecks(sample,
         [candidateFixtures[0], ratedFixtures[0], reviewedFixtures[0]]));
