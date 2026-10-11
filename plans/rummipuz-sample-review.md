@@ -4,13 +4,13 @@ This records agent hand analysis and verification separately from player feedbac
 
 ## Revision-5 user review — prepared 11 October 2026
 
-**Status:** Complete. On 11 October 2026, the user reported “It worked well” and requested that the sample-review step be marked complete. The samples are approved without further tuning. Revision 4 remains the default until the separate default-switch step. No agent-side browser access was used and no runtime/interface changes were made.
+**Status:** Complete. On 11 October 2026, the user reported “It worked well” and requested that the sample-review step be marked complete. The samples are approved without further tuning. Revision 5 is now the default following the separate verified default-switch step. No agent-side browser access was used and no runtime/interface changes were made.
 
 The [saved sample set](revision-5-sample-review.json) contains the full identities, exact generated results, replay codes, and separately hand-derived physical-ID solutions. Selection uses `review-v5-0` and `review-v5-1` at Easy, Medium, and Hard; Expert uses `review-v5-0` and `review-v5-2` to include both available families. This is a deliberately small family-coverage set, not a random difficulty survey. Easy's second sample reverses the endpoint direction; it does not introduce another structural family.
 
 ### Play first, then open explanations
 
-Use the game's existing replay control to paste each full code and load its puzzle. These are explicit revision-5 replays; Start and Next still generate revision 4. An unfinished session may require the existing replacement confirmation. Review replays use ordinary saved-session and completion-credit behaviour: completing a previously uncompleted code can earn credit at its recorded tier. Copy your current replay code first if you want to return to that puzzle; it does not preserve an unfinished layout or undo history.
+Use the game's existing replay control to paste each full code and load its puzzle. These are explicit revision-5 replays; Start and Next now generate revision 5; use the listed replay codes to reproduce these exact review samples. An unfinished session may require the existing replacement confirmation. Review replays use ordinary saved-session and completion-credit behaviour: completing a previously uncompleted code can earn credit at its recorded tier. Copy your current replay code first if you want to return to that puzzle; it does not preserve an unfinished layout or undo history.
 
 Try A–F in order, then H before G to compare Expert without and with duplicates. Keep the explanations closed until you have tried the puzzle. Approximate solving time, resets/undo, or getting stuck are useful observations, not pass/fail limits.
 
@@ -126,7 +126,7 @@ Provisional assessment: Easy retains a clear single-row route. Medium introduces
 
 For A–H, record whether it was straightforward, appropriately challenging, or frustrating; roughly how long it took; the idea or choice that required thought; and whether it felt repetitive after earlier samples. In particular: are A/B approachable, do C/D differ meaningfully, does F add thought beyond E, and do G/H deserve Expert after learning the group-conversion idea? Report any easy alternative you found using the replay code and your final layout.
 
-**User feedback:** “It worked well. Mark that step as complete.” The user approved the sample review overall; no individual puzzle ratings, solving times, or device details were supplied. **Tuning:** None requested or made, so the verified criteria, constructions, and proofs are unchanged. **Sample approval:** Accepted; Phase 6’s fifth step is complete. **Release/default decision:** Revision 4 remains the current default. Making approved revision 5 the default is the separate sixth step, to perform when instructed with its focused play-flow, replay/session compatibility, documentation, and offline-package checks. Outstanding Phase 5 whole-session verification remains separate.
+**User feedback:** “It worked well. Mark that step as complete.” The user approved the sample review overall; no individual puzzle ratings, solving times, or device details were supplied. **Tuning:** None requested or made, so the verified criteria, constructions, and proofs are unchanged. **Sample approval:** Accepted; Phase 6’s fifth step is complete. **Release/default decision:** The separate sixth step is now complete: revision 5 is the default for fresh puzzles, with 869 native checks and 39 offline-bundle worker checks passing. Offline release is `v3`; old replay and saved-session behaviour is preserved. Outstanding Phase 5 whole-session verification remains separate.
 
 ## Earlier revision-4 review
 

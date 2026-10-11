@@ -1,6 +1,6 @@
 # Revision-5 correctness, variety, and preparation verification
 
-**Status:** Phase 6's fourth step is complete. Native verification and the user-reported desktop and tablet preparation runs passed. The desktop rerun passed after loading offline release `v2`. Revision 4 remains the default pending user review of generated puzzles.
+**Status:** Phase 6's fourth step is complete. Native verification and the user-reported desktop and tablet preparation runs passed. The desktop rerun passed after loading offline release `v2`. This report records the pre-release preparation verification. Generated samples have since been approved and revision 5 is now the default; see the [generation contract](rummipuz-generator.md#approved-default-switch--11-october-2026) for the subsequent release-`v3` checks.
 
 ## Native sample and correctness
 

@@ -10,7 +10,7 @@ try {
   const { createGameState, checkState } = await import('file://' + staging + '/app/state.js');
   const { rearrangedRows } = await import('file://' + staging + '/app/difficulty.js');
   const samples = JSON.parse(await fs.readFile(new URL('../revision-5-sample-review.json', import.meta.url), 'utf8'));
-  assert.equal(RATED_GENERATOR_VERSION, 4);
+  assert.equal(RATED_GENERATOR_VERSION, 5);
   assert.equal(samples.length, 8);
   for (const { identity, replayCode, result, handSolution } of samples) {
     assert.equal(replayCode, `rummipuz:1:5:${identity.difficultyTier}:${identity.seed}`);
@@ -20,7 +20,7 @@ try {
     assert.equal(checkState({ ...state, rack: [], board: handSolution }).won, true, replayCode);
     assert.equal(rearrangedRows(state, handSolution).length, identity.difficultyTier, replayCode);
   }
-  console.log('42 native assertions passed: eight exact replays, repeated determinism, conserved hand solutions, minimum changed rows, and retained default revision 4.');
+  console.log('42 native assertions passed: eight exact replays, repeated determinism, conserved hand solutions, minimum changed rows, and approved default revision 5.');
 } finally {
   await fs.rm(staging, { recursive: true, force: true });
 }

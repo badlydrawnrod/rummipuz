@@ -37,7 +37,7 @@ An **Expert structural example** has board rows blue 1–6, red 1–6, orange 8�
 
 ## Revision-5 structural difficulty policy
 
-Phase 6 adds structural requirements for newly generated revision-5 puzzles. These are implemented for explicit revision-5 requests in `rateStructuralPuzzle`; revision 4 remains the default pending sample approval. Revisions 1–4 retain their existing identities and rating behaviour. The four tiers, exact minimum `R` requirements, full rack/board-size bounds above, and three-completion progression policy remain unchanged. Revision 4 stays the default until revision-5 samples are approved. The additional thresholds below are an initial design policy, not a measured human-difficulty scale; tuning them before publication must be recorded here and in the implementation plan.
+Phase 6 adds structural requirements for newly generated revision-5 puzzles. These are implemented in `rateStructuralPuzzle`; revision 5 is now the approved default for fresh Start and Next puzzles. Revisions 1–4 retain their existing identities and rating behaviour. The four tiers, exact minimum `R` requirements, full rack/board-size bounds above, and three-completion progression policy remain unchanged. The user approved the revision-5 sample set on 11 October 2026 without requesting tuning. Existing saved sessions keep their recorded revision. The additional thresholds below are an initial design policy, not a measured human-difficulty scale; tuning them before publication must be recorded here and in the implementation plan.
 
 ### Features of a complete solution
 
@@ -142,4 +142,4 @@ Rating features record rack size, board rows, minimum rearrangement, one minimum
 
 Phase 3 must review the tier limits and generation speed using actual puzzles. Any later change that alters deterministic generation requires a generator-version increment under the puzzle-format replay contract.
 
-Initial sample review retains these tier definitions and broad bounds, while revision 4 uses smaller sampling envelopes for clearer teaching moves and reduced proof work. See [rummipuz-sample-review.md](rummipuz-sample-review.md) for eight hand-derived solutions and generation timing. This is design analysis; actual learner feedback is still pending.
+Initial sample review retains these tier definitions and broad bounds, while revision 4 uses smaller sampling envelopes for clearer teaching moves and reduced proof work. See [rummipuz-sample-review.md](rummipuz-sample-review.md) for eight hand-derived solutions and generation timing. This is historical revision-4 design analysis. The later revision-5 sample set was approved by the user; revision 5 now uses the structural gates above for fresh play.

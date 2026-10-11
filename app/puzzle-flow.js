@@ -1,5 +1,6 @@
 import { createGameState } from './state.js';
 import { puzzleIdentity } from './progress.js';
+import { RATED_GENERATOR_VERSION } from './rated-generator.js';
 
 export const TIER_NAMES = ['Easy', 'Medium', 'Hard', 'Expert'];
 export function nextDifficulty({ chosenDifficultyTier: tier, credits }) {
@@ -40,7 +41,7 @@ export function createPuzzleFlow({ service, progress, loadSample,
         let seed;
         for (let attempt = 0; attempt < 100; attempt += 1) {
           seed = newSeed();
-          identity = { version: 1, generatorVersion: 4, difficultyTier: chosenTier, seed };
+          identity = { version: 1, generatorVersion: RATED_GENERATOR_VERSION, difficultyTier: chosenTier, seed };
           if (!seen.has(puzzleIdentity(identity))) break;
           identity = null;
         }

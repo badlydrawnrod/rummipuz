@@ -8,7 +8,12 @@ export function runStructuralChecks(designs, fixtures) {
   const passed = [];
   const assert = (ok, name) => { if (!ok) throw new Error(`Failed: ${name}`); passed.push(name); };
   const throws = (fn) => { try { fn(); return false; } catch { return true; } };
-  assert(RATED_GENERATOR_VERSION === 4, 'Revision 4 remains the default pending sample approval');
+  assert(RATED_GENERATOR_VERSION === 5, 'Approved revision 5 is the default');
+  for (let tier = 1; tier <= 4; tier += 1) {
+    const identity = { difficultyTier: tier, seed: 'default-v5' };
+    assert(JSON.stringify(generatePuzzle(identity)) === JSON.stringify(generatePuzzle({ ...identity, generatorVersion: 5 })),
+      `Omitted revision uses exact revision-5 output at tier ${tier}`);
+  }
   for (const design of designs) {
     const puzzle = { version: 1, generatorVersion: 5, seed: design.name,
       difficultyTier: design.difficultyTier, board: design.board, rack: design.rack,
