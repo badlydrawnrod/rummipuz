@@ -4,7 +4,7 @@
 
 Build a local, replayable Rummikub-style puzzle game for PC and tablet. Each puzzle starts with a valid board and a rack; the player wins by placing every rack tile while leaving every board row valid. Players can select a starting difficulty, and completed puzzles lead to progressively harder ones. Puzzles are generated on demand, with no daily limit.
 
-**Status:** Phases 1 and 2 complete. Phase 3 generation, difficulty proofs, and sample review/tuning complete; worker execution is next.
+**Status:** Phases 1–3 implementation complete. Phase 4 readable tile interface work is next; real-browser worker verification remains pending.
 
 ## Working assumptions
 
@@ -20,7 +20,7 @@ Record any changes to these assumptions under **Decisions** before implementing 
 
 Work from the first unchecked item in the current phase. Check an item only when its acceptance condition is met. At the end of a work session, update **Current position** with the next action and any blocker or decision. Keep this file with the project so a later session can continue without reconstructing the plan.
 
-**Current position:** Eight revision-4 samples (two per tier) have hand-derived solutions showing one, two, three, and four changed rows; all physical IDs and minimum rearrangement counts were verified. Design review is documented in `rummipuz-sample-review.md`; this is agent hand analysis, not an observed learner playtest. Revision 4 is the default in `app/rated-generator.js`, sampling smaller boards/racks within unchanged tier bounds, with fixed 64-attempt/20,000-node budgets. Explicit revision-3 replay preserves its original bounds, algorithm, and budgets; all prior golden fixtures pass. A 64-seed native-runtime probe succeeded across all tiers with varied sizes and a maximum observed generation time of about 58 ms, avoiding the earlier multi-second Expert workload in this sample. All 264 checks passed, including 33 replay/hand-review checks. Next: move generation/rating/solving into a module worker and verify responsiveness/cancellation while preparing puzzles. Tablet performance and actual learner testing remain later interface verification work. The app remains a static sample preview. No blockers.
+**Current position:** `app/puzzle-service.js` runs generation, solving, and rating asynchronously in dedicated module workers via `app/puzzle-worker.js`. Abort terminates synchronous search; disposal cancels all pending tasks, late results are ignored, and worker errors reject without a main-thread fallback. Results regain deep immutability after structured cloning. Generation preserves revisions 2/3/4; revision 1 remains a stored fixture. All 290 checks passed in a fresh native-module runtime, including 15 lifecycle/race checks and 11 real worker-thread checks executing the actual module, verifying deterministic replay, cancellation, and main-thread heartbeat progress. `/checks/` includes those real-worker checks for browsers. No browser was connected in this environment, so native worker verification is complete but actual browser/tablet execution remains pending. The app is still a static sample preview; session/UI wiring comes in subsequent interface work. Next: Phase 4 readable board/rack tiles and accessible interface work, using the worker service whenever preparing puzzles; verify browser worker behavior when a browser is available. No implementation blockers.
 
 ## Phase 1 — Define the game
 
@@ -42,7 +42,7 @@ Work from the first unchecked item in the current phase. Check an item only when
 - [x] Build a seeded generator that produces valid starting boards and racks, then uses the solver to reject unsolvable candidates. **Done when:** the same seed always reproduces the same puzzle. Implemented as `generateCandidate` in `app/generator.js`; revision-2 replay fixtures, validation, and rejection checks passed. Candidates remain unpublished until the next step proves their requested difficulty.
 - [x] Rate candidate puzzles using features tied to human difficulty: rack size, number of rows touched, required rearrangement, and competing placements. **Done when:** generated samples fall into distinct starting tiers. Exact minimum rearrangement proofs and requested-tier rejection are implemented; revision-3 samples and all 64 focused difficulty checks passed. Initial design calibration is documented in the sample review; actual learner feedback remains future validation.
 - [x] Review sample puzzles by hand and tune the tiers. **Done when:** the starting tier teaches one-row rearrangement and later tiers require coordinated changes across more rows, without long generation delays. Eight hand-derived solutions verified the tier sequence. Revision-4 sampling reduces incidental rows and proof work; 64 measured requests all succeeded, maximum about 58 ms on the native runtime. See [rummipuz-sample-review.md](rummipuz-sample-review.md); learner/tablet testing remains pending.
-- [ ] Move generation/solving off the UI thread if it causes visible pauses. **Done when:** interaction remains responsive while preparing the next puzzle.
+- [x] Move generation/solving off the UI thread if it causes visible pauses. **Done when:** interaction remains responsive while preparing the next puzzle. Dedicated module-worker service implemented; actual worker-thread checks verify main-thread timer progress and cancellation. The browser runner is ready; real browser/tablet confirmation and play-screen wiring remain part of interface verification.
 
 ## Phase 4 — Build the PC and tablet interface
 
@@ -77,6 +77,8 @@ Work from the first unchecked item in the current phase. Check an item only when
 - Preserve revision-2 candidate generation and introduce rated generation as revision 3 because difficulty filtering changes which puzzle a seed selects. Reject zero-rearrangement, size/tier mismatches, and inconclusive proofs. Correct the Expert example by separating its number ranges; the rules and tier definitions are unchanged.
 
 - Keep tier definitions and full size bounds unchanged after sample review; use narrower revision-4 generation envelopes for clear teaching moves and shorter proofs. Preserve explicit revision-3 replay. Sampling envelopes and fixed work budgets are documented in [rummipuz-sample-review.md](rummipuz-sample-review.md).
+
+- Use a dedicated module worker per preparation/search request, terminating it on cancellation or completion. Keep failures explicit rather than falling back to main-thread search. Callers retain the active session until a replacement is ready.
 
 - Offer Classic / Light, Dark, High Contrast, and System appearance settings, defaulting to System. Keep tiles light in Dark mode so black numbers remain readable. Standard tile colours remain consistent across themes; the alternative tile palette is an independent preference. Keep symbols and colour names visible in every combination, and save appearance settings on the device without changing puzzle data.
 

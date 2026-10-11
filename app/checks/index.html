@@ -11,6 +11,7 @@
     import { runGeneratorChecks } from './generator.js';
     import { runDifficultyChecks } from './difficulty.js';
     import { runReviewChecks } from './review.js';
+    import { runWorkerLifecycleChecks, runWorkerChecks } from './worker.js';
     const results = document.querySelector('#results');
     try {
       const response = await fetch('../puzzles/sample.json');
@@ -23,10 +24,17 @@
       const reviewedResponse = await fetch('./fixtures/generated-v4.json');
       const handResponse = await fetch('./fixtures/reviewed-v4.json');
       if (!reviewedResponse.ok || !handResponse.ok) throw new Error('Review fixture request failed.');
+      const reviewedFixtures = await reviewedResponse.json();
+      const candidateFixtures = await fixturesResponse.json();
+      const ratedFixtures = await ratedResponse.json();
       const passed = [...runCoreChecks(sample), ...runSolverChecks(sample),
-        ...runGeneratorChecks(await fixturesResponse.json()),
-        ...runDifficultyChecks(sample, await ratedResponse.json()),
-        ...runReviewChecks(await reviewedResponse.json(), await handResponse.json())];
+        ...runGeneratorChecks(candidateFixtures),
+        ...runDifficultyChecks(sample, ratedFixtures),
+        ...runReviewChecks(reviewedFixtures, await handResponse.json()),
+        ...await runWorkerLifecycleChecks()];
+      results.textContent = `${passed.length} checks passed. Testing real module workers…`;
+      passed.push(...await runWorkerChecks(sample,
+        [candidateFixtures[0], ratedFixtures[0], reviewedFixtures[0]]));
       results.textContent = `${passed.length} checks passed.\n\n${passed.join('\n')}`;
     } catch (error) {
       results.textContent = error.stack;
