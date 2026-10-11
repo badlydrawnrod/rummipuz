@@ -1,4 +1,4 @@
-import { initialiseAppearance } from '../appearance.js';
+import { initialiseAppearance, initialiseTilePalette } from '../appearance.js';
 
 export function runAppearanceChecks(styles) {
   const passed = [];
@@ -49,6 +49,40 @@ export function runAppearanceChecks(styles) {
       `Appearance listeners can be cleaned up (${dark})`);
   }
 
+  const root = { dataset: {} };
+  const select = events({ value: '' });
+  const paletteSelect = events({ value: '' });
+  const paletteStatus = { textContent: '' };
+  const media = events({ matches: false });
+  const disposeAppearance = initialiseAppearance({ root, select, status: { textContent: '' }, media });
+  const disposePalette = initialiseTilePalette({ root, select: paletteSelect, status: paletteStatus });
+  assert(root.dataset.palette === 'standard' && paletteSelect.value === 'standard',
+    'Tile palette defaults to Standard independently of appearance');
+  for (const mode of ['light', 'dark', 'high-contrast', 'system']) {
+    select.value = mode;
+    select.emit();
+    for (const palette of ['alternative', 'standard', 'alternative']) {
+      const theme = root.dataset.theme;
+      paletteSelect.value = palette;
+      paletteSelect.emit();
+      assert(root.dataset.palette === palette && root.dataset.theme === theme && select.value === mode,
+        `${mode}: switching to ${palette} preserves appearance`);
+    }
+    media.matches = !media.matches;
+    media.emit();
+    assert(root.dataset.palette === 'alternative' && paletteSelect.value === 'alternative',
+      `${mode}: device preference changes preserve the selected palette`);
+  }
+  paletteSelect.value = 'invalid';
+  paletteSelect.emit();
+  assert(paletteSelect.value === 'alternative' && root.dataset.palette === 'alternative',
+    'Invalid palette cannot replace the selected palette');
+  assert(paletteStatus.textContent.includes('names and symbols stay the same'),
+    'Alternative palette explains unchanged logical colour labels');
+  disposePalette();
+  disposeAppearance();
+  assert(paletteSelect.listenerCount === 0, 'Tile palette listener can be cleaned up');
+
   // Audit the actual CSS colour tokens used by text, controls, and focus rings.
   const luminance = (hex) => {
     const channels = hex.slice(1).match(/../g).map((part) => {
@@ -61,13 +95,19 @@ export function runAppearanceChecks(styles) {
     const values = [luminance(a), luminance(b)].sort((x, y) => y - x);
     return (values[0] + 0.05) / (values[1] + 0.05);
   };
+  const readTokens = (selector) => {
+    const start = styles.indexOf(`${selector} {`);
+    if (start < 0) throw new Error(`Missing stylesheet selector: ${selector}`);
+    const block = styles.slice(start).split('}')[0];
+    return Object.fromEntries([...block.matchAll(/--([\w-]+):\s*(#[0-9a-f]{6})/g)]
+      .map((match) => [match[1], match[2]]));
+  };
+  const base = readTokens(':root');
   for (const [mode, selector] of [
     ['light', ':root'], ['dark', ':root[data-theme="dark"]'],
     ['high-contrast', ':root[data-theme="high-contrast"]'],
   ]) {
-    const block = styles.slice(styles.indexOf(`${selector} {`)).split('}')[0];
-    const tokens = Object.fromEntries([...block.matchAll(/--([\w-]+):\s*(#[0-9a-f]{6})/g)]
-      .map((match) => [match[1], match[2]]));
+    const tokens = { ...base, ...readTokens(selector) };
     const pairs = [
       ['text', 'page'], ['muted', 'page'], ['accent', 'page'],
       ['text', 'rack'], ['muted', 'rack'], ['board-text', 'board'],
@@ -77,10 +117,13 @@ export function runAppearanceChecks(styles) {
       assert(contrast(tokens[foreground], tokens[background]) >= 4.5,
         `${mode}: ${foreground} on ${background} meets 4.5:1 text contrast`);
     }
-    for (const colour of ['black', 'blue', 'red', 'orange']) {
-      const value = styles.match(new RegExp(`\\.tile-${colour} \\{ color: (#[0-9a-f]{6})`))[1];
-      assert(contrast(value, tokens.tile) >= 4.5,
-        `${mode}: ${colour} tile text meets 4.5:1 contrast`);
+    for (const palette of ['standard', 'alternative']) {
+      const inks = palette === 'standard' ? base : readTokens(':root[data-palette="alternative"]');
+      for (const colour of ['black', 'blue', 'red', 'orange']) {
+        assert(styles.includes(`.tile-${colour} { color: var(--ink-${colour}); }`) &&
+          contrast(inks[`ink-${colour}`], tokens.tile) >= 4.5,
+        `${mode}/${palette}: ${colour} tile and legend text meets 4.5:1 contrast`);
+      }
     }
     for (const [foreground, background] of [['focus', 'page'], ['line', 'page'], ['tile-border', 'tile']]) {
       assert(contrast(tokens[foreground], tokens[background]) >= 3,

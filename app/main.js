@@ -1,12 +1,17 @@
 import { renderTileLegend, renderTileRow } from './tiles.js';
 import { createGameState } from './state.js';
-import { initialiseAppearance } from './appearance.js';
+import { initialiseAppearance, initialiseTilePalette } from './appearance.js';
 
 initialiseAppearance({
   root: document.documentElement,
   select: document.querySelector('#appearance-mode'),
   status: document.querySelector('#appearance-status'),
   media: window.matchMedia('(prefers-color-scheme: dark)'),
+});
+initialiseTilePalette({
+  root: document.documentElement,
+  select: document.querySelector('#tile-palette'),
+  status: document.querySelector('#palette-status'),
 });
 
 const openButton = document.querySelector('#open-sample');

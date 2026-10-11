@@ -35,3 +35,28 @@ export function initialiseAppearance({ root, select, status, media }) {
     media.removeEventListener('change', onDeviceChange);
   };
 }
+
+export function initialiseTilePalette({ root, select, status }) {
+  let palette = 'standard';
+
+  function apply() {
+    root.dataset.palette = palette;
+    select.value = palette;
+    status.textContent = palette === 'alternative'
+      ? 'Alternative inks. Tile colour names and symbols stay the same.'
+      : 'Standard tile colours.';
+  }
+
+  function onSelection() {
+    if (!['standard', 'alternative'].includes(select.value)) {
+      select.value = palette;
+      return;
+    }
+    palette = select.value;
+    apply();
+  }
+
+  select.addEventListener('change', onSelection);
+  apply();
+  return () => select.removeEventListener('change', onSelection);
+}

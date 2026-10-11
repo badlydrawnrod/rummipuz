@@ -1,6 +1,6 @@
 # Rummipuz
 
-A local Rummikub-style puzzle game for PC and tablet. The current foundation opens a validated sample board and rack, shows readable tiles with distinct symbols and colour names, all four difficulty descriptions, the rules, and Classic / Light, Dark, High Contrast, and System appearance choices. Pure rules, reversible moves, a solver, seeded generation with proven tiers, and cancellable worker execution are implemented. Play controls and progress saving are still planned. This is not yet a playable game.
+A local Rummikub-style puzzle game for PC and tablet. The current foundation opens a validated sample board and rack, shows readable tiles with distinct symbols and colour names, all four difficulty descriptions, the rules, and Classic / Light, Dark, High Contrast, and System appearance choices plus an independent alternative tile palette. Pure rules, reversible moves, a solver, seeded generation with proven tiers, and cancellable worker execution are implemented. Play controls and progress saving are still planned. This is not yet a playable game.
 
 ## Run on a PC
 
@@ -32,7 +32,7 @@ The `--directory app` option serves only the public app files, rather than repos
 ## Project layout
 
 - `app/index.html`, `styles.css`, `main.js`, and `tiles.js`: buildless static app and native browser modules.
-- `app/appearance.js`: session-only appearance switching and live device preference tracking, independent of puzzle state.
+- `app/appearance.js`: session-only appearance and tile-palette switching with live device preference tracking, independent of puzzle state.
 - `app/rules.js` and `state.js`: pure row classification, puzzle validation, tile tracking, win detection, reversible moves, and undo/reset.
 - `app/solver.js`: pure deterministic search for a complete valid arrangement of every puzzle tile.
 - `app/generator.js`: seeded, solver-verified candidate generation with versioned replay behavior.
@@ -92,10 +92,12 @@ const result = await pending;
 
 Module workers load over HTTP through the same static server. A browser without module-worker support receives an error; it never runs preparation on the main thread. The sample preview remains unchanged. Full play-screen wiring and desktop/tablet verification belong to the interface phases.
 
-With the same Python server running, open [http://127.0.0.1:8000/checks/](http://127.0.0.1:8000/checks/). The page reports all checks or the first failure. There are 351 checks (80 core, 36 solver, 51 generator, 64 difficulty, 33 review, 15 worker lifecycle, 11 real-worker checks, and 61 appearance checks). These include independent search oracles, saved replay fixtures, hand-derived solutions, a 200-move undo sequence, worker error/cleanup races, concurrent cancellation, and main-thread heartbeat progress during search. Pure and lifecycle checks run in native-module runtimes; real-worker checks also accept a worker adapter. The original 290 passed using native worker threads executing the actual worker module; the 61 appearance checks passed separately in a native-module runtime. No browser was connected during implementation, so execution in a real browser and tablet remains to be verified through this runner. No Node installation or package manager is needed for the browser runner.
+With the same Python server running, open [http://127.0.0.1:8000/checks/](http://127.0.0.1:8000/checks/). The page reports all checks or the first failure. There are 383 checks (80 core, 36 solver, 51 generator, 64 difficulty, 33 review, 15 worker lifecycle, 11 real-worker checks, and 93 appearance/palette checks). These include independent search oracles, saved replay fixtures, hand-derived solutions, a 200-move undo sequence, worker error/cleanup races, concurrent cancellation, and main-thread heartbeat progress during search. Pure and lifecycle checks run in native-module runtimes; real-worker checks also accept a worker adapter. The original 290 passed using native worker threads executing the actual worker module; the 93 appearance/palette checks passed separately in a native-module runtime. No browser was connected during implementation, so execution in a real browser and tablet remains to be verified through this runner. No Node installation or package manager is needed for the browser runner.
 
 ## Verify appearance manually
 
 Use the **Appearance** selector above the sample preview. Switch through Classic / Light, Dark, and High Contrast before and after opening the puzzle. Check that numbers, symbols, names, controls, loading feedback, and keyboard focus remain readable. Tiles and replay code should stay unchanged. High Contrast has plain backgrounds, strong borders, bold numbers, and no tile shadows; Dark retains light tiles.
 
 Select **System**, then change the device's light/dark preference while the page is open: the appearance and status should follow. Select an explicit mode and repeat the device change: the selected mode should remain active. Inspect narrow/tablet layouts and 200% zoom. Appearance settings are currently session-only; reload returns to System. Local preference saving is planned in Phase 5.
+
+Use **Tile palette → Alternative** with each appearance mode. The legend and tiles should use charcoal, deep blue, purple, and ochre inks while keeping the same numbers, symbols, and logical colour names (a purple heart still says “Red”). Switch appearances and change the device preference in System mode: the palette choice should remain selected. Switching back to Standard restores the original inks without changing the puzzle or replay code. Reload currently restores Standard; saving both preferences comes in Phase 5.

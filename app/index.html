@@ -24,7 +24,15 @@
           <option value="high-contrast">High Contrast</option>
         </select>
         <p id="appearance-status" role="status">System appearance follows your device.</p>
-        <p id="appearance-note">Applies immediately. This preview keeps your choice until you reload.</p>
+        <div class="palette-setting">
+          <label for="tile-palette">Tile palette</label>
+          <select id="tile-palette" aria-describedby="palette-status appearance-note">
+            <option value="standard" selected>Standard</option>
+            <option value="alternative">Alternative</option>
+          </select>
+          <p id="palette-status" role="status">Standard tile colours.</p>
+        </div>
+        <p id="appearance-note">Applies immediately. This preview keeps your choices until you reload.</p>
       </section>
       <section class="intro" aria-labelledby="page-title">
         <p class="eyebrow">YOUR NEXT MOVE</p>
