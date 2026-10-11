@@ -11,6 +11,7 @@
     import { runGeneratorChecks } from './generator.js';
     import { runDifficultyChecks } from './difficulty.js';
     import { runReviewChecks } from './review.js';
+    import { runAppearanceChecks } from './appearance.js';
     import { runWorkerLifecycleChecks, runWorkerChecks } from './worker.js';
     const results = document.querySelector('#results');
     try {
@@ -27,11 +28,14 @@
       const reviewedFixtures = await reviewedResponse.json();
       const candidateFixtures = await fixturesResponse.json();
       const ratedFixtures = await ratedResponse.json();
+      const stylesResponse = await fetch('../styles.css');
+      if (!stylesResponse.ok) throw new Error('Appearance stylesheet request failed.');
       const passed = [...runCoreChecks(sample), ...runSolverChecks(sample),
         ...runGeneratorChecks(candidateFixtures),
         ...runDifficultyChecks(sample, ratedFixtures),
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
-        ...await runWorkerLifecycleChecks()];
+        ...await runWorkerLifecycleChecks(),
+        ...runAppearanceChecks(await stylesResponse.text())];
       results.textContent = `${passed.length} checks passed. Testing real module workers…`;
       passed.push(...await runWorkerChecks(sample,
         [candidateFixtures[0], ratedFixtures[0], reviewedFixtures[0]]));

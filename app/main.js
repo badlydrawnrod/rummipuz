@@ -1,5 +1,13 @@
 import { renderTileLegend, renderTileRow } from './tiles.js';
 import { createGameState } from './state.js';
+import { initialiseAppearance } from './appearance.js';
+
+initialiseAppearance({
+  root: document.documentElement,
+  select: document.querySelector('#appearance-mode'),
+  status: document.querySelector('#appearance-status'),
+  media: window.matchMedia('(prefers-color-scheme: dark)'),
+});
 
 const openButton = document.querySelector('#open-sample');
 const puzzleSection = document.querySelector('#puzzle');

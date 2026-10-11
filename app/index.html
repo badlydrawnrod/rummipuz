@@ -15,6 +15,17 @@
       <span class="header-note">A little rearranging goes a long way.</span>
     </header>
     <main>
+      <section class="appearance" aria-labelledby="appearance-title">
+        <label id="appearance-title" for="appearance-mode">Appearance</label>
+        <select id="appearance-mode" aria-describedby="appearance-status appearance-note">
+          <option value="system" selected>System</option>
+          <option value="light">Classic / Light</option>
+          <option value="dark">Dark</option>
+          <option value="high-contrast">High Contrast</option>
+        </select>
+        <p id="appearance-status" role="status">System appearance follows your device.</p>
+        <p id="appearance-note">Applies immediately. This preview keeps your choice until you reload.</p>
+      </section>
       <section class="intro" aria-labelledby="page-title">
         <p class="eyebrow">YOUR NEXT MOVE</p>
         <h1 id="page-title">Make room for<br>every tile.</h1>
