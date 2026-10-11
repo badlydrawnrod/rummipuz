@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rummipuz revision-5 preparation check</title>
+<style>body{font:1rem system-ui;margin:1rem;max-width:65rem}button{font:inherit;padding:.8rem;margin:.3rem}pre{white-space:pre-wrap;overflow-wrap:anywhere}label{display:block;margin:1rem 0}input{font:inherit;padding:.5rem;max-width:100%}</style>
+<h1>Revision-5 preparation check</h1>
+<p>This runs 64 fixed seeds per tier through module workers (256 requests). It does not change your puzzle, progress, appearance, or default generator. Keep this page visible during the run. Move or scroll the page to check that it remains responsive.</p>
+<label>Device and browser <input id="device" placeholder="e.g. tablet model, browser version"></label>
+<button id="start">Run check</button><button id="stop" disabled>Stop</button><button id="save" disabled>Download results</button>
+<p id="status" role="status">Ready. Run once on desktop and once on tablet.</p>
+<pre id="results"></pre>
+<script type="module">
+import { OFFLINE_RELEASE } from '../offline-cache.js';
+import { createPuzzleService } from '../puzzle-service.js';
+import { benchmarkRevision5 } from './revision-5-benchmark.js';
+const start = document.querySelector('#start');
+const stop = document.querySelector('#stop');
+const save = document.querySelector('#save');
+const status = document.querySelector('#status');
+const output = document.querySelector('#results');
+let controller;
+let report;
+stop.addEventListener('click', () => controller?.abort());
+save.addEventListener('click', () => {
+  const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
+  const link = document.createElement('a'); link.href = url; link.download = 'rummipuz-v5-preparation.json'; link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+start.addEventListener('click', async () => {
+  controller = new AbortController(); report = null;
+  start.disabled = true; stop.disabled = false; save.disabled = true; output.textContent = '';
+  const service = createPuzzleService();
+  let completed = 0;
+  let heartbeats = 0;
+  const heartbeat = setInterval(() => { heartbeats += 1; }, 50);
+  try {
+    report = await benchmarkRevision5({ service, signal: controller.signal,
+      onSample(record) { completed += 1; status.textContent = `${completed}/256: tier ${record.identity.difficultyTier}, ${record.status}`; } });
+    report.device = document.querySelector('#device').value;
+    report.userAgent = navigator.userAgent; report.timerHeartbeats = heartbeats;
+    report.recordedAt = new Date().toISOString();
+    report.loadedOfflineRelease = OFFLINE_RELEASE;
+    report.expectedOfflineRelease = 'v2';
+    try {
+      const registration = await navigator.serviceWorker?.getRegistration(new URL('../', import.meta.url).href);
+      report.offlineUpdateWaiting = Boolean(registration?.waiting);
+    } catch { report.offlineUpdateWaiting = null; }
+    output.textContent = JSON.stringify({ device: report.device, userAgent: report.userAgent,
+      cancelled: report.cancelled, timerHeartbeats: heartbeats, requested: report.requested,
+      ready: report.ready, tiers: report.tiers, errors: report.errors,
+      loadedOfflineRelease: report.loadedOfflineRelease, expectedOfflineRelease: report.expectedOfflineRelease,
+      offlineUpdateWaiting: report.offlineUpdateWaiting }, null, 2);
+    status.textContent = report.cancelled ? 'Stopped. Partial results are available; rerun for acceptance.'
+      : report.ready !== report.requested ? 'Finished with failed requests. Share the error summary above.'
+      : 'Finished. Share the summary above and note any pauses or failures.';
+    if (OFFLINE_RELEASE !== 'v2' || report.offlineUpdateWaiting) {
+      status.textContent += ' An older release or waiting update was detected. Close all Rummipuz tabs/windows, reopen the game to finish its update, then rerun this check.';
+    }
+    save.disabled = false;
+  } catch (error) { status.textContent = error.message; }
+  finally { clearInterval(heartbeat); service.dispose(); start.disabled = false; stop.disabled = true; }
+});
+</script>
+</html>

@@ -7,6 +7,7 @@
   <pre id="results" role="status">Running…</pre>
   <script type="module">
     import { runOfflineChecks, runOfflinePackageChecks } from './offline.js';
+    import { runBenchmarkChecks } from './benchmark.js';
     import { runStructuralChecks, runStructuralWorkerChecks } from './structural.js';
     import { runCoreChecks } from './core.js';
     import { runSolverChecks } from './solver.js';
@@ -52,6 +53,7 @@
       const passed = [...await runOfflineChecks(), ...offlinePackage, ...runCoreChecks(sample), ...runSolverChecks(sample),
         ...runGeneratorChecks(candidateFixtures),
         ...runStructuralChecks(structuralDesigns, v5Fixtures),
+        ...await runBenchmarkChecks(v5Fixtures),
         ...runDifficultyChecks(sample, ratedFixtures),
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
         ...await runWorkerLifecycleChecks(),
