@@ -4,7 +4,7 @@
 
 Build a local, replayable Rummikub-style puzzle game for PC and tablet. Each puzzle starts with a valid board and a rack; the player wins by placing every rack tile while leaving every board row valid. Players can select a starting difficulty, and completed puzzles lead to progressively harder ones. Puzzles are generated on demand, with no daily limit.
 
-**Status:** Phase 1 complete: rules, puzzle data format, player flow, and initial difficulty/progression policy defined. App implementation has not started.
+**Status:** Phase 1 complete. Phase 2 static app foundation complete; browser opening on PC and tablet confirmed by the user.
 
 ## Working assumptions
 
@@ -20,7 +20,7 @@ Record any changes to these assumptions under **Decisions** before implementing 
 
 Work from the first unchecked item in the current phase. Check an item only when its acceptance condition is met. At the end of a work session, update **Current position** with the next action and any blocker or decision. Keep this file with the project so a later session can continue without reconstructing the plan.
 
-**Current position:** Phase 1 is complete. Next: start Phase 2 by creating the static HTML/CSS/JavaScript app and local Python HTTP-server run instructions. No blockers. The sample is assigned to Tier 1 (Easy); review generation targets with actual puzzles in Phase 3.
+**Current position:** Static app foundation is complete in `app/`, with Python PC/LAN launch instructions in [README.md](../README.md). HTTP checks passed for HTML, CSS, both native modules, and the sample JSON over loopback and the PC's LAN address; the runtime fixture matches the planning sample. The user has confirmed browser opening on both PC and tablet, completing the first Phase 2 item. Next: implement the pure game state/rules module. No blockers. The sample is Tier 1 (Easy).
 
 ## Phase 1 — Define the game
 
@@ -31,7 +31,7 @@ Work from the first unchecked item in the current phase. Check an item only when
 
 ## Phase 2 — Build the game foundation
 
-- [ ] Create a static HTML/CSS/JavaScript app using native browser modules, with local run instructions using Python's built-in HTTP server. **Done when:** it opens on a PC browser and on a tablet browser over the local network.
+- [x] Create a static HTML/CSS/JavaScript app using native browser modules, with local run instructions using Python's built-in HTTP server. **Done when:** it opens on a PC browser and on a tablet browser over the local network. App and instructions implemented; HTTP checks passed and browser opening on PC and tablet confirmed by the user.
 - [ ] Implement a pure game state and rules module, separate from the interface. **Done when:** it can classify valid rows, track every physical tile, and detect a win.
 - [ ] Implement reversible moves and undo/reset. **Done when:** any sequence of moves can be undone without losing or duplicating a tile.
 - [ ] Add focused checks for rule edge cases and tile conservation. **Done when:** duplicate tiles, long runs, invalid groups, and undo are covered.
@@ -47,6 +47,8 @@ Work from the first unchecked item in the current phase. Check an item only when
 ## Phase 4 — Build the PC and tablet interface
 
 - [ ] Draw the board and rack with readable HTML tiles. **Done when:** numbers and suits are distinguishable without relying only on colour.
+- [ ] Add appearance settings: Classic / Light (cream background, green board, ivory tiles), Dark (charcoal background, deep green board, muted ivory tiles), High Contrast (plain backgrounds, strong borders, bold numbers, clear selection outlines, minimal decoration), and System (automatically follow the device's light/dark preference; default setting). **Done when:** changes apply immediately without altering the puzzle or undo history; System reacts to device preference changes, and tiles, controls, feedback, and focus indicators meet WCAG AA contrast requirements in every mode.
+- [ ] Add an alternative tile palette for colour-vision differences as a separate setting usable with any appearance mode. **Done when:** the palette works across Light, Dark, and High Contrast; symbols and colour names remain visible, and logical tile colours, identities, and rules are unchanged.
 - [ ] Add mouse drag and click-to-select/place controls. **Done when:** the full puzzle can be completed comfortably on a PC.
 - [ ] Add touch drag and tap-to-select/place controls using the same move rules. **Done when:** the full puzzle can be completed on a tablet without precision gestures.
 - [ ] Add keyboard selection, placement, undo, and focus indicators. **Done when:** basic play is possible without a pointer.
@@ -56,10 +58,11 @@ Work from the first unchecked item in the current phase. Check an item only when
 ## Phase 5 — Progress, offline use, and finishing
 
 - [ ] Save chosen difficulty, completed puzzle seeds, and current puzzle locally. **Done when:** a reload resumes the same state and a completed puzzle cannot be counted twice.
+- [ ] Save appearance mode and tile-palette preference locally. **Done when:** reload restores both preferences, System continues following the device rather than saving a fixed light/dark result, and unavailable storage leaves settings usable for the current session.
 - [ ] Add unlimited Next Puzzle, difficulty selection, and replay by seed. **Done when:** players can continue indefinitely or start at any tier.
 - [ ] Package the static app for offline use as a PWA. **Done when:** it loads after the first visit without a network connection in a supported installed browser context.
 - [ ] Document PC local launch and tablet access. **Done when:** instructions cover Python's built-in HTTP server, serving on a local network, and the HTTPS requirement for installing a PWA on a tablet.
-- [ ] Verify complete play sessions on a desktop browser and tablet-sized touch layout, including reload, offline launch, win, and difficulty change. **Done when:** all core flows work and remain readable.
+- [ ] Verify complete play sessions on a desktop browser and tablet-sized touch layout, including reload, offline launch, win, difficulty change, appearance switching, and the alternative tile palette. **Done when:** all core flows work and remain readable in every appearance mode, including with the alternative palette enabled.
 
 ## Decisions
 
@@ -69,6 +72,8 @@ Work from the first unchecked item in the current phase. Check an item only when
 - Store immutable starting puzzles as versioned JSON, using canonical colour/value/copy tile IDs and ordered rack/row arrays. Replay identifiers must preserve format version, generator version, difficulty tier, and seed so generation changes do not silently change a puzzle. Keep live saved-game state separate. See [rummipuz-puzzle-format.md](rummipuz-puzzle-format.md).
 - Use select-then-place controls alongside mouse/touch dragging, with keyboard access to the same destinations. Completion is explicit through Check. Keep one active saved session, replacing it only after a new puzzle is ready. Replay codes use `rummipuz:<version>:<generatorVersion>:<difficultyTier>:<seed>`; repeated completions of the same identity earn no additional progression credit. See [rummipuz-player-flow.md](rummipuz-player-flow.md).
 - Exclude puzzles requiring no board rearrangement. Use four tiers: Easy, Medium, Hard, and Expert, with Easy as the default and all tiers selectable immediately. Rate tiers by the minimum number of original rows that a solution must rearrange (exactly 1, 2, 3, or at least 4 respectively), with explicit rack/board-size bounds. Three distinct completions at the chosen tier qualify Next for a one-tier promotion; Expert continues without a limit. Preserve per-tier credit across manual changes and replay. See [rummipuz-difficulty.md](rummipuz-difficulty.md).
+
+- Offer Classic / Light, Dark, High Contrast, and System appearance settings, defaulting to System. Keep tiles light in Dark mode so black numbers remain readable. Standard tile colours remain consistent across themes; the alternative tile palette is an independent preference. Keep symbols and colour names visible in every combination, and save appearance settings on the device without changing puzzle data.
 
 ## Deferred ideas
 

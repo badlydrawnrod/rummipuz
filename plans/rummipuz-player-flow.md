@@ -14,10 +14,13 @@ This outlines the first playable interface using the [rules](rummipuz-rules.md) 
 | Difficulty picker | Show supported tiers and brief descriptions, with the current choice selected. **Start puzzle** prepares a fresh puzzle at the chosen tier; **Cancel** returns to the previous screen. | Dialog or central panel. | Full-width panel with large tier choices. |
 | Replay picker | Accept a replay code; offer **Play replay** and **Cancel**. Show a clear error for invalid codes or unavailable puzzles. | Dialog with a text input and paste support. | Full-width panel with text input and paste support. |
 | Rules | Explain valid runs/groups, rearrangement, duplicate tiles, and the win condition with examples. **Back to puzzle** returns to the exact prior state. | Scrollable dialog. | Scrollable panel with a persistent back control. |
+| Appearance | Accessible from Start, Play, and Completed. Select Classic / Light, Dark, High Contrast, or System (default), plus an independent alternative tile palette for colour-vision differences. Apply changes immediately; **Back** returns to the previous screen without altering puzzle state or undo history. | Dialog with labelled choices. | Scrollable full-width panel with large choices and a persistent back control. |
 
 All panels restore focus to their opening control when closed. Buttons and feedback have readable labels, visible keyboard focus, and accessible status announcements. Colour is supplemented by a consistent symbol and colour name on each tile; for example, an accessible tile label is “Blue 6”. Matching physical copies need not display their internal IDs, but each remains independently selectable.
 
 ## Playing and moving tiles
+
+Appearance preferences are saved on the device. System follows the device's light/dark preference, including changes while the app is open. All themes retain tile symbols and colour names, readable feedback, and visible focus indicators. The alternative palette works with every theme and changes display colours only; a tile labelled “Blue 6” retains its logical colour and physical identity. If storage is unavailable, changes still apply for the current session with the existing unsaved-progress notice.
 
 The default interaction is select, then place. Select a tile in the rack or board; highlight it without removing it from its source. Choose a visible insertion position before, between, or after tiles, an empty row, or **New row**. Rack insertion positions also allow any tile to return to the rack. A successful placement is one undoable move; selection alone is not a move.
 
@@ -62,5 +65,6 @@ If local storage is unavailable, keep the current session playable and display �
 2. **Keyboard:** Start → select a tile with Enter → navigate to a placement target → place → cancel selection with Escape → Undo → finish and Check, all with visible focus and no pointer.
 3. **Tablet:** Start in portrait → tap/place a tile → scroll the board → rotate to landscape without changing state → touch-drag another tile → Check → complete → change difficulty and start again.
 4. **Replay/resume:** Copy a code → open Replay and cancel → reject an invalid code without losing moves → replay a valid code → reload and Resume → complete the same puzzle twice and confirm only one completion is recorded.
+5. **Appearance:** Switch through Light, Dark, and High Contrast during play → enable the alternative palette with each theme → confirm tiles, feedback, and focus remain readable and moves/history are unchanged → select System and change the device preference → reload and confirm both settings are retained.
 
 These are acceptance scenarios for later implementation, not claims that an interface already exists.

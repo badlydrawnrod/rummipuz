@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#174c43">
+    <meta name="description" content="Rummipuz — rearrange the board, empty your rack.">
+    <title>Rummipuz</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="wordmark" href="./" aria-label="Rummipuz home">rummi<span>puz</span><span class="logo-dot" aria-hidden="true">●</span></a>
+      <span class="header-note">A little rearranging goes a long way.</span>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">YOUR NEXT MOVE</p>
+        <h1 id="page-title">Make room for<br>every tile.</h1>
+        <p class="lead">Rearrange the board. Empty your rack.<br>Leave every row in a valid group or run.</p>
+        <button id="open-sample" type="button">Open sample puzzle <span aria-hidden="true">→</span></button>
+        <p class="preview-note">Sample preview · tile movement is coming next.</p>
+      </section>
+
+      <section id="puzzle" class="puzzle" aria-labelledby="puzzle-title" hidden>
+        <div class="puzzle-heading">
+          <div><p class="eyebrow">SAMPLE PUZZLE</p><h2 id="puzzle-title">Easy · rework one row</h2></div>
+          <p class="rack-count"><strong id="rack-count">0</strong> tiles in rack</p>
+        </div>
+        <p id="load-status" role="status" aria-live="polite"></p>
+        <div id="puzzle-content" hidden>
+          <section class="board" aria-labelledby="board-title">
+            <h3 id="board-title">Board</h3>
+            <div id="board-rows"></div>
+          </section>
+          <section class="rack" aria-labelledby="rack-title">
+            <h3 id="rack-title">Your rack</h3>
+            <ul id="rack-tiles" class="tile-row" aria-label="Rack tiles"></ul>
+          </section>
+          <p class="seed-label">Replay code <code id="replay-code"></code></p>
+        </div>
+      </section>
+
+      <section class="difficulty" aria-labelledby="difficulty-title">
+        <h2 id="difficulty-title">A challenge for every mood</h2>
+        <ul class="tier-list">
+          <li><span class="tier-number">01</span><strong>Easy</strong><span>Rework one row</span></li>
+          <li><span class="tier-number">02</span><strong>Medium</strong><span>Connect changes across two rows</span></li>
+          <li><span class="tier-number">03</span><strong>Hard</strong><span>Coordinate three rows</span></li>
+          <li><span class="tier-number">04</span><strong>Expert</strong><span>Rebuild four or more rows</span></li>
+        </ul>
+      </section>
+      <details class="rules">
+        <summary>How to play</summary>
+        <div>
+          <p>A <strong>group</strong> is three or four tiles with the same number and different colours. A <strong>run</strong> is at least three consecutive numbers of one colour, ordered from low to high.</p>
+          <p>Split, extend, and rearrange rows to use every tile. Matching copies are separate tiles. A row can be temporarily invalid while you work; to finish, every row must be valid and your rack must be empty.</p>
+          <p>Numbers run from 1 to 13 without wrapping. There are no jokers or opening-point requirement.</p>
+        </div>
+      </details>
+      <noscript><p class="no-script">Enable JavaScript to open the sample puzzle.</p></noscript>
+    </main>
+    <footer>Rummipuz <span aria-hidden="true">·</span> One board. Many possibilities.</footer>
+  </body>
+</html>
