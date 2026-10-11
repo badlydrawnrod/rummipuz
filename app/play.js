@@ -2,6 +2,7 @@ import { renderTileRow } from './tiles.js';
 import { classifyRow, parseTile } from './rules.js';
 import { checkState } from './state.js';
 import { createPlaySession } from './play-session.js';
+import { initialiseTouch } from './touch.js';
 
 const dragType = 'application/x-rummipuz-tile';
 
@@ -15,6 +16,7 @@ export function initialisePlay({ content, status, state }) {
   const newRow = find('#new-row');
   const cancel = find('#cancel-selection');
   const check = find('#check-puzzle');
+  let touch;
 
   function focusTile(id) {
     if (!id) return;
@@ -35,10 +37,11 @@ export function initialisePlay({ content, status, state }) {
     find('#selection-status').textContent = tile
       ? `Selected ${tile.colour} ${tile.value}. Choose a + position or New row.`
       : completed ? 'Select Replay to start again.'
-        : 'Select a tile, then choose a + position. You can also drag to a + position or New row.';
+        : 'Tap or click a tile, then choose a + position or New row. To touch-drag, hold a tile briefly, then move it. Swipe row whitespace to scroll.';
   }
 
   function render(focusId) {
+    touch?.cancel();
     const { state, selected, completed } = session.snapshot();
     const board = find('#board-rows');
     board.replaceChildren();
@@ -83,6 +86,7 @@ export function initialisePlay({ content, status, state }) {
   }
 
   function onClick(event) {
+    touch.cancel();
     const tile = event.target.closest('[data-tile-id]');
     if (tile && content.contains(tile)) {
       session.select(tile.dataset.tileId);
@@ -97,6 +101,7 @@ export function initialisePlay({ content, status, state }) {
   }
 
   function onDragStart(event) {
+    if (event.defaultPrevented) return;
     const tile = event.target.closest('[data-tile-id]');
     if (!tile || !event.dataTransfer || !session.beginDrag(tile.dataset.tileId)) {
       event.preventDefault();
@@ -132,6 +137,7 @@ export function initialisePlay({ content, status, state }) {
 
   function onKeyDown(event) {
     if (event.key === 'Escape') {
+      touch.cancel();
       session.cancel();
       paintSelection();
       if (!resetPanel.hidden) { resetPanel.hidden = true; reset.focus(); }
@@ -172,6 +178,7 @@ export function initialisePlay({ content, status, state }) {
         ...result.invalidRows.map(({ row, reason }) => `Row ${row + 1}: ${reason}`)].join(' ');
     (result.won ? reset : check).focus();
   });
+  touch = initialiseTouch({ content, status, session, paintSelection, afterMove });
   render();
   return session;
 }

@@ -13,6 +13,7 @@
     import { runReviewChecks } from './review.js';
     import { runAppearanceChecks } from './appearance.js';
     import { runPlayChecks } from './play.js';
+    import { runTouchChecks } from './touch.js';
     import { runWorkerLifecycleChecks, runWorkerChecks } from './worker.js';
     const results = document.querySelector('#results');
     try {
@@ -31,13 +32,14 @@
       const ratedFixtures = await ratedResponse.json();
       const stylesResponse = await fetch('../styles.css');
       if (!stylesResponse.ok) throw new Error('Appearance stylesheet request failed.');
+      const styles = await stylesResponse.text();
       const passed = [...runCoreChecks(sample), ...runSolverChecks(sample),
         ...runGeneratorChecks(candidateFixtures),
         ...runDifficultyChecks(sample, ratedFixtures),
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
         ...await runWorkerLifecycleChecks(),
         ...runPlayChecks(sample),
-        ...runAppearanceChecks(await stylesResponse.text())];
+        ...runAppearanceChecks(styles), ...runTouchChecks(sample, styles)];
       results.textContent = `${passed.length} checks passed. Testing real module workers…`;
       passed.push(...await runWorkerChecks(sample,
         [candidateFixtures[0], ratedFixtures[0], reviewedFixtures[0]]));

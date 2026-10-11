@@ -114,19 +114,23 @@ h3 { font-size: 13px; margin: 0 0 16px; font-weight: 650; }
 .tile-red { color: var(--ink-red); }
 .tile-orange { color: var(--ink-orange); }
 .tile-slot { flex: 0 0 64px; }
-button.tile { padding: 0; font: inherit; cursor: grab; }
+button.tile { padding: 0; font: inherit; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 button.tile:hover { background: var(--tile); }
 button.tile:disabled { opacity: 1; cursor: default; }
 button.tile[aria-pressed="true"] { outline: 3px solid var(--selection); outline-offset: -5px; }
 button.tile:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .board button.tile:focus-visible { outline-color: var(--board-text); }
-.placement-slot { display: flex; align-items: center; flex: 0 0 40px; }
-.placement { padding: 0; min-width: 40px; min-height: 56px; border: 2px dashed var(--board-text); background: var(--board); color: var(--board-text); font-size: 22px; }
+.placement-slot { display: flex; align-items: center; flex: 0 0 48px; }
+.placement { padding: 0; min-width: 48px; min-height: 56px; border: 2px dashed var(--board-text); background: var(--board); color: var(--board-text); font-size: 22px; }
 .placement:hover { background: var(--board); }
 .placement:disabled { opacity: 1; cursor: default; border-style: dotted; }
 .board .placement:focus-visible { outline-color: var(--board-text); }
 .rack .placement { background: var(--rack); color: var(--text); border-color: var(--text); }
 .new-row { margin-top: 16px; padding: 8px 16px; font-size: 16px; }
+.touch-source { cursor: grabbing; }
+.touch-preview { position: fixed; z-index: 1000; pointer-events: none; transform: translate(-50%, calc(-100% - 24px)); }
+.board .touch-destination { outline: 4px solid var(--board-text); outline-offset: 3px; border-style: solid; }
+.rack .touch-destination { outline: 4px solid var(--text); outline-offset: 3px; border-style: solid; }
 .play-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 #selection-status { line-height: 1.5; }
 #load-status { font-size: clamp(20px, 2.4vw, 26px); font-weight: 750; line-height: 1.4; padding: 16px 20px; border-left: 4px solid var(--accent); background: var(--rack); color: var(--text); }
