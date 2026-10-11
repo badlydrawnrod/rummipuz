@@ -4,7 +4,7 @@
 
 Build a local, replayable Rummikub-style puzzle game for PC and tablet. Each puzzle starts with a valid board and a rack; the player wins by placing every rack tile while leaving every board row valid. Players can select a starting difficulty, and completed puzzles lead to progressively harder ones. Puzzles are generated on demand, with no daily limit.
 
-**Status:** Phase 1 complete. Phase 2 static app foundation and pure game state/rules module complete; reversible moves are next.
+**Status:** Phases 1 and 2 complete. Solver implementation is next.
 
 ## Working assumptions
 
@@ -20,7 +20,7 @@ Record any changes to these assumptions under **Decisions** before implementing 
 
 Work from the first unchecked item in the current phase. Check an item only when its acceptance condition is met. At the end of a work session, update **Current position** with the next action and any blocker or decision. Keep this file with the project so a later session can continue without reconstructing the plan.
 
-**Current position:** Pure modules in `app/rules.js` and `app/state.js` classify rows, validate starting puzzles and supplied solutions, track physical tiles, and detect wins against the original inventory. Sample loading uses the validated immutable state. All 47 core checks passed in a native-module JavaScript runtime; a browser runner is available at `/checks/`. The user previously confirmed the app foundation on PC and tablet. Next: implement reversible moves and undo/reset, then extend focused checks to cover those operations. No blockers. The sample is Tier 1 (Easy).
+**Current position:** Pure modules in `app/rules.js` and `app/state.js` classify rows, validate puzzles and solutions, track physical tiles, detect wins, and implement immutable tile moves with snapshot undo and reset to the original layout. Moves use pre-move insertion gaps, permit temporary invalid rows, and retain empty source rows. All 80 core checks passed in a native-module JavaScript runtime, including exact restoration of a 200-move sequence; a browser runner is available at `/checks/`. Sample loading remains a static preview; play controls are scheduled for Phase 4. The user previously confirmed the app foundation on PC and tablet. Next: implement the Phase 3 solver. No blockers or changed assumptions. The sample is Tier 1 (Easy).
 
 ## Phase 1 — Define the game
 
@@ -33,8 +33,8 @@ Work from the first unchecked item in the current phase. Check an item only when
 
 - [x] Create a static HTML/CSS/JavaScript app using native browser modules, with local run instructions using Python's built-in HTTP server. **Done when:** it opens on a PC browser and on a tablet browser over the local network. App and instructions implemented; HTTP checks passed and browser opening on PC and tablet confirmed by the user.
 - [x] Implement a pure game state and rules module, separate from the interface. **Done when:** it can classify valid rows, track every physical tile, and detect a win. Implemented in `app/rules.js` and `app/state.js`; 47 core checks passed.
-- [ ] Implement reversible moves and undo/reset. **Done when:** any sequence of moves can be undone without losing or duplicating a tile.
-- [ ] Add focused checks for rule edge cases and tile conservation. **Done when:** duplicate tiles, long runs, invalid groups, and undo are covered.
+- [x] Implement reversible moves and undo/reset. **Done when:** any sequence of moves can be undone without losing or duplicating a tile. Implemented in `app/state.js`; immutable snapshots restore exact tile and row order, and reset clears history.
+- [x] Add focused checks for rule edge cases and tile conservation. **Done when:** duplicate tiles, long runs, invalid groups, and undo are covered. All 80 checks passed, including rejected moves, reset recovery, and conservation/exact undo throughout a 200-move sequence.
 
 ## Phase 3 — Create and rate puzzles
 

@@ -1,5 +1,5 @@
 import { parseTile, classifyRow } from '../rules.js';
-import { createGameState, getTileLocations, checkState } from '../state.js';
+import { createGameState, getTileLocations, checkState, moveTile, undoMove, resetGame } from '../state.js';
 
 // Dependency-free checks, runnable in a browser or any native-module JS runtime.
 export function runCoreChecks(sample) {
@@ -93,5 +93,96 @@ export function runCoreChecks(sample) {
   const withoutSolution = { ...sample };
   delete withoutSolution.solution;
   assert(checkState(createGameState(withoutSolution)).conserved, 'optional solution can be omitted');
+
+  const layout = (position) => JSON.stringify({ rack: position.rack, board: position.board });
+  const throws = (action) => { try { action(); return false; } catch { return true; } };
+  const startLayout = layout(state);
+  assert(state.history.length === 0 && Object.isFrozen(state.history)
+    && Object.isFrozen(state.initial) && Object.isFrozen(state.initial.rack)
+    && state.initial.board.every(Object.isFrozen), 'immutable starting layout and empty history');
+  assert(undoMove(state) === state, 'undo without history is a no-op');
+  assert(layout(resetGame(state)) === startLayout, 'reset unchanged puzzle');
+  let moved = moveTile(state, 'blue-6-1', { area: 'new-row' });
+  assert(moved.board.length === 3 && moved.board[2][0] === 'blue-6-1'
+    && moved.board[0].length === 5 && moved.history.length === 1
+    && checkState(moved).conserved && checkState(moved).invalidRows[0].row === 2,
+  'board to new row allows temporary invalid rows');
+  moved = moveTile(moved, 'red-6-1', { area: 'board', row: 2, index: 0 });
+  moved = moveTile(moved, 'black-6-1', { area: 'board', row: 2, index: 2 });
+  assert(checkState(moved).won && moved.history.length === 3, 'solve sample through three reversible moves');
+  assert(layout(undoMove(undoMove(undoMove(moved)))) === startLayout,
+    'undo full solution restores exact starting layout');
+  const reset = resetGame(moved);
+  assert(layout(reset) === startLayout && reset.history.length === 0
+    && reset.inventory === state.inventory && reset.seed === state.seed
+    && reset.initial === state.initial, 'reset restores original layout, identity, and clears history');
+  assert(layout(state) === startLayout && moved.history.every((position) => Object.isFrozen(position)
+    && Object.isFrozen(position.rack) && Object.isFrozen(position.board) && position.board.every(Object.isFrozen)),
+  'moves leave input unchanged and freeze every history snapshot');
+  assert(Object.isFrozen(moved) && Object.isFrozen(moved.history) && moved.board.every(Object.isFrozen),
+    'moved states are immutable');
+
+  const toRack = moveTile(state, 'blue-3-1', { area: 'rack', index: 1 });
+  assert(toRack.rack[1] === 'blue-3-1' && toRack.board[0][2] === 'blue-4-1'
+    && toRack.board[1][0] === 'blue-3-2' && checkState(toRack).conserved,
+  'board to rack preserves matching physical copy');
+  const rackReordered = moveTile(state, state.rack[0], { area: 'rack', index: 2 });
+  assert(rackReordered.rack[1] === state.rack[0] && layout(undoMove(rackReordered)) === startLayout,
+    'same-rack forward reorder and undo');
+  const forward = moveTile(state, 'blue-1-1', { area: 'board', row: 0, index: 6 });
+  const backward = moveTile(forward, 'blue-1-1', { area: 'board', row: 0, index: 0 });
+  assert(forward.board[0][5] === 'blue-1-1' && layout(backward) === startLayout,
+    'same-row forward and backward pre-move insertion gaps');
+  assert(moveTile(state, 'blue-3-1', { area: 'board', row: 0, index: 2 }) === state
+    && moveTile(state, 'blue-3-1', { area: 'board', row: 0, index: 3 }) === state,
+  'adjacent insertion gaps do not add undo entries');
+  let emptied = moveTile(state, 'blue-1-1', { area: 'new-row' });
+  emptied = moveTile(emptied, 'blue-1-1', { area: 'board', row: 1, index: 1 });
+  assert(emptied.board[2].length === 0 && emptied.board[1][1] === 'blue-1-1'
+    && undoMove(emptied).board[2][0] === 'blue-1-1', 'empty source rows persist and undo restores them');
+  const intoEmpty = moveTile(emptied, 'blue-3-2', { area: 'board', row: 2, index: 0 });
+  assert(intoEmpty.board[2][0] === 'blue-3-2', 'place tile into existing empty row');
+
+  for (const destination of [null, {}, { area: 'other' }, { area: 'rack', index: -1 },
+    { area: 'rack', index: 3 }, { area: 'rack', index: 0.5 }, { area: 'rack' },
+    { area: 'board', row: -1, index: 0 }, { area: 'board', row: 2, index: 0 },
+    { area: 'board', row: 0.5, index: 0 }, { area: 'board', row: 0, index: 7 }]) {
+    assert(throws(() => moveTile(state, 'red-6-1', destination)) && layout(state) === startLayout
+      && state.history.length === 0, `reject destination ${JSON.stringify(destination)} without mutation`);
+  }
+  assert(throws(() => moveTile(state, 'orange-13-1', { area: 'rack', index: 0 })),
+    'reject absent physical tile');
+  assert(throws(() => moveTile(duplicate, 'blue-3-1', { area: 'new-row' }))
+    && throws(() => undoMove(missing)), 'moves and undo reject corrupt tile inventories');
+  assert(layout(resetGame(missing)) === startLayout, 'reset recovers corrupt live layout from original');
+  assert(throws(() => undoMove({ ...state, history: [{ rack: [], board: [] }] })),
+    'undo rejects history that loses inventory');
+  const branch = moveTile(undoMove(moved), 'red-6-1', { area: 'rack', index: 0 });
+  assert(branch.history.length === 3 && layout(undoMove(branch)) === layout(undoMove(moved)),
+    'new move after undo branches from restored position');
+
+  // Exercise mixed destinations, copies, empty rows, and repeated reordering.
+  let sequence = state;
+  const priorLayouts = [];
+  for (let i = 0; i < 200; i += 1) {
+    const id = state.inventory[(i * 7) % state.inventory.length];
+    const destination = i % 3 === 0 ? { area: 'new-row' }
+      : i % 3 === 1 ? { area: 'rack', index: i % (sequence.rack.length + 1) }
+        : { area: 'board', row: i % sequence.board.length,
+          index: i % (sequence.board[i % sequence.board.length].length + 1) };
+    const previous = sequence;
+    sequence = moveTile(sequence, id, destination);
+    if (sequence !== previous) priorLayouts.push(layout(previous));
+    if (!checkState(sequence).conserved) throw new Error(`Conservation failed at move ${i}`);
+  }
+  assert(sequence.history.length === priorLayouts.length, 'mixed move sequence conserves every tile');
+  while (priorLayouts.length) {
+    sequence = undoMove(sequence);
+    if (layout(sequence) !== priorLayouts.pop() || !checkState(sequence).conserved) {
+      throw new Error('Mixed sequence undo failed to restore an exact conserved position.');
+    }
+  }
+  assert(layout(sequence) === startLayout && sequence.history.length === 0,
+    'undo entire mixed sequence restores every intermediate position and starting order');
   return passed;
 }

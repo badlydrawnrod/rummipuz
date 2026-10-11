@@ -1,5 +1,98 @@
 import { classifyRow, parseTile } from './rules.js';
 
+function freezePosition(position) {
+  Object.freeze(position.rack);
+  position.board.forEach(Object.freeze);
+  Object.freeze(position.board);
+  return Object.freeze(position);
+}
+
+function copyPosition(position) {
+  return { rack: [...position.rack], board: position.board.map((row) => [...row]) };
+}
+
+function freezeState(state) {
+  freezePosition(state);
+  Object.freeze(state.inventory);
+  Object.freeze(state.history);
+  return state;
+}
+
+function assertSession(state) {
+  if (!state || !state.initial || !Array.isArray(state.history)) {
+    throw new Error('State requires an initial position and undo history.');
+  }
+}
+
+function assertConserved(state) {
+  const result = checkState(state);
+  if (!result.conserved) throw new Error(result.errors.join(' '));
+}
+
+/**
+ * Move one physical tile to a pre-move insertion gap. Destinations are
+ * { area: 'rack', index }, { area: 'board', row, index }, or
+ * { area: 'new-row' }. Indices run from zero through the target's length.
+ * Same-location gaps immediately before/after the tile are no-ops. Empty
+ * source rows remain as placeholders, keeping row indices stable.
+ */
+export function moveTile(state, id, destination) {
+  assertSession(state);
+  assertConserved(state);
+  const source = getTileLocations(state).get(id)?.[0];
+  if (!source) throw new Error('Move requires an existing physical tile.');
+  if (!destination || !['rack', 'board', 'new-row'].includes(destination.area)) {
+    throw new Error('Move requires a rack, board, or new-row destination.');
+  }
+  let target;
+  if (destination.area === 'rack') target = state.rack;
+  if (destination.area === 'board') {
+    if (!Number.isInteger(destination.row) || destination.row < 0 || destination.row >= state.board.length) {
+      throw new Error('Destination row is out of range.');
+    }
+    target = state.board[destination.row];
+  }
+  if (target && (!Number.isInteger(destination.index) || destination.index < 0 || destination.index > target.length)) {
+    throw new Error('Destination insertion index is out of range.');
+  }
+  const sameLocation = source.area === destination.area
+    && (source.area === 'rack' || source.row === destination.row);
+  if (sameLocation && (destination.index === source.index || destination.index === source.index + 1)) return state;
+
+  const position = copyPosition(state);
+  const origin = source.area === 'rack' ? position.rack : position.board[source.row];
+  origin.splice(source.index, 1);
+  if (destination.area === 'new-row') {
+    position.board.push([id]);
+  } else {
+    const row = destination.area === 'rack' ? position.rack : position.board[destination.row];
+    const index = destination.index - (sameLocation && source.index < destination.index ? 1 : 0);
+    row.splice(index, 0, id);
+  }
+  const next = { ...state, ...position,
+    history: [...state.history, freezePosition(copyPosition(state))] };
+  assertConserved(next);
+  return freezeState(next);
+}
+
+/** Restore the preceding position, including empty rows and exact ordering. */
+export function undoMove(state) {
+  assertSession(state);
+  assertConserved(state);
+  if (state.history.length === 0) return state;
+  const next = { ...state, ...copyPosition(state.history.at(-1)), history: state.history.slice(0, -1) };
+  assertConserved(next);
+  return freezeState(next);
+}
+
+/** Restore the trusted starting layout and clear history, also for recovery. */
+export function resetGame(state) {
+  assertSession(state);
+  const next = { ...state, ...copyPosition(state.initial), history: [] };
+  assertConserved(next);
+  return freezeState(next);
+}
+
 function assertLocations(state) {
   if (!state || !Array.isArray(state.inventory) || !Array.isArray(state.rack)
       || !Array.isArray(state.board) || Array.from(state.board).some((row) => !Array.isArray(row))) {
@@ -98,9 +191,7 @@ export function createGameState(puzzle) {
       throw new Error('Supplied solution must contain every puzzle tile exactly once in valid rows.');
     }
   }
-  Object.freeze(state.inventory);
-  Object.freeze(state.rack);
-  state.board.forEach(Object.freeze);
-  Object.freeze(state.board);
-  return Object.freeze(state);
+  state.initial = freezePosition(copyPosition(state));
+  state.history = [];
+  return freezeState(state);
 }
