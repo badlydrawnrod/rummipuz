@@ -1,8 +1,10 @@
 # Revision-6 family and sequence review
 
+> Historical record archived on 12 October 2026. Status, next-step instructions and release numbers below describe the work at the time. Use the [current implementation plan](../rummipuz-implementation.md) for remaining work.
+
 **Status:** Complete. User approval recorded on 2026-10-12: “We've tested. All good.” No tuning was requested. Approved revision 6 is now the default after the separate verified switch. No runtime or offline-package change was made by this review step, and no commit or agent-side browser use. The preceding native/laptop/tablet variety and preparation checks passed.
 
-This guide has **19 tier/family samples**, **five additional variant comparisons**, and **four fixed consecutive 16-puzzle sequences**. The [exact review data](revision-6-sample-review.json) contains 71 distinct full replay identities, saved generated results, independently derived physical solutions and their provenance. Shared samples are stored once. This is a deliberate family/overlay review, not another frequency survey.
+This guide has **19 tier/family samples**, **five additional variant comparisons**, and **four fixed consecutive 16-puzzle sequences**. The [exact review data](../revision-6-sample-review.json) contains 71 distinct full replay identities, saved generated results, independently derived physical solutions and their provenance. Shared samples are stored once. This is a deliberate family/overlay review, not another frequency survey.
 
 Use **Replay puzzle** to paste a full code below. Start and Next continue to generate revision 5; they will not select these review samples. Use the tuned offline release `v5`, with no waiting update. Ordinary replay uses the existing session replacement confirmation, local saving and completion credit. Copy your current code before replacing it if you want to return to its initial puzzle; a code does not preserve an unfinished layout or undo history.
 
@@ -1918,7 +1920,7 @@ The answer is transported from the independently hand-reviewed `expert-longer-co
 
 ## Verification and user acceptance
 
-The native checker re-generates all 71 exact outputs twice, validates each reviewed physical solution and minimum `R`, checks the certified mechanism, verifies every transport against the original fixture rows/rack, confirms all 19 tier/family pairings and all four unchanged sequences, and now checks approved default revision 6. It passed 3,499 assertions again after the default switch. The independent physical oracle audits every review inventory and solution using both enumeration paths; evidence is in [revision-6-sample-audit.json](revision-6-sample-audit.json).
+The native checker re-generates all 71 exact outputs twice, validates each reviewed physical solution and minimum `R`, checks the certified mechanism, verifies every transport against the original fixture rows/rack, confirms all 19 tier/family pairings and all four unchanged sequences, and now checks approved default revision 6. It passed 3,499 assertions again after the default switch. The independent physical oracle audits every review inventory and solution using both enumeration paths; evidence is in [revision-6-sample-audit.json](../revision-6-sample-audit.json).
 
 ```bash
 node plans/checks/review_v6_samples.mjs

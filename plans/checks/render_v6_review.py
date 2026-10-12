@@ -135,4 +135,10 @@ if data.get('review', {}).get('status') == 'approved':
     rendered = rendered.replace('## Verification and pending review', '## Verification and user acceptance')
     rendered = rendered.replace('Preparation and native correctness are complete; human family/sequence acceptance remains pending. Record feedback here before checking the plan item. If tuning is requested, update the specification/contract as needed, regenerate affected review codes and solutions, reprove the candidates, and rerun the relevant full quota blocks and regressions. Keep revision 5 as default until user approval and the separate default-switch step.',
                                 f"The user reported “{review['feedback']}” on {review['date']}, accepting the family/sequence review without further tuning. This is overall acceptance; no per-puzzle results or timings were supplied. The plan review item is complete. Revision 5 remains default until the separate verified default-switch step; no runtime change was made to record approval.")
-(ROOT / 'plans/rummipuz-revision-6-sample-review.md').write_text(rendered)
+# This completed guide lives in the archive; check data keep their stable paths.
+rendered = rendered.replace('](revision-6-sample-review.json)', '](../revision-6-sample-review.json)')
+rendered = rendered.replace('](revision-6-sample-audit.json)', '](../revision-6-sample-audit.json)')
+heading, body = rendered.split('\n', 1)
+rendered = heading + '\n\n> Historical record archived on 12 October 2026. Status, next-step instructions and release numbers below describe the work at the time. Use the [current implementation plan](../rummipuz-implementation.md) for remaining work.\n' + body
+(ROOT / 'plans/archive').mkdir(exist_ok=True)
+(ROOT / 'plans/archive/rummipuz-revision-6-sample-review.md').write_text(rendered)

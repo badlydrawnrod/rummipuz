@@ -1,5 +1,7 @@
 # Sample review and generation tuning
 
+> Historical record archived on 12 October 2026. Status, next-step instructions and release numbers below describe the work at the time. Use the [current implementation plan](../rummipuz-implementation.md) for remaining work.
+
 This records agent hand analysis and verification separately from player feedback. The user approved the revision-5 samples on 11 October 2026 and requested that the review step be marked complete; no tuning was requested. The earlier revision-4 review follows unchanged. Neither hand analysis nor structural proofs establish observed human difficulty.
 
 ## Revision-6 family and sequence review — approved 12 October 2026
@@ -10,7 +12,7 @@ See [the revision-6 review guide](rummipuz-revision-6-sample-review.md) for repr
 
 **Status:** Complete. On 11 October 2026, the user reported “It worked well” and requested that the sample-review step be marked complete. The samples are approved without further tuning. Revision 5 is now the default following the separate verified default-switch step. No agent-side browser access was used and no runtime/interface changes were made.
 
-The [saved sample set](revision-5-sample-review.json) contains the full identities, exact generated results, replay codes, and separately hand-derived physical-ID solutions. Selection uses `review-v5-0` and `review-v5-1` at Easy, Medium, and Hard; Expert uses `review-v5-0` and `review-v5-2` to include both available families. This is a deliberately small family-coverage set, not a random difficulty survey. Easy's second sample reverses the endpoint direction; it does not introduce another structural family.
+The [saved sample set](../revision-5-sample-review.json) contains the full identities, exact generated results, replay codes, and separately hand-derived physical-ID solutions. Selection uses `review-v5-0` and `review-v5-1` at Easy, Medium, and Hard; Expert uses `review-v5-0` and `review-v5-2` to include both available families. This is a deliberately small family-coverage set, not a random difficulty survey. Easy's second sample reverses the endpoint direction; it does not introduce another structural family.
 
 ### Play first, then open explanations
 
@@ -113,7 +115,7 @@ This clears the Expert structural gate, but the conversion is similar to E with 
 
 ### Verification and provisional judgement
 
-The native [replay check](checks/review_v5_samples.mjs) passed 42 assertions: exact saved output and repeated deterministic replay, conserved winning hand solutions, minimum changed-row counts, eight samples, and default revision 4. The independent [Python review audit](checks/review_v5_samples.py) verified both the hand solutions and production witnesses, enumerating all 108 physical partitions with zero easier structural counterexamples. Partition counts A–H are 8, 8, 1, 1, 1, 1, 80, and 8. Hand-solution component sizes/non-endpoint counts are respectively (1,0), (1,0), (2,2), (2,2), (3,3), (3,3), (4,4), and (4,4). These verify the documented gates, including all alternative copy assignments; they do not measure human effort.
+The native [replay check](../checks/review_v5_samples.mjs) passed 42 assertions: exact saved output and repeated deterministic replay, conserved winning hand solutions, minimum changed-row counts, eight samples, and default revision 4. The independent [Python review audit](../checks/review_v5_samples.py) verified both the hand solutions and production witnesses, enumerating all 108 physical partitions with zero easier structural counterexamples. Partition counts A–H are 8, 8, 1, 1, 1, 1, 80, and 8. Hand-solution component sizes/non-endpoint counts are respectively (1,0), (1,0), (2,2), (2,2), (3,3), (3,3), (4,4), and (4,4). These verify the documented gates, including all alternative copy assignments; they do not measure human effort.
 
 Reproduce from the repository root, with Node available for the first command:
 

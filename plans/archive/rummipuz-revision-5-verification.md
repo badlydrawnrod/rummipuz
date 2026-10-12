@@ -1,6 +1,8 @@
 # Revision-5 correctness, variety, and preparation verification
 
-**Status:** Phase 6's fourth step is complete. Native verification and the user-reported desktop and tablet preparation runs passed. The desktop rerun passed after loading offline release `v2`. This report records the pre-release preparation verification. Generated samples have since been approved and revision 5 is now the default; see the [generation contract](rummipuz-generator.md#approved-default-switch--11-october-2026) for the subsequent release-`v3` checks.
+> Historical record archived on 12 October 2026. Status, next-step instructions and release numbers below describe the work at the time. Use the [current implementation plan](../rummipuz-implementation.md) for remaining work.
+
+**Status:** Phase 6's fourth step is complete. Native verification and the user-reported desktop and tablet preparation runs passed. The desktop rerun passed after loading offline release `v2`. This report records the pre-release preparation verification. Generated samples have since been approved and revision 5 is now the default; see the [generation contract](../rummipuz-generator.md#approved-default-switch--11-october-2026) for the subsequent release-`v3` checks.
 
 ## Native sample and correctness
 
@@ -21,7 +23,7 @@ Environment: Linux x64, Intel Core i7-8565U @ 1.80GHz, native modules and Node w
 
 A 10 ms main-thread timer fired 1,522 times during the run. This confirms native timer progress, not browser scrolling, rendering, or touch responsiveness. Sampled proof costs and worker startup are acceptable on this native host; device results are still needed. Zero failures in 64 seeds per tier is not a guarantee for all devices or seeds.
 
-Full per-request timings and family counts are in [revision-5-verification.json](revision-5-verification.json).
+Full per-request timings and family counts are in [revision-5-verification.json](../revision-5-verification.json).
 
 ## Variety evidence and limits
 

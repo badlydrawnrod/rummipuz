@@ -1,10 +1,12 @@
 # Revision-6 variety and preparation verification
 
+> Historical record archived on 12 October 2026. Status, next-step instructions and release numbers below describe the work at the time. Use the [current implementation plan](../rummipuz-implementation.md) for remaining work.
+
 **Status:** Phase 7 variety/preparation verification complete on 12 October 2026. Both full tuned native blocks and laptop/tablet reruns pass every quota with no failed requests; the user confirmed both devices stayed responsive. Required physical/semantic audits and regressions pass. Revision 5 remains the default. Family/sequence user review and Phase 5 whole-session/installed-offline acceptance remain separate. No commit or agent-side browser use.
 
 ## Initial laptop run — preparation succeeds, composition quotas fail
 
-The user supplied the diagnostic summary for Lenovo Laptop, Firefox 157.0 on Linux x86_64. Both fixed blocks completed: all 2,048 requested puzzles were ready, no errors or cancellation, 5,677 timer heartbeats. Loaded and expected offline release were `v4`, with no waiting update. Exact supplied evidence is retained in [revision-6-laptop-initial.json](revision-6-laptop-initial.json). No scrolling/interaction observations or full per-request download were supplied.
+The user supplied the diagnostic summary for Lenovo Laptop, Firefox 157.0 on Linux x86_64. Both fixed blocks completed: all 2,048 requested puzzles were ready, no errors or cancellation, 5,677 timer heartbeats. Loaded and expected offline release were `v4`, with no waiting update. Exact supplied evidence is retained in [revision-6-laptop-initial.json](../revision-6-laptop-initial.json). No scrolling/interaction observations or full per-request download were supplied.
 
 Easy and Medium pass every reported gate in both blocks. Hard and Expert meet the family requirements but fail the starting-board group-only minimum of 26 outputs per block:
 
@@ -26,7 +28,7 @@ Expert is materially slower than the recorded revision-5 desktop preparation (23
 
 ## Initial tablet run — preparation succeeds, same quota failures
 
-The user reported “Tablet chrome” on 12 October 2026; exact model was not supplied. The provided user-agent string reports Linux x86_64 and Chrome 154.0.0.0, including a pasted link around the version. Preserve this as user-labelled tablet evidence without inferring hardware. [revision-6-tablet-initial.json](revision-6-tablet-initial.json) retains the complete supplied summary.
+The user reported “Tablet chrome” on 12 October 2026; exact model was not supplied. The provided user-agent string reports Linux x86_64 and Chrome 154.0.0.0, including a pasted link around the version. Preserve this as user-labelled tablet evidence without inferring hardware. [revision-6-tablet-initial.json](../revision-6-tablet-initial.json) retains the complete supplied summary.
 
 Both fixed blocks prepared all 2,048 outputs with no errors/cancellation. Loaded release was `v4`, with no waiting update, and 6,267 timer heartbeats. All reported family/composition counts and failed gates agree with laptop and native generation. Hard/Expert group-only counts are 23/22 (development) and 20/20 (holdout), below 26. No user scrolling/interaction observations were supplied.
 
@@ -43,7 +45,7 @@ The Expert maximum is an isolated slow request requiring post-optimisation devic
 
 On 12 October 2026, the user explicitly chose: “Retune unreleased revision 6; allow its current replay layouts to change.” This authorises changing the revision-6 mix during this verification step. Revisions 1–5 remain exact and revision 5 remains the fresh-puzzle default. Existing saved revision-6 sessions still resume from their saved immutable starting layouts; regenerating an early revision-6 code can now produce a different layout. No storage migration or active-session replacement is performed.
 
-The initial native run completed both prescribed blocks with all 2,048 ready outputs and the same four group-only quota failures. Every worker output matched a separate direct generation. Full per-request accounting, semantic-key frequencies, sequences and timings are preserved in [revision-6-native-initial.json](revision-6-native-initial.json). Long semantic strings are represented by SHA-256 of the exact canonical encoding, separately from family labels; complete/truncated statuses remain explicit. The original full native data were written to `/tmp/rummipuz-v6-performance-x1IRHB`.
+The initial native run completed both prescribed blocks with all 2,048 ready outputs and the same four group-only quota failures. Every worker output matched a separate direct generation. Full per-request accounting, semantic-key frequencies, sequences and timings are preserved in [revision-6-native-initial.json](../revision-6-native-initial.json). Long semantic strings are represented by SHA-256 of the exact canonical encoding, separately from family labels; complete/truncated statuses remain explicit. The original full native data were written to `/tmp/rummipuz-v6-performance-x1IRHB`.
 
 Tuning increases Hard groups-to-runs to 26% and gives its group-only inventory an 8:1:1 variant weighting, yielding a proposed group-only share of 20.8%. Expert groups-to-runs increases to 20%, with two pure-group inventories weighted 2 each and its mixed duplicate variant 1, yielding a proposed group-only share of 16%. Expert's proposed run-only/mixed split has ample margin above the respective 20%/40% floors. These are design expectations; both full named blocks must independently pass observed quotas. No favourable seeds are substituted and no quota is lowered.
 
@@ -53,7 +55,7 @@ Offline release increments to `v5` with the same 39 assets. All 1,284 native che
 
 ## Tuned laptop rerun — all quotas pass
 
-The user supplied the Lenovo Laptop / Firefox 157.0 rerun on 12 October 2026. Both fixed blocks pass every reported gate: all 2,048 requested puzzles were ready, with no failures or cancellation. Release `v5` was loaded and expected, with no waiting update; 2,741 timer heartbeats were recorded. Exact supplied evidence is retained in [revision-6-laptop-tuned.json](revision-6-laptop-tuned.json).
+The user supplied the Lenovo Laptop / Firefox 157.0 rerun on 12 October 2026. Both fixed blocks pass every reported gate: all 2,048 requested puzzles were ready, with no failures or cancellation. Release `v5` was loaded and expected, with no waiting update; 2,741 timer heartbeats were recorded. Exact supplied evidence is retained in [revision-6-laptop-tuned.json](../revision-6-laptop-tuned.json).
 
 | Tier | Development median / p95 / max (ms) | Holdout median / p95 / max (ms) |
 | --- | --- | --- |
@@ -67,7 +69,7 @@ Expert median preparation fell from 340–365 ms to 89–90 ms; its maximum fell
 
 ## Tuned tablet rerun and interaction review — pass
 
-The user supplied the tablet Chrome rerun on 12 October 2026. Both fixed blocks pass all reported gates: all 2,048 requested puzzles were ready, with no failures or cancellation. Release `v5` was loaded and expected, with no waiting update; 4,413 timer heartbeats were recorded. Exact evidence is retained in [revision-6-tablet-tuned.json](revision-6-tablet-tuned.json). The user explicitly confirmed **both laptop and tablet stayed responsive**, including during slower requests.
+The user supplied the tablet Chrome rerun on 12 October 2026. Both fixed blocks pass all reported gates: all 2,048 requested puzzles were ready, with no failures or cancellation. Release `v5` was loaded and expected, with no waiting update; 4,413 timer heartbeats were recorded. Exact evidence is retained in [revision-6-tablet-tuned.json](../revision-6-tablet-tuned.json). The user explicitly confirmed **both laptop and tablet stayed responsive**, including during slower requests.
 
 | Tier | Development median / p95 / max (ms) | Holdout median / p95 / max (ms) |
 | --- | --- | --- |
@@ -84,7 +86,7 @@ The isolated Hard development outlier (`rummipuz:1:6:3:variety-v6-dev-223`) took
 
 Both complete prescribed blocks ran sequentially through fresh actual module workers: 256 outputs per tier per block, 2,048 requests total. Every request succeeded on attempt one; no exhaustion, proof limit, error, cancellation or substituted seed occurred. Each complete block independently meets every integer quota, all primary families exceed the 13-output minimum, and every audited inventory appeared across the run (36 patterns). The separately timed direct pass matched every complete worker result exactly.
 
-Evidence is retained in [revision-6-verification.json](revision-6-verification.json): all request identities, accepted frequencies, attempts/rejections, per-family proof/timing distributions, composition including changed origins/components, boundary/duplicate/size overlays, canonical semantic-key frequencies, longest streaks, and all 16 fixed groups of 16 seeds per tier/block. Keys are SHA-256 of exact canonical JSON strings; they are not raw face-layout counts. The native originals are in `/tmp/rummipuz-v6-performance-rWp1Si`; regenerate with `node plans/checks/benchmark_v6_native.mjs` and compact with `python3 plans/checks/summarize_v6_native.py <native-directory> <output-json>`.
+Evidence is retained in [revision-6-verification.json](../revision-6-verification.json): all request identities, accepted frequencies, attempts/rejections, per-family proof/timing distributions, composition including changed origins/components, boundary/duplicate/size overlays, canonical semantic-key frequencies, longest streaks, and all 16 fixed groups of 16 seeds per tier/block. Keys are SHA-256 of exact canonical JSON strings; they are not raw face-layout counts. The native originals are in `/tmp/rummipuz-v6-performance-rWp1Si`; regenerate with `node plans/checks/benchmark_v6_native.mjs` and compact with `python3 plans/checks/summarize_v6_native.py <native-directory> <output-json>`.
 
 Native environment: Linux x64, Intel Core i7-8565U @ 1.80 GHz, Node modules/worker threads. Measurements include worker startup, imports, generation/proofs, result transfer and freezing, without discarded warmups. The separate direct pass excludes worker startup. These native timings are distinct from the device results above. A 10 ms timer recorded 19,705 heartbeats across native worker and direct passes; browser interaction acceptance comes from the user's explicit observation.
 
@@ -124,7 +126,7 @@ All Easy/Medium/Hard semantic key sets are complete. Expert has 34 development a
 
 ## Independent generated-output audit
 
-An independent Python audit examined **all 2,048 tuned outputs and 26,994 complete physical partitions**, using both mask and plain set-cover enumeration paths. They agree on every complete partition set. Exact minimum `R`, universal structural gates, common/optional minimum-solution mechanisms, complete conserved witnesses and runtime physical partition counts all agree. Full request-level evidence, including face completion counts, dead initially legal placements and duplicate-origin alternatives, is retained in [revision-6-generated-audit.json](revision-6-generated-audit.json). This full pass omits expensive semantic-key collection; semantic equivalence is checked separately on the 36 audited inventories and one actual transformed output per inventory.
+An independent Python audit examined **all 2,048 tuned outputs and 26,994 complete physical partitions**, using both mask and plain set-cover enumeration paths. They agree on every complete partition set. Exact minimum `R`, universal structural gates, common/optional minimum-solution mechanisms, complete conserved witnesses and runtime physical partition counts all agree. Full request-level evidence, including face completion counts, dead initially legal placements and duplicate-origin alternatives, is retained in [revision-6-generated-audit.json](../revision-6-generated-audit.json). This full pass omits expensive semantic-key collection; semantic equivalence is checked separately on the 36 audited inventories and one actual transformed output per inventory.
 
 | Tier | One face completion | Multiple face completions | Face completion range | Outputs with incompatible preserved rack placement | Outputs with duplicate allocation alternatives |
 | --- | --- | --- | --- | --- | --- |
@@ -144,4 +146,4 @@ PYTHONDONTWRITEBYTECODE=1 python3 plans/checks/verify_v6_generated.py <native-di
 The original 36 fixture canonical results agree with the literal independent oracle after the optimisation. A separate transformed-output audit collects full literal semantic evidence for one generated representative of each inventory, while checking the runtime's complete/bounded key/profile records. No claim of uniqueness or missing optional mechanisms is based on truncated runtime diagnostics.
 
 
-The 36 actual transformed representatives passed full independent semantic audit across **757 physical partitions**, including every geometry key, bounded/full origin key and mechanism profile; evidence is in [revision-6-signature-audit.json](revision-6-signature-audit.json). Required audits, all 1,284 native regression checks, both independently passing quota blocks and both responsive device runs complete this plan item. The next step is user review of every family and short same-tier sequences. Revision 5 remains default until that approval; no commit was made.
+The 36 actual transformed representatives passed full independent semantic audit across **757 physical partitions**, including every geometry key, bounded/full origin key and mechanism profile; evidence is in [revision-6-signature-audit.json](../revision-6-signature-audit.json). Required audits, all 1,284 native regression checks, both independently passing quota blocks and both responsive device runs complete this plan item. The next step is user review of every family and short same-tier sequences. Revision 5 remains default until that approval; no commit was made.
