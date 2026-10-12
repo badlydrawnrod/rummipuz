@@ -15,6 +15,7 @@ export function renderTileLegend(list) {
     const item = document.createElement('li');
     item.className = `legend-item tile-${colour}`;
     const symbol = document.createElement('span');
+    symbol.className = 'tile-symbol';
     symbol.textContent = appearance.symbol;
     symbol.setAttribute('aria-hidden', 'true');
     const name = document.createElement('span');

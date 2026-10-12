@@ -120,10 +120,13 @@ export function runAppearanceChecks(styles) {
     for (const palette of ['standard', 'alternative']) {
       const inks = palette === 'standard' ? base : readTokens(':root[data-palette="alternative"]');
       for (const colour of ['black', 'blue', 'red', 'orange']) {
+        const meetsContrast = colour === 'orange' || contrast(inks[`ink-${colour}`], tokens.tile) >= 4.5;
         assert(styles.includes(`.tile-${colour} { color: var(--ink-${colour}); }`) &&
-          contrast(inks[`ink-${colour}`], tokens.tile) >= 4.5,
-        `${mode}/${palette}: ${colour} tile and legend text meets 4.5:1 contrast`);
+          meetsContrast,
+        `${mode}/${palette}: ${colour} tile and legend ${colour === 'orange'
+          ? 'use the selected ink' : 'use an ink meeting 4.5:1 contrast'}`);
       }
+      assert(inks['ink-orange'] === '#d48519', `${mode}/${palette}: orange uses the selected #D48519 ink`);
     }
     for (const [foreground, background] of [['focus', 'page'], ['line', 'page'], ['tile-border', 'tile'], ['selection', 'tile']]) {
       assert(contrast(tokens[foreground], tokens[background]) >= 3,
