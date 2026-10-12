@@ -21,6 +21,7 @@ export function createOverflowControls(scroller, label) {
   // revealed instead of repeatedly snapping between the two ends.
   let revealLeading = false;
   let moving = false;
+  let restoring = false;
   let settleTimer;
 
   function show(button, visible) {
@@ -31,7 +32,7 @@ export function createOverflowControls(scroller, label) {
     if (!visible && document.activeElement === button) scroller.focus({ preventScroll: true });
   }
 
-  function update() {
+  function update(allowSnap = true) {
     if (disposed || wrapper.clientWidth === 0) return;
     // Compare against the full width, not the narrower viewport between arrows,
     // so cues do not trap a row in overflow after resizing or removing tiles.
@@ -41,7 +42,7 @@ export function createOverflowControls(scroller, label) {
     const firstTileLeft = firstTile ? firstTile.left - scroller.getBoundingClientRect().left : 0;
     show(earlier, overflowing && firstTileLeft < -1);
     // If only the leading + is clipped, reveal it instead of offering an arrow.
-    if (!moving && earlier.hidden && scroller.scrollLeft > 0) {
+    if (allowSnap && !restoring && !moving && earlier.hidden && scroller.scrollLeft > 0) {
       revealLeading = true;
       scroller.scrollLeft = 0;
     }
@@ -56,7 +57,7 @@ export function createOverflowControls(scroller, label) {
     show(later, overflowing && lastTileRight > withoutLater + 1);
     // A trailing placement gap alone must not keep a "more tiles" arrow alive.
     // Expose that final + after reclaiming the arrow's space.
-    if (!moving && overflowing && later.hidden && (!revealLeading || !earlier.hidden) &&
+    if (allowSnap && !restoring && !moving && overflowing && later.hidden && (!revealLeading || !earlier.hidden) &&
         scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 1) {
       scroller.scrollLeft = scroller.scrollWidth - scroller.clientWidth;
     }
@@ -67,9 +68,9 @@ export function createOverflowControls(scroller, label) {
     view.clearTimeout(settleTimer);
     settleTimer = view.setTimeout(() => {
       moving = false;
-      update();
+      update(!restoring);
     }, 150);
-    update();
+    update(!restoring);
   }
 
   function refresh() {
@@ -77,6 +78,19 @@ export function createOverflowControls(scroller, label) {
     view.cancelAnimationFrame(frame);
     // Layout settles after controls appear/disappear or a hidden puzzle opens.
     frame = view.requestAnimationFrame(update);
+  }
+
+  function restoreScrollLeft(position) {
+    restoring = true;
+    view.cancelAnimationFrame(frame);
+    scroller.scrollLeft = position;
+    update(false);
+    frame = view.requestAnimationFrame(() => {
+      // Arrow visibility can change the available width. Re-measure without
+      // snapping to an edge marker so the restored tile stays in view.
+      update(false);
+      restoring = false;
+    });
   }
 
   function scroll(direction, event) {
@@ -110,6 +124,7 @@ export function createOverflowControls(scroller, label) {
   refresh();
   return {
     refresh,
+    restoreScrollLeft,
     dispose() {
       if (disposed) return;
       disposed = true;

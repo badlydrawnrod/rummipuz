@@ -26,6 +26,72 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   let rowOverflow = [];
   const rackOverflow = createOverflowControls(find('.rack-scroll'), 'rack');
 
+  function captureScroll(scroller) {
+    const bounds = scroller.getBoundingClientRect();
+    const tiles = [...scroller.querySelectorAll('[data-tile-id]')].map((tile) => ({
+      id: tile.dataset.tileId,
+      offset: tile.getBoundingClientRect().left - bounds.left,
+    }));
+    if (!tiles.length) return null;
+    const visible = tiles
+      .map((tile, index) => ({ ...tile, index }))
+      .filter(({ offset }) => offset < scroller.clientWidth && offset + 64 > 0);
+    const anchor = visible.reduce((best, tile) =>
+      !best || Math.abs(tile.offset) < Math.abs(best.offset) ? tile : best, null)
+      ?? { ...tiles[0], index: 0 };
+    return {
+      tiles,
+      anchorIndex: anchor.index,
+      atEnd: scroller.scrollWidth > scroller.clientWidth &&
+        scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth - 1,
+    };
+  }
+
+  function restoreScroll(scroller, controls, snapshot) {
+    if (!snapshot) return;
+    if (snapshot.atEnd) {
+      controls.restoreScrollLeft(scroller.scrollWidth - scroller.clientWidth);
+      return;
+    }
+    const currentIds = new Set([...scroller.querySelectorAll('[data-tile-id]')]
+      .map((tile) => tile.dataset.tileId));
+    const nearby = snapshot.tiles
+      .map((tile, index) => ({ ...tile, distance: Math.abs(index - snapshot.anchorIndex),
+        side: index < snapshot.anchorIndex ? 0 : 1 }))
+      .filter(({ id }) => currentIds.has(id))
+      .sort((a, b) => a.distance - b.distance || a.side - b.side);
+    const retained = nearby[0];
+    if (!retained) return;
+    const tile = [...scroller.querySelectorAll('[data-tile-id]')]
+      .find((candidate) => candidate.dataset.tileId === retained.id);
+    const bounds = scroller.getBoundingClientRect();
+    const offset = tile.getBoundingClientRect().left - bounds.left;
+    controls.restoreScrollLeft(scroller.scrollLeft + offset - retained.offset);
+  }
+
+  function matchRowScroll(oldRows, newRows) {
+    const matches = [];
+    oldRows.forEach((snapshot, oldIndex) => {
+      if (!snapshot) return;
+      const oldIds = new Set(snapshot.tiles.map(({ id }) => id));
+      newRows.forEach((row, newIndex) => {
+        const overlap = [...row.scroller.querySelectorAll('[data-tile-id]')]
+          .reduce((count, tile) => count + Number(oldIds.has(tile.dataset.tileId)), 0);
+        if (overlap) matches.push({ oldIndex, newIndex, overlap });
+      });
+    });
+    matches.sort((a, b) => b.overlap - a.overlap);
+    const usedOld = new Set();
+    const usedNew = new Set();
+    for (const match of matches) {
+      if (usedOld.has(match.oldIndex) || usedNew.has(match.newIndex)) continue;
+      usedOld.add(match.oldIndex);
+      usedNew.add(match.newIndex);
+      restoreScroll(newRows[match.newIndex].scroller, newRows[match.newIndex].controls,
+        oldRows[match.oldIndex]);
+    }
+  }
+
   function focusTile(id) {
     if (!id) return;
     // Canonical IDs contain no CSS metacharacters.
@@ -52,9 +118,12 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     touch?.cancel();
     const { state, selected, completed } = session.snapshot();
     const board = find('#board-rows');
+    const oldRows = [...board.querySelectorAll('.board-row')].map(captureScroll);
+    const rackScroll = captureScroll(find('.rack-scroll'));
     for (const controls of rowOverflow) controls.dispose();
     rowOverflow = [];
     board.replaceChildren();
+    const newRows = [];
     state.board.forEach((tiles, index) => {
       const container = document.createElement('div');
       container.className = 'board-row';
@@ -72,12 +141,16 @@ export function initialisePlay({ content, status, state, completed = false, onCh
         label: `row ${index + 1}`, selected, locked: completed });
       container.append(label, list);
       board.append(container);
-      rowOverflow.push(createOverflowControls(container, `row ${index + 1}`));
+      const controls = createOverflowControls(container, `row ${index + 1}`);
+      rowOverflow.push(controls);
+      newRows.push({ scroller: container, controls });
     });
+    matchRowScroll(oldRows, newRows);
     renderTileRow(state.rack, find('#rack-tiles'), {
       location: { area: 'rack' }, label: 'rack', selected, locked: completed,
     });
     rackOverflow.refresh();
+    restoreScroll(find('.rack-scroll'), rackOverflow, rackScroll);
     document.querySelector('#rack-count').textContent = state.rack.length;
     find('#replay-code').textContent =
       `rummipuz:${state.version}:${state.generatorVersion}:${state.difficultyTier}:${state.seed}`;
