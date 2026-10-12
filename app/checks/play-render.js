@@ -1,15 +1,16 @@
 import { initialisePlay } from '../play.js';
 import { createGameState, checkState } from '../state.js';
+import { planAssistance } from '../assistance.js';
 
 // Exercise the real renderer/event handlers in a small DOM harness. Geometry
 // models fixed tile widths; actual browser layout and touch still need review.
-export function runPlayRenderChecks(sample) {
+export async function runPlayRenderChecks(sample) {
   const passed = [];
   const assert = (condition, name) => {
     if (!condition) throw new Error(`Failed: ${name}`);
     passed.push(name);
   };
-  function harness(state) {
+  function harness(state, options = {}) {
     const events = (object) => Object.assign(object, {
       listeners: new Map(),
       addEventListener(type, fn) {
@@ -52,6 +53,8 @@ export function runPlayRenderChecks(sample) {
         };
       }
       setAttribute(key, value) { this.attributes[key] = value; }
+      getAttribute(key) { return this.attributes[key] ?? null; }
+      removeAttribute(key) { delete this.attributes[key]; }
       matches(selector) {
         if (selector.startsWith('#')) return this.id === selector.slice(1);
         if (selector.startsWith('.')) return this.className.split(' ').includes(selector.slice(1));
@@ -85,6 +88,9 @@ export function runPlayRenderChecks(sample) {
         node.remove(); this.before(node); this.remove();
       }
       focus() { document.activeElement = this; }
+      scrollIntoView(options) { this.revealed = options; }
+      showModal() { this.open = true; }
+      close() { this.open = false; this.emit('close'); }
       get clientWidth() { return 300; }
       get scrollWidth() {
         return Math.max(this.clientWidth, (this.querySelector('.tile-row')?.children ?? [])
@@ -108,14 +114,15 @@ export function runPlayRenderChecks(sample) {
     for (const id of ['reset-confirmation', 'undo-move', 'reset-puzzle', 'new-row', 'cancel-selection',
       'check-puzzle', 'reveal-solution', 'solution-dialog', 'solution-status', 'solution-rows',
       'cancel-solution', 'retry-solution', 'selection-status', 'board-rows', 'rack-count',
-      'replay-code', 'confirm-reset', 'keep-playing', 'close-solution']) {
+      'replay-code', 'confirm-reset', 'keep-playing', 'close-solution', 'hint-puzzle', 'hint-panel',
+      'hint-status', 'hint-reason', 'show-hint-tile', 'show-hint-destination', 'dismiss-hint', 'retry-hint', 'solution-title']) {
       const node = new Element('button'); node.id = id; content.append(node);
     }
     const rack = new Element('div'); rack.className = 'rack-scroll';
     const tiles = new Element('ul'); tiles.className = 'tile-row'; tiles.id = 'rack-tiles';
     content.append(rack); rack.append(tiles);
     const status = new Element('p');
-    const play = initialisePlay({ content, status, state });
+    const play = initialisePlay({ content, status, state, ...options });
     const find = (selector) => content.querySelector(selector);
     const click = (node) => {
       if (node.disabled) throw new Error('Attempted to click disabled control');
@@ -214,5 +221,53 @@ export function runPlayRenderChecks(sample) {
   assert(boardRows().length === 1 && reordered.content.querySelectorAll('[data-row-handle]')[0].disabled,
     'Only visible rows control move availability after hidden-row collapse');
   reordered.play.dispose();
+
+  let searches = 0;
+  const preferredTargets = [];
+  const hinted = harness(initial, { assist: async (state, options) => {
+    searches += 1;
+    preferredTargets.push(options.preferredBoard);
+    return planAssistance(state, options);
+  } });
+  const settle = async () => { for (let tick = 0; tick < 8; tick += 1) await Promise.resolve(); };
+  const liveRows = () => hinted.find('#board-rows').querySelectorAll('.board-row');
+  hinted.click(hinted.find('[data-tile-id="red-6-1"]'));
+  liveRows()[0].scrollLeft = 160;
+  const beforeHintRows = liveRows().map((row) => row.scrollLeft);
+  hinted.click(hinted.find('#hint-puzzle')); await settle();
+  const firstSource = hinted.content.querySelector('.hint-source');
+  const firstDestination = hinted.content.querySelector('.hint-destination');
+  assert(!hinted.find('#hint-panel').hidden && firstSource && firstDestination
+    && hinted.play.snapshot().selected === 'red-6-1' && hinted.play.snapshot().state === initial
+    && liveRows().every((row, index) => row.scrollLeft === beforeHintRows[index]),
+    'Hint highlights live controls without changing selection, history, or view positions');
+  hinted.click(hinted.find('#show-hint-tile'));
+  assert(liveRows().every((row, index) => row.scrollLeft === beforeHintRows[index]),
+    'Revealing a rack source leaves unrelated board viewports unchanged');
+  hinted.click(hinted.find('#reveal-solution')); await settle();
+  const previewBoard = hinted.find('#solution-rows').querySelectorAll('.tile-row')
+    .map((row) => row.querySelectorAll('[data-tile-id]').map((tile) => tile.dataset.tileId));
+  assert(searches === 1 && checkState({ inventory: initial.inventory, rack: [], board: previewBoard }).won,
+    'Reveal reuses Hint\'s verified arrangement without a second search');
+  hinted.click(hinted.find('#close-solution'));
+  assert(hinted.play.snapshot().state === initial && hinted.play.snapshot().selected === 'red-6-1'
+    && firstSource.classList.contains('hint-source') && liveRows()[0].scrollLeft === beforeHintRows[0],
+    'Closing shared-target Reveal preserves the live hint, selection, and board viewport');
+  if (hinted.play.snapshot().selected !== firstSource.dataset.tileId) hinted.click(firstSource);
+  hinted.click(firstDestination);
+  assert(hinted.find('#hint-panel').hidden && !hinted.content.querySelector('.hint-source')
+    && hinted.play.snapshot().state.history.length === 1,
+    'Ordinary placement clears the hint and creates only the player\'s move history');
+  hinted.click(hinted.find('#hint-puzzle')); await settle();
+  assert(searches === 2 && Array.isArray(preferredTargets[1]) && !hinted.find('#hint-panel').hidden,
+    'A fresh hint recomputes after progress using the previous verified target as a preference');
+  hinted.click(hinted.find('#check-puzzle'));
+  assert(!hinted.find('#hint-panel').hidden && hinted.content.contains(hinted.content.querySelector('.hint-source'))
+    && hinted.content.contains(hinted.content.querySelector('.hint-destination')) && searches === 2,
+    'Read-only Check rebinds hint highlights to the rendered controls without searching again');
+  hinted.click(hinted.find('#undo-move'));
+  assert(hinted.find('#hint-panel').hidden && hinted.play.snapshot().state.history.length === 0,
+    'Undo invalidates the displayed hint through the real play session');
+  hinted.play.dispose();
   return passed;
 }

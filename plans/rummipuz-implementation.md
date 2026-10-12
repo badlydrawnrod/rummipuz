@@ -2,15 +2,15 @@
 
 ## Current status
 
-Generator work is complete through Phase 7. Approved generator revision 6 supplies fresh Start/Next puzzles and omitted-revision generation. Revisions 1–6 retain exact replay identities and saved layouts/undo history. Fixed difficulty selection and the read-only solution preview are implemented and configured for offline release `v8` with the existing 39 assets; the user has not asked to commit the current UX changes.
+Generator work is complete through Phase 7. Approved generator revision 6 supplies fresh Start/Next puzzles and omitted-revision generation. Revisions 1–6 retain exact replay identities and saved layouts/undo history. The UX changes, including current-position Hint and the read-only solution preview, are implemented and configured for offline release `v14` with 42 assets. Hint and its visibility refinement are user-approved; broader device acceptance remains pending. No commit was requested.
 
-Latest generator verification before the fixed-difficulty change: 1,288 native checks passed, including 62 worker checks from only the precached assets. Approved sample checkers passed 42 revision-5 and 3,499 revision-6 assertions. Both full revision-6 variety/preparation blocks passed on native runtime, laptop and user-reported tablet; the user confirmed both devices stayed responsive and approved the family/sequence review on 12 October 2026 without tuning. The focused checks were updated for fixed difficulty but have not been run.
+Step 7 integrated verification: 2,334 native checks passed, including 700 assistance-planner checks and 113 assistance-worker checks each in regular and precache-only bundles. Approved sample checkers passed 42 revision-5 and 3,499 revision-6 assertions. Both full revision-6 variety/preparation blocks passed on native runtime, laptop and user-reported tablet; the user confirmed both devices stayed responsive and approved the family/sequence review on 12 October 2026 without tuning. Fixed-difficulty, row-control and assistance regressions pass in the integrated suite. The subsequent hint-visibility refinement passes 286 focused checks for hints, rendering, appearance, touch and offline packaging.
 
 Mouse, touch and overflow controls have user approval. Appearance/palette preference retention is confirmed on desktop and tablet. Complete browser sessions and installed offline launch still need the acceptance checks below; generator/device preparation approval does not complete those checks.
 
 ## Planned UX improvements
 
-The user requested scroll retention, clearer red/orange tiles, whole-row reordering, collapsed empty rows, fixed difficulty selection, hints and solution reveal on 12 October 2026. See the [UX improvements and assistance plan](rummipuz-ux-improvements.md) for work order and acceptance criteria. Steps 1, 2, 5 and 6 are implemented and user-approved. Complete the remaining checks below against the revised app.
+The user requested scroll retention, clearer red/orange tiles, whole-row reordering, collapsed empty rows, fixed difficulty selection, hints and solution reveal on 12 October 2026. See the [UX improvements and assistance plan](rummipuz-ux-improvements.md) for work order and acceptance criteria. Steps 1, 2, 3, 3a, 4, 5, 6 and 7 are complete and user-approved. Complete the remaining checks below against the revised app.
 
 ## Remaining work
 
@@ -22,7 +22,7 @@ The user requested scroll retention, clearer red/orange tiles, whole-row reorder
 
 Fix issues found by these checks, then record device/browser, results and any limitations before checking an item. User-reported device testing can supply acceptance when no browser is available to the agent.
 
-**Next action:** Continue with step 3 of the UX plan, then reconcile launch documentation and complete HTTPS/browser/device acceptance against the revised app.
+**Next action:** Complete remaining UX integration/device acceptance, reconcile launch documentation and complete HTTPS/browser/device acceptance against the revised app.
 
 ## Scope and decisions still in force
 
@@ -54,4 +54,4 @@ Work from the first unchecked item unless the user directs otherwise. Check an i
 
 ## Deferred ideas
 
-Hints and solution reveal are now scheduled in the UX plan. Jokers, scoring, timed challenges, daily featured puzzles and syncing progress across devices remain deferred. They are optional ideas, not outstanding acceptance work.
+Hints and solution reveal are implemented and user-approved. Jokers, scoring, timed challenges, daily featured puzzles and syncing progress across devices remain deferred. They are optional ideas, not outstanding acceptance work.

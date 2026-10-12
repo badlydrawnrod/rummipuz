@@ -20,12 +20,14 @@
     import { runPuzzleFlowChecks, runPuzzleFlowWorkerChecks } from './puzzle-flow.js';
     import { runPlayChecks } from './play.js';
     import { runPlayRenderChecks } from './play-render.js';
+    import { runHintChecks } from './hints.js';
+    import { runAssistanceChecks } from './assistance.js';
     import { runProgressChecks } from './progress.js';
     import { runPreferenceChecks } from './preferences.js';
     import { runTouchChecks } from './touch.js';
     import { runRowDragChecks } from './row-drag.js';
     import { runOverflowChecks } from './overflow.js';
-    import { runWorkerLifecycleChecks, runWorkerChecks } from './worker.js';
+    import { runWorkerLifecycleChecks, runWorkerChecks, runAssistanceWorkerChecks } from './worker.js';
     const results = document.querySelector('#results');
     try {
       const response = await fetch('../puzzles/sample.json');
@@ -65,7 +67,8 @@
         ...runDifficultyChecks(sample, ratedFixtures),
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
         ...await runWorkerLifecycleChecks(),
-        ...runPlayChecks(sample), ...runPlayRenderChecks(sample),
+        ...runPlayChecks(sample), ...await runPlayRenderChecks(sample), ...await runHintChecks(sample),
+        ...runAssistanceChecks(sample, [...candidateFixtures, ...ratedFixtures, ...reviewedFixtures, ...v5Fixtures, ...v6Fixtures]),
         ...await runPuzzleFlowChecks(sample),
         ...runProgressChecks(sample),
         ...runPreferenceChecks(),
@@ -73,6 +76,8 @@
       results.textContent = `${passed.length} checks passed. Testing real module workers…`;
       passed.push(...await runWorkerChecks(sample,
         [candidateFixtures[0], ratedFixtures[0], reviewedFixtures[0]]));
+      passed.push(...await runAssistanceWorkerChecks(sample,
+        [...candidateFixtures, ...ratedFixtures, ...reviewedFixtures, ...v5Fixtures, ...v6Fixtures]));
       passed.push(...await runPuzzleFlowWorkerChecks(sample));
       passed.push(...await runStructuralWorkerChecks(v5Fixtures));
       passed.push(...await runVarietyWorkerChecks(v6Fixtures));

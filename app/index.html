@@ -88,8 +88,22 @@
             <button id="reset-puzzle" type="button" disabled>Reset</button>
             <button id="check-puzzle" type="button">Check</button>
             <button id="cancel-selection" type="button" disabled>Cancel selection</button>
+            <button id="hint-puzzle" type="button">Hint</button>
             <button id="reveal-solution" type="button">Reveal solution</button>
           </div>
+          <section id="hint-panel" class="hint-panel" aria-labelledby="hint-title" hidden>
+            <div class="hint-heading">
+              <h3 id="hint-title">Hint</h3>
+              <button id="dismiss-hint" type="button">Dismiss</button>
+            </div>
+            <p id="hint-status" role="status" aria-live="polite"></p>
+            <p id="hint-reason"></p>
+            <div class="hint-actions">
+              <button id="show-hint-tile" type="button" hidden><span class="hint-action-marker" aria-hidden="true">1</span> Show tile</button>
+              <button id="show-hint-destination" type="button" hidden><span class="hint-action-marker" aria-hidden="true">2</span> Show destination</button>
+              <button id="retry-hint" type="button" hidden>Try again</button>
+            </div>
+          </section>
           <dialog id="solution-dialog" class="solution-dialog" aria-labelledby="solution-title" aria-describedby="solution-status">
             <div class="solution-dialog-content">
               <div class="solution-dialog-heading">

@@ -73,6 +73,7 @@ export function createPuzzleService({ workerFactory = () => {
   return {
     generate: (identity, { signal } = {}) => request('generate', identity, signal),
     solve: (state, { signal, ...options } = {}) => request('solve', { state, options }, signal),
+    assist: (state, { signal, ...options } = {}) => request('assist', { state, options }, signal),
     rate: (puzzle, { signal, ...options } = {}) => request('rate', { puzzle, options }, signal),
     dispose() {
       disposed = true;

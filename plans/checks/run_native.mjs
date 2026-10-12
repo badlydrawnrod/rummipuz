@@ -19,6 +19,7 @@ const v6 = await json('checks/fixtures/generated-v6.json');
 const awaitedV5 = await json('checks/fixtures/structural-v5.json');
 const awaitedV6 = await json('checks/fixtures/structural-v6.json');
 const styles = await fs.readFile(new URL('styles.css', app), 'utf8');
+const assistanceFixtures = [...v2, ...v3, ...v4, ...v5, ...v6];
 export const workerFactoryFor = (url) => () => {
   const worker = new Worker(`const {parentPort}=require('node:worker_threads');globalThis.self={addEventListener(type,handler){parentPort.on(type,data=>handler({data}));},postMessage(value){parentPort.postMessage(value);}};import(${JSON.stringify(url)});`, { eval: true });
   const listeners = new Map();
@@ -37,7 +38,8 @@ try {
   for (const [name, args] of [['core', [sample]], ['solver', [sample]], ['generator', [v2]],
     ['difficulty', [sample, v3]], ['review', [v4, await json('checks/fixtures/reviewed-v4.json')]],
     ['play', [sample]], ['play-render', [sample]], ['progress', [sample]], ['preferences', []], ['appearance', [styles]],
-    ['touch', [sample, styles]], ['row-drag', []], ['overflow', []]]) {
+    ['touch', [sample, styles]], ['row-drag', []], ['hints', [sample]],
+    ['assistance', [sample, assistanceFixtures]], ['overflow', []]]) {
     const mod = await module(name);
     await run(name, () => Object.values(mod)[0](...args));
   }
@@ -53,6 +55,7 @@ try {
   await run('worker-lifecycle', () => workers.runWorkerLifecycleChecks());
   await run('variety-v6', () => variety.runVarietyChecks(awaitedV6, v6));
   await run('worker', () => workers.runWorkerChecks(sample, [v2[0], v3[0], v4[0]], workerFactory));
+  await run('assistance-worker', () => workers.runAssistanceWorkerChecks(sample, assistanceFixtures, workerFactory));
   await run('flow-worker', () => flow.runPuzzleFlowWorkerChecks(sample, workerFactory));
   await run('structural-v5-worker', () => structural.runStructuralWorkerChecks(v5, workerFactory));
   await run('variety-v6-worker', () => variety.runVarietyWorkerChecks(v6, workerFactory));
@@ -68,6 +71,7 @@ try {
   await run('precache-flow-worker', () => flow.runPuzzleFlowWorkerChecks(sample, offlineFactory));
   await run('precache-v5-worker', () => structural.runStructuralWorkerChecks(v5, offlineFactory));
   await run('precache-v6-worker', () => variety.runVarietyWorkerChecks(v6, offlineFactory));
+  await run('precache-assistance-worker', () => workers.runAssistanceWorkerChecks(sample, assistanceFixtures, offlineFactory));
   console.log(JSON.stringify({ checks: passed.length, suites, offlineRelease: OFFLINE_RELEASE, assets: OFFLINE_ASSETS.length }));
 } finally { await fs.rm(staging, { recursive: true, force: true }); }
 export default { checks: passed.length, suites };

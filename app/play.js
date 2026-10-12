@@ -5,11 +5,12 @@ import { createPlaySession } from './play-session.js';
 import { initialiseTouch } from './touch.js';
 import { createOverflowControls } from './overflow.js';
 import { initialiseRowDrag } from './row-drag.js';
+import { initialiseHints } from './hints.js';
 
 const dragType = 'application/x-rummipuz-tile';
 const SOLUTION_NODE_LIMIT = 1_000_000;
 
-export function initialisePlay({ content, status, state, completed = false, onChange, solve }) {
+export function initialisePlay({ content, status, state, completed = false, onChange, solve, assist }) {
   const session = createPlaySession(state, { completed, onChange: onSessionChange });
   const document = content.ownerDocument;
   const find = (selector) => content.querySelector(selector);
@@ -32,6 +33,9 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   };
   let touch;
   let rowDrag;
+  let hints;
+  let assistanceCache = null;
+  let preferredBoard = null;
   let rowOverflow = [];
   const rowScroll = new Map();
   let solutionOverflow = [];
@@ -41,6 +45,8 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   const rackOverflow = createOverflowControls(find('.rack-scroll'), 'rack');
 
   function onSessionChange(snapshot) {
+    hints?.invalidate();
+    assistanceCache = null;
     cancelSolutionSearch();
     solutionBoard = null;
     if (solutionDialog.open) {
@@ -87,6 +93,19 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     return result.conserved && result.won;
   }
 
+  async function requestAssistance(currentState, options) {
+    if (options.signal?.aborted) throw new DOMException('Assistance cancelled.', 'AbortError');
+    if (assistanceCache?.state === currentState) return assistanceCache.result;
+    if (typeof assist !== 'function') throw new Error('Assistance is unavailable in this browser.');
+    const result = await assist(currentState, { ...options, preferredBoard });
+    if (!options.signal?.aborted && session.snapshot().state === currentState
+        && result?.status === 'solved' && verifiedSolution(currentState, result.board)) {
+      assistanceCache = { state: currentState, result };
+      preferredBoard = result.board.map((row) => [...row]);
+    }
+    return result;
+  }
+
   function cancelSolutionSearch({ announce = true } = {}) {
     if (!solutionController) return;
     const controller = solutionController;
@@ -108,7 +127,7 @@ export function initialisePlay({ content, status, state, completed = false, onCh
       retrySolutionButton.hidden = false;
       return;
     }
-    if (typeof solve !== 'function') {
+    if (typeof assist !== 'function' && typeof solve !== 'function') {
       solutionStatus.textContent = 'Solution search is unavailable in this browser. The puzzle is unchanged.';
       retrySolutionButton.hidden = false;
       return;
@@ -123,7 +142,9 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     cancelSolutionButton.hidden = false;
     retrySolutionButton.hidden = true;
     try {
-      const result = await solve(currentState, { signal: controller.signal, maxNodes: SOLUTION_NODE_LIMIT });
+      const options = { signal: controller.signal, maxNodes: SOLUTION_NODE_LIMIT };
+      const result = typeof assist === 'function'
+        ? await requestAssistance(currentState, options) : await solve(currentState, options);
       if (token !== solutionRequest || !solutionDialog.open || controller.signal.aborted
           || session.snapshot().state !== currentState) return;
       solutionController = null;
@@ -162,6 +183,7 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     if (solutionDialog.open) return;
     rowDrag.cancel();
     touch.cancel();
+    hints.cancelPending();
     solutionDialog.showModal();
     find('#solution-title').focus({ preventScroll: true });
     if (solutionBoard) {
@@ -228,6 +250,23 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     if (!id) return;
     // Canonical IDs contain no CSS metacharacters.
     find(`[data-tile-id="${id}"]`)?.focus({ preventScroll: true });
+  }
+
+  function revealHintElement(element) {
+    const scroller = element.closest('.board-row, .rack-scroll');
+    if (!scroller) {
+      element.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
+      return;
+    }
+    const bounds = scroller.getBoundingClientRect();
+    const tile = element.getBoundingClientRect();
+    let position = scroller.scrollLeft;
+    if (tile.left < bounds.left + 4) position += tile.left - bounds.left - 4;
+    else if (tile.right > bounds.right - 4) position += tile.right - bounds.right + 4;
+    const index = session.snapshot().rows.findIndex((row) => row.id === scroller.dataset.rowId);
+    const controls = scroller.dataset.rowId ? rowOverflow[index] : rackOverflow;
+    controls?.restoreScrollLeft(position);
+    scroller.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
   }
 
   function paintSelection() {
@@ -324,6 +363,7 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     newRow.dataset.destination = JSON.stringify(session.destination({ area: 'new-row' }));
     check.disabled = completed;
     paintSelection();
+    hints?.refresh();
     focusTile(focusId);
   }
 
@@ -447,12 +487,15 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   touch = initialiseTouch({ content, status, session, paintSelection, afterMove });
   rowDrag = initialiseRowDrag({ content, board: find('#board-rows'), status,
     session, paintSelection, afterReorder });
+  hints = initialiseHints({ content, session, requestAssistance,
+    revealElement: revealHintElement });
   render();
   return { ...session, dispose() {
     cancelSolutionSearch({ announce: false });
     if (solutionDialog.open) solutionDialog.close();
     touch.dispose();
     rowDrag.dispose();
+    hints.dispose();
     listeners.forEach((remove) => remove());
     rowOverflow.forEach((controls) => controls.dispose());
     solutionOverflow.forEach((controls) => controls.dispose());

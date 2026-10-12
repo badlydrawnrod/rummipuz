@@ -1,6 +1,7 @@
 import { generateCandidate } from './generator.js';
 import { generatePuzzle } from './rated-generator.js';
 import { solveState } from './solver.js';
+import { planAssistance } from './assistance.js';
 import { rateVarietyPuzzle } from './difficulty-v6.js';
 import { ratePuzzle } from './difficulty.js';
 import { rateStructuralPuzzle } from './structural-difficulty.js';
@@ -16,6 +17,7 @@ self.addEventListener('message', ({ data }) => {
           ? generateCandidate(data.input) : generatePuzzle(data.input);
         break;
       case 'solve': value = solveState(data.input.state, data.input.options); break;
+      case 'assist': value = planAssistance(data.input.state, data.input.options); break;
       case 'rate': value = data.input.puzzle?.generatorVersion === 6
         ? rateVarietyPuzzle(data.input.puzzle, data.input.options)
         : data.input.puzzle?.generatorVersion === 5
