@@ -1,0 +1,678 @@
+{
+  "summary": {
+    "samples": 36,
+    "physicalPartitions": 757,
+    "differentialEnumeration": "passed",
+    "runtimeMechanisms": "passed",
+    "runtimeSignatures": "passed"
+  },
+  "records": [
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 1,
+        "seed": "variety-v6-dev-0"
+      },
+      "family": "run-division",
+      "pattern": "easy-run-division",
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "red-10": 4,
+        "red-11": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 1,
+        "seed": "variety-v6-dev-1"
+      },
+      "family": "group-donation",
+      "pattern": "easy-group-middle-donation",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 1,
+        "seed": "variety-v6-dev-2"
+      },
+      "family": "run-division",
+      "pattern": "easy-longer-division",
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "black-10": 4,
+        "black-11": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 1,
+        "seed": "variety-v6-dev-4"
+      },
+      "family": "run-donation",
+      "pattern": "easy-both-ends",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 1,
+        "seed": "variety-v6-dev-14"
+      },
+      "family": "group-donation",
+      "pattern": "easy-group-donation",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 1,
+        "seed": "variety-v6-dev-20"
+      },
+      "family": "run-donation",
+      "pattern": "easy-run-donation",
+      "physicalPartitions": 8,
+      "minimumPhysicalPartitions": 2,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "red-3": 4,
+        "red-4": 4,
+        "red-5": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 2,
+        "seed": "variety-v6-dev-0"
+      },
+      "family": "runs-to-groups",
+      "pattern": "medium-adjacent-rack-partners",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 2,
+        "seed": "variety-v6-dev-2"
+      },
+      "family": "split-and-join",
+      "pattern": "medium-split-and-join",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 2,
+        "seed": "variety-v6-dev-3"
+      },
+      "family": "interior-extraction",
+      "pattern": "medium-asymmetric-interior",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [
+        {
+          "tile": "blue-9-2",
+          "row": 1,
+          "index": 0
+        }
+      ],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 2,
+        "seed": "variety-v6-dev-4"
+      },
+      "family": "mixed-exchange",
+      "pattern": "medium-mixed-group-donation",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [
+        {
+          "tile": "orange-9-1",
+          "row": 2,
+          "index": 3
+        }
+      ],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 2,
+        "seed": "variety-v6-dev-5"
+      },
+      "family": "split-and-join",
+      "pattern": "medium-longer-split-join",
+      "physicalPartitions": 2,
+      "minimumPhysicalPartitions": 2,
+      "facePartitions": 2,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 2,
+        "seed": "variety-v6-dev-6"
+      },
+      "family": "groups-to-runs",
+      "pattern": "medium-groups-to-runs",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 2,
+        "seed": "variety-v6-dev-8"
+      },
+      "family": "groups-to-runs",
+      "pattern": "medium-four-colour-conversion",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 2,
+        "seed": "variety-v6-dev-14"
+      },
+      "family": "runs-to-groups",
+      "pattern": "medium-runs-to-groups",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 2,
+        "seed": "variety-v6-dev-16"
+      },
+      "family": "interior-extraction",
+      "pattern": "medium-interior-extraction",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [
+        {
+          "tile": "red-10-2",
+          "row": 2,
+          "index": 0
+        }
+      ],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 3,
+        "seed": "variety-v6-dev-0"
+      },
+      "family": "runs-to-groups",
+      "pattern": "hard-endpoint-missing-partner",
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "orange-1": 2,
+        "blue-1": 2,
+        "red-1": 2
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 3,
+        "seed": "variety-v6-dev-1"
+      },
+      "family": "interior-extraction",
+      "pattern": "hard-interior-extraction",
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "black-5": 2,
+        "red-5": 2,
+        "orange-5": 2
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 3,
+        "seed": "variety-v6-dev-2"
+      },
+      "family": "split-and-join",
+      "pattern": "hard-split-and-join",
+      "physicalPartitions": 8,
+      "minimumPhysicalPartitions": 8,
+      "facePartitions": 4,
+      "deadPreservedPlacements": [
+        {
+          "tile": "black-1-2",
+          "row": 3,
+          "index": 0
+        }
+      ],
+      "duplicateAllocationAlternatives": {
+        "red-7": 10
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 3,
+        "seed": "variety-v6-dev-4"
+      },
+      "family": "groups-to-runs",
+      "pattern": "hard-four-colour-group-only",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 3,
+        "seed": "variety-v6-dev-5"
+      },
+      "family": "mixed-exchange",
+      "pattern": "hard-mixed-exchange",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [
+        {
+          "tile": "red-8-2",
+          "row": 0,
+          "index": 3
+        }
+      ],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 3,
+        "seed": "variety-v6-dev-13"
+      },
+      "family": "runs-to-groups",
+      "pattern": "hard-runs-to-groups",
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "red-13": 2,
+        "blue-13": 2,
+        "orange-13": 2
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 3,
+        "seed": "variety-v6-dev-29"
+      },
+      "family": "mixed-exchange",
+      "pattern": "hard-longer-mixed-repair",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [
+        {
+          "tile": "black-10-2",
+          "row": 2,
+          "index": 4
+        }
+      ],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 3,
+        "seed": "variety-v6-dev-71"
+      },
+      "family": "groups-to-runs",
+      "pattern": "hard-duplicate-choice",
+      "physicalPartitions": 16,
+      "minimumPhysicalPartitions": 4,
+      "facePartitions": 2,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "blue-11": 8,
+        "blue-10": 8,
+        "blue-12": 8
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 3,
+        "seed": "variety-v6-dev-226"
+      },
+      "family": "groups-to-runs",
+      "pattern": "hard-groups-to-runs",
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-0"
+      },
+      "family": "mixed-exchange",
+      "pattern": "expert-mixed-exchange",
+      "physicalPartitions": 2,
+      "minimumPhysicalPartitions": 2,
+      "facePartitions": 2,
+      "deadPreservedPlacements": [
+        {
+          "tile": "red-10-2",
+          "row": 1,
+          "index": 3
+        }
+      ],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-1"
+      },
+      "family": "groups-to-runs",
+      "pattern": "expert-groups-to-runs",
+      "physicalPartitions": 8,
+      "minimumPhysicalPartitions": 8,
+      "facePartitions": 8,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-2"
+      },
+      "family": "split-and-join",
+      "pattern": "expert-longer-split-join",
+      "physicalPartitions": 128,
+      "minimumPhysicalPartitions": 128,
+      "facePartitions": 2,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "red-4": 4,
+        "orange-5": 4,
+        "black-6": 4,
+        "blue-4": 4,
+        "blue-5": 4,
+        "blue-6": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-3"
+      },
+      "family": "groups-to-runs",
+      "pattern": "expert-five-group-conversion",
+      "physicalPartitions": 18,
+      "minimumPhysicalPartitions": 18,
+      "facePartitions": 18,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {}
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-6"
+      },
+      "family": "interior-extraction",
+      "pattern": "expert-interior-extraction",
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "orange-4": 4,
+        "orange-5": 4,
+        "orange-6": 4,
+        "red-4": 4,
+        "blue-6": 4,
+        "black-5": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-7"
+      },
+      "family": "interior-extraction",
+      "pattern": "expert-longer-interior",
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "black-6": 4,
+        "red-5": 4,
+        "blue-4": 4,
+        "orange-4": 4,
+        "orange-5": 4,
+        "orange-6": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-10"
+      },
+      "family": "combined-repair",
+      "pattern": "expert-longer-combined-repair",
+      "physicalPartitions": 128,
+      "minimumPhysicalPartitions": 128,
+      "facePartitions": 2,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "blue-5": 4,
+        "orange-6": 4,
+        "red-4": 4,
+        "black-4": 4,
+        "black-5": 4,
+        "black-6": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-16"
+      },
+      "family": "combined-repair",
+      "pattern": "expert-combined-repair",
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "black-4": 4,
+        "blue-6": 4,
+        "red-4": 4,
+        "red-5": 4,
+        "red-6": 4,
+        "orange-5": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-20"
+      },
+      "family": "runs-to-groups",
+      "pattern": "expert-runs-to-groups",
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "orange-8": 4,
+        "blue-7": 4,
+        "blue-8": 4,
+        "blue-9": 4,
+        "red-9": 4,
+        "black-7": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-24"
+      },
+      "family": "groups-to-runs",
+      "pattern": "expert-duplicate-choice",
+      "physicalPartitions": 80,
+      "minimumPhysicalPartitions": 16,
+      "facePartitions": 10,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "orange-7": 10,
+        "orange-8": 10,
+        "orange-9": 10
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-36"
+      },
+      "family": "split-and-join",
+      "pattern": "expert-split-and-join",
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "blue-7": 4,
+        "blue-8": 4,
+        "blue-9": 4,
+        "orange-7": 4,
+        "red-9": 4,
+        "black-8": 4
+      }
+    },
+    {
+      "identity": {
+        "version": 1,
+        "generatorVersion": 6,
+        "difficultyTier": 4,
+        "seed": "variety-v6-dev-45"
+      },
+      "family": "combined-repair",
+      "pattern": "expert-compact-combined-repair",
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "facePartitions": 1,
+      "deadPreservedPlacements": [],
+      "duplicateAllocationAlternatives": {
+        "blue-4": 2,
+        "red-4": 2,
+        "black-4": 2
+      }
+    }
+  ]
+}

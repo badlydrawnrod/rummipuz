@@ -14,44 +14,63 @@ const permutations = (items) => items.length ? items.flatMap((item, i) =>
   permutations(items.filter((_, j) => i !== j)).map((rest) => [item, ...rest])) : [[]];
 const colours = ['black', 'blue', 'red', 'orange'];
 
-/** Literal 48-transform and tied-origin canonicalisation; checked against the independent oracle. */
-export function semanticKeys(state, board = null) {
+/** Prepare all 48 starting transforms once. The joint encoding compares the
+ * starting geometry before any final row, so only geometry-minimal transforms
+ * can win. Keep all tied transforms and all tied source-index assignments.
+ */
+export function createSemanticCanonicalizer(state) {
   const origins = new Map(state.board.flatMap((row, i) => row.map((id) => [id, i])));
-  let geometry = null, origin = null, mapping = null, finalRows = null;
+  const tiles = state.inventory.map((id) => parseTile(id));
+  const sourceKinds = state.board.map((row) => classifyRow(row).kind);
+  let geometry = null, transforms = [];
   for (const perm of permutations(colours)) for (const reflected of [false, true]) {
-    const tiles = state.inventory.map((id) => parseTile(id));
     const values = tiles.map((tile) => reflected ? 14 - tile.value : tile.value);
     const min = Math.min(...values);
     const mapped = new Map(state.inventory.map((id, i) => [id,
       [perm[colours.indexOf(tiles[i].colour)], values[i] - min + 1]]));
-    const rowFaces = (row) => row.map((id) => mapped.get(id)).sort(classifyRow(row).kind === 'run'
-      ? (a, b) => a[1] - b[1] : tuple);
-    const sources = state.board.map((row) => encode([classifyRow(row).kind, rowFaces(row)]));
+    const sources = state.board.map((row, i) => encode([sourceKinds[i], row.map((id) => mapped.get(id))
+      .sort(sourceKinds[i] === 'run' ? (a, b) => a[1] - b[1] : tuple)]));
     const sorted = [...sources].sort(ascii);
     const start = ['start-v1', sorted.map((row) => JSON.parse(row)), state.rack.map((id) => mapped.get(id)).sort(tuple)];
-    const startKey = encode(start);
-    if (geometry === null || startKey < geometry) geometry = startKey;
-    if (!board) continue;
+    const key = encode(start);
+    if (geometry === null || key < geometry) { geometry = key; transforms = []; }
+    if (key === geometry) transforms.push({ mapped, sources, sorted, start });
+  }
+  for (const transform of transforms) {
+    const { sources, sorted } = transform;
     const tied = [...new Set(sorted)].map((key) => {
       const slots = sorted.flatMap((s, i) => s === key ? [i] : []);
       const indices = sources.flatMap((s, i) => s === key ? [i] : []);
       return permutations(slots).map((assignment) => indices.map((i, j) => [i, assignment[j]]));
     });
+    transform.mappings = [];
     function assign(at, pairs) {
       if (at < tied.length) { for (const next of tied[at]) assign(at + 1, [...pairs, ...next]); return; }
-      const indexMap = new Map(pairs);
-      const finals = board.map((row) => {
-        const kind = classifyRow(row).kind;
-        const entries = row.map((id) => [...mapped.get(id), origins.has(id) ? `row:${indexMap.get(origins.get(id))}` : 'rack']);
-        entries.sort(kind === 'run' ? (a, b) => a[1] - b[1] : tuple);
-        return [kind, entries];
-      }).sort((a, b) => ascii(encode(a), encode(b)));
-      const key = encode(['origin-v1', start, finals]);
-      if (origin === null || key < origin) { origin = key; mapping = indexMap; finalRows = finals; }
+      transform.mappings.push(new Map(pairs));
     }
     assign(0, []);
   }
-  return { geometry, origin, mapping, finalRows };
+  return (board = null) => {
+    let origin = null, mapping = null, finalRows = null;
+    if (board) {
+      const kinds = board.map((row) => classifyRow(row).kind);
+      for (const { mapped, start, mappings } of transforms) for (const indexMap of mappings) {
+        const finals = board.map((row, i) => {
+          const entries = row.map((id) => [...mapped.get(id), origins.has(id) ? `row:${indexMap.get(origins.get(id))}` : 'rack']);
+          entries.sort(kinds[i] === 'run' ? (a, b) => a[1] - b[1] : tuple);
+          return [kinds[i], entries];
+        }).sort((a, b) => ascii(encode(a), encode(b)));
+        const key = encode(['origin-v1', start, finals]);
+        if (origin === null || key < origin) { origin = key; mapping = indexMap; finalRows = finals; }
+      }
+    }
+    return { geometry, origin, mapping, finalRows };
+  };
+}
+
+/** Same literal 48-transform semantics; reuse the prepared context in batch proofs. */
+export function semanticKeys(state, board = null) {
+  return createSemanticCanonicalizer(state)(board);
 }
 
 export function mechanismProfile(state, board, predicates, keys) {

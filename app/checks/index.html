@@ -6,6 +6,7 @@
   <h1>Rummipuz core checks</h1>
   <pre id="results" role="status">Running…</pre>
   <script type="module">
+    import { runVarietyBenchmarkChecks } from './variety-benchmark.js';
     import { runVarietyChecks, runVarietyWorkerChecks } from './variety.js';
     import { runOfflineChecks, runOfflinePackageChecks } from './offline.js';
     import { runBenchmarkChecks } from './benchmark.js';
@@ -57,6 +58,7 @@
         ...runGeneratorChecks(candidateFixtures),
         ...runStructuralChecks(structuralDesigns, v5Fixtures),
         ...runVarietyChecks(v6Designs, v6Fixtures),
+        ...await runVarietyBenchmarkChecks(v6Fixtures),
         ...await runBenchmarkChecks(v5Fixtures),
         ...runDifficultyChecks(sample, ratedFixtures),
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),

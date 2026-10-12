@@ -102,7 +102,7 @@ Revision 6 is supported explicitly through `generatePuzzle`, worker generation/r
 Hash `rummipuz:1:6:<tier>:<seed>` with FNV-1a and use the fixed Mulberry32, inclusive integer and descending Fisher–Yates implementations in `generator-v6.js`. Each attempt draws, in this order:
 
 1. One inclusive integer ticket from the sum of the following ordered family weights, assigning cumulative buckets in the listed order.
-2. One uniform pattern index from that tier/family's filtered source-order inventory list, even for a singleton bucket.
+2. One inclusive integer pattern ticket from that tier/family's filtered source-order inventory list, even for a singleton bucket. Default per-inventory weight is 1. For Hard groups-to-runs, the group-only inventory has weight 8 (8:1:1). For Expert groups-to-runs, each of the two group-only inventories has weight 2 and the mixed duplicate inventory weight 1 (2:2:1). Accumulate these weights in the unchanged inventory order.
 3. Shuffle black/blue/red/orange; draw reflection; draw the common legal offset inclusively from `1 - min` through `13 - max` after reflection.
 4. Sort distinct original face strings in ASCII order and draw a swap bit for each face. Map copies bijectively, retaining all physical identities.
 5. Transform source rows in their original order; sort runs numerically ascending and shuffle each group. Shuffle the board, then the rack.
@@ -112,8 +112,8 @@ Hash `rummipuz:1:6:<tier>:<seed>` with FNV-1a and use the fixed Mulberry32, incl
 | --- | --- |
 | Easy | run-donation 1, group-donation 1, run-division 1 |
 | Medium | interior-extraction 1, split-and-join 1, groups-to-runs 1, runs-to-groups 1, mixed-exchange 1 |
-| Hard | interior-extraction 18, split-and-join 18, groups-to-runs 20, runs-to-groups 19, mixed-exchange 25 |
-| Expert | interior-extraction 40, split-and-join 20, groups-to-runs 30, runs-to-groups 20, mixed-exchange 45, combined-repair 45 |
+| Hard | interior-extraction 16, split-and-join 16, groups-to-runs 26, runs-to-groups 16, mixed-exchange 26 |
+| Expert | interior-extraction 32, split-and-join 20, groups-to-runs 40, runs-to-groups 16, mixed-exchange 46, combined-repair 46 |
 
 Medium includes its audited optional mixed-exchange family. These are proposal weights, not evidence of accepted-output quotas. The specification's two fixed 256-seed blocks per tier, composition caps, family caps and sequence review still govern the next verification step. Selection is independent of game history; adjacent repeats are possible.
 
@@ -129,7 +129,7 @@ Required search exhaustion returns `limit`, with null tier/board. Completed sear
 
 ### Semantic diagnostics
 
-`signatures-v6.js` implements the literal 48 colour/orientation transforms, translated value geometry and tied-source index assignments from the specification. It retains physical origins while omitting cosmetic copy numbers from keys. ASCII comparison and numeric tuple sorting are explicit; no locale ordering is used. Mechanism profiles include source kinds, component `C/N`, canonical source/final contribution incidence, split/join counts and conversion directions.
+`signatures-v6.js` implements the same literal 48-transform semantics for translated geometry and tied-source index assignments. It prepares all starting transforms once per candidate and retains all geometry-minimal ties for repeated final-board canonicalisation: the joint encoding compares starting geometry before final rows, so larger starting keys cannot win. All tied row assignments remain enumerated. The optimised results match the independent literal oracle for all 36 inventories. It retains physical origins while omitting cosmetic copy numbers from keys. ASCII comparison and numeric tuple sorting are explicit; no locale ordering is used. Mechanism profiles include source kinds, component `C/N`, canonical source/final contribution incidence, split/join counts and conversion directions.
 
 The proof enumerates all partitions, but detailed key/profile collection is limited to the **first 64 minimum physical partitions in fixed traversal order**. This diagnostic allowance is separate from the shared proof-node budget and cannot affect tier/family acceptance. Key sets are `complete` only when at most 64 minimum physical partitions exist; otherwise they are explicitly `truncated`, even when later partitions might yield duplicate keys. No uniqueness or absence claim uses a truncated set. Common/optional family predicates and physical counts remain exhaustive. Boundary distances are stored as the sorted pair `[distance to 1, distance to 13]`, deliberately invariant to reflection, separately from translation-normalised geometry.
 
@@ -142,3 +142,15 @@ All **1,267 native checks** pass through `plans/checks/run_native.mjs`, includin
 All 36 fixture geometry keys and full/bounded origin/profile records were compared with the independent Python audit. Eight golden generated replays independently pass both physical enumeration paths across **134 partitions**; the additional 32-output smoke set independently passes across **463 partitions** with matching mechanism/signature evidence. Rerun the golden audit with `python3 plans/checks/verify_v6_generated.py`. The smoke requests all succeeded, exercising all nine distinct core labels across tiers; this small set does **not** satisfy release-quota acceptance. The measured native smoke maximum was about 790 ms; Expert semantic diagnostics dominate some requests. Device timings and larger-block performance review remain next.
 
 Offline release **`v4`** precaches **39 assets**, adding the six revision-6 runtime modules. All **60 focused worker checks** pass from a fresh bundle containing only those assets (revision-5/default flow and revision-6 replay/rating). Package checks cover the complete import graph and atomic cache lifecycle. No browser access was available or used; service-worker activation and installed desktop/tablet offline launch remain Phase 5 acceptance. No commit was made.
+
+
+### Pre-release tuning authorisation — 12 October 2026
+
+Both initial device runs and the native run prepared all 2,048 prescribed outputs, but Hard/Expert failed the group-only floor in both blocks. The user explicitly authorised retuning unreleased revision 6 and allowing its existing regenerated replay layouts to change. The family and pattern weights above are the revised contract; earlier revision-6 golden outputs have been replaced. Revisions 1–5 retain exact replay, and saved revision-6 sessions resume their stored layouts. Revision 5 remains the default.
+
+The signature optimisation changes performance without changing canonical results, proof predicates, traversal, budgets or diagnostic completeness. Runtime changes require offline release `v5`, with 39 assets. All 1,284 native checks pass. Accepted-output quotas and renewed device performance review are recorded in [the verification report](rummipuz-revision-6-verification.md); the full named blocks are rerun rather than substituting seeds or reducing quotas.
+
+
+### Variety/preparation verification complete — 12 October 2026
+
+Both fixed 256-seed-per-tier blocks independently pass all quotas, with all 2,048 native requests ready on attempt one and exact worker/direct replay. All 36 finite inventories appear. Independent audits verify all outputs across 26,994 physical partitions and full semantic evidence for 36 transformed representatives across 757 partitions. All 1,284 regression checks pass, including unchanged revisions 1–5 and the 60 precache-only worker checks. Laptop and user-reported tablet each pass both complete blocks on release `v5`, and the user confirmed both stayed responsive. See the verification report for finite variety, capped diagnostic sets, per-family proof costs, retained initial failures and device outliers. The next step is family/sequence user review; revision 5 remains the default until approval.

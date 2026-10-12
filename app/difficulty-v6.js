@@ -3,7 +3,7 @@ import { ratePuzzle } from './difficulty.js';
 import { solutionStructure } from './structural-difficulty.js';
 import { EASY_PRIORITY, CORE_PRIORITY, easyMechanisms, coreMechanisms } from './mechanisms-v6.js';
 import { enumeratePhysicalPartitions } from './partitions-v6.js';
-import { semanticKeys, mechanismProfile } from './signatures-v6.js';
+import { createSemanticCanonicalizer, mechanismProfile } from './signatures-v6.js';
 
 export const V6_MAX_NODES = 200000;
 // Diagnostics cannot confer a tier or family. Proof still visits every partition.
@@ -15,7 +15,8 @@ export function rateVarietyPuzzle(puzzle, { maxNodes = V6_MAX_NODES } = {}) {
   let nodes = base.nodes, minimumPartitions = 0, common = null, witness = null, counterexample = null;
   const union = new Set(), bypass = {}, easyWitnesses = new Map(), records = new Map();
   const priority = tier === 1 ? EASY_PRIORITY : CORE_PRIORITY;
-  const geometry = semanticKeys(state).geometry;
+  const canonicalize = createSemanticCanonicalizer(state);
+  const geometry = canonicalize().geometry;
   const enumeration = enumeratePhysicalPartitions(state, () => {
     if (nodes >= maxNodes) return false;
     nodes += 1; return true;
@@ -35,7 +36,7 @@ export function rateVarietyPuzzle(puzzle, { maxNodes = V6_MAX_NODES } = {}) {
     for (const name of priority) if (!predicates.includes(name) && !bypass[name]) bypass[name] = board;
     if (!witness) witness = board;
     if (minimumPartitions <= V6_SIGNATURE_PARTITIONS) {
-      const keys = semanticKeys(state, board);
+      const keys = canonicalize(board);
       records.set(keys.origin, mechanismProfile(state, board, predicates, keys));
     }
     return true;

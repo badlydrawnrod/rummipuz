@@ -1,0 +1,1370 @@
+{
+  "device": "Lenovo Laptop, Firefox",
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:157.0) Gecko/20100101 Firefox/157.0",
+  "cancelled": false,
+  "timerHeartbeats": 5677,
+  "requested": 2048,
+  "ready": 2048,
+  "quotaPass": false,
+  "blocks": [
+    {
+      "block": "dev",
+      "quotaPass": false,
+      "failures": [],
+      "tiers": [
+        {
+          "tier": 1,
+          "requested": 256,
+          "ready": 256,
+          "quotaPass": true,
+          "failedGates": [],
+          "families": {
+            "group-donation": 96,
+            "run-division": 85,
+            "run-donation": 75
+          },
+          "compositions": {
+            "mixed": 96,
+            "run-only": 160
+          },
+          "timingMs": {
+            "median": 61,
+            "p95": 79,
+            "max": 140
+          },
+          "proofNodes": {
+            "median": 60,
+            "p95": 240,
+            "max": 241
+          },
+          "byFamily": {
+            "group-donation": {
+              "ready": 96,
+              "timingMs": {
+                "median": 54,
+                "p95": 66,
+                "max": 140
+              },
+              "proofNodes": {
+                "median": 42,
+                "p95": 44,
+                "max": 45
+              },
+              "proposedAttempts": 96,
+              "proposedProofNodes": 4039,
+              "rejectionReasons": {}
+            },
+            "run-division": {
+              "ready": 85,
+              "timingMs": {
+                "median": 71,
+                "p95": 83,
+                "max": 120
+              },
+              "proofNodes": {
+                "median": 218,
+                "p95": 240,
+                "max": 241
+              },
+              "proposedAttempts": 85,
+              "proposedProofNodes": 16549,
+              "rejectionReasons": {}
+            },
+            "run-donation": {
+              "ready": 75,
+              "timingMs": {
+                "median": 60,
+                "p95": 77,
+                "max": 97
+              },
+              "proofNodes": {
+                "median": 194,
+                "p95": 241,
+                "max": 241
+              },
+              "proposedAttempts": 75,
+              "proposedProofNodes": 10688,
+              "rejectionReasons": {}
+            }
+          },
+          "slowest": [
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-dev-199"
+              },
+              "family": "group-donation",
+              "elapsedMs": 140,
+              "proofNodes": 41
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-dev-8"
+              },
+              "family": "run-division",
+              "elapsedMs": 120,
+              "proofNodes": 221
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-dev-9"
+              },
+              "family": "run-division",
+              "elapsedMs": 107,
+              "proofNodes": 238
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-dev-81"
+              },
+              "family": "run-donation",
+              "elapsedMs": 97,
+              "proofNodes": 230
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-dev-229"
+              },
+              "family": "run-division",
+              "elapsedMs": 88,
+              "proofNodes": 220
+            }
+          ],
+          "longestFamilyStreak": 6
+        },
+        {
+          "tier": 2,
+          "requested": 256,
+          "ready": 256,
+          "quotaPass": true,
+          "failedGates": [],
+          "families": {
+            "groups-to-runs": 48,
+            "interior-extraction": 50,
+            "mixed-exchange": 48,
+            "runs-to-groups": 51,
+            "split-and-join": 59
+          },
+          "compositions": {
+            "mixed": 96,
+            "run-only": 160
+          },
+          "timingMs": {
+            "median": 64,
+            "p95": 81,
+            "max": 101
+          },
+          "proofNodes": {
+            "median": 181,
+            "p95": 418,
+            "max": 519
+          },
+          "byFamily": {
+            "groups-to-runs": {
+              "ready": 48,
+              "timingMs": {
+                "median": 59,
+                "p95": 75,
+                "max": 77
+              },
+              "proofNodes": {
+                "median": 58,
+                "p95": 107,
+                "max": 107
+              },
+              "proposedAttempts": 48,
+              "proposedProofNodes": 3514,
+              "rejectionReasons": {}
+            },
+            "interior-extraction": {
+              "ready": 50,
+              "timingMs": {
+                "median": 67,
+                "p95": 79,
+                "max": 95
+              },
+              "proofNodes": {
+                "median": 265,
+                "p95": 337,
+                "max": 358
+              },
+              "proposedAttempts": 50,
+              "proposedProofNodes": 13643,
+              "rejectionReasons": {}
+            },
+            "mixed-exchange": {
+              "ready": 48,
+              "timingMs": {
+                "median": 64,
+                "p95": 80,
+                "max": 81
+              },
+              "proofNodes": {
+                "median": 177,
+                "p95": 215,
+                "max": 220
+              },
+              "proposedAttempts": 48,
+              "proposedProofNodes": 8620,
+              "rejectionReasons": {}
+            },
+            "runs-to-groups": {
+              "ready": 51,
+              "timingMs": {
+                "median": 60,
+                "p95": 71,
+                "max": 93
+              },
+              "proofNodes": {
+                "median": 51,
+                "p95": 57,
+                "max": 57
+              },
+              "proposedAttempts": 51,
+              "proposedProofNodes": 2614,
+              "rejectionReasons": {}
+            },
+            "split-and-join": {
+              "ready": 59,
+              "timingMs": {
+                "median": 72,
+                "p95": 85,
+                "max": 101
+              },
+              "proofNodes": {
+                "median": 387,
+                "p95": 489,
+                "max": 519
+              },
+              "proposedAttempts": 59,
+              "proposedProofNodes": 22235,
+              "rejectionReasons": {}
+            }
+          },
+          "slowest": [
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-dev-2"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 101,
+              "proofNodes": 372
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-dev-232"
+              },
+              "family": "interior-extraction",
+              "elapsedMs": 95,
+              "proofNodes": 316
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-dev-78"
+              },
+              "family": "runs-to-groups",
+              "elapsedMs": 93,
+              "proofNodes": 51
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-dev-107"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 88,
+              "proofNodes": 409
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-dev-230"
+              },
+              "family": "runs-to-groups",
+              "elapsedMs": 88,
+              "proofNodes": 49
+            }
+          ],
+          "longestFamilyStreak": 5
+        },
+        {
+          "tier": 3,
+          "requested": 256,
+          "ready": 256,
+          "quotaPass": false,
+          "failedGates": [
+            {
+              "name": "minimum:group-only",
+              "passes": false,
+              "actual": 23,
+              "bound": 26
+            }
+          ],
+          "families": {
+            "groups-to-runs": 54,
+            "interior-extraction": 47,
+            "mixed-exchange": 72,
+            "runs-to-groups": 43,
+            "split-and-join": 40
+          },
+          "compositions": {
+            "group-only": 23,
+            "mixed": 103,
+            "run-only": 130
+          },
+          "timingMs": {
+            "median": 89,
+            "p95": 180,
+            "max": 295
+          },
+          "proofNodes": {
+            "median": 402,
+            "p95": 2310,
+            "max": 4242
+          },
+          "byFamily": {
+            "groups-to-runs": {
+              "ready": 54,
+              "timingMs": {
+                "median": 70,
+                "p95": 110,
+                "max": 192
+              },
+              "proofNodes": {
+                "median": 349,
+                "p95": 585,
+                "max": 610
+              },
+              "proposedAttempts": 54,
+              "proposedProofNodes": 18479,
+              "rejectionReasons": {}
+            },
+            "interior-extraction": {
+              "ready": 47,
+              "timingMs": {
+                "median": 103,
+                "p95": 127,
+                "max": 132
+              },
+              "proofNodes": {
+                "median": 505,
+                "p95": 635,
+                "max": 663
+              },
+              "proposedAttempts": 47,
+              "proposedProofNodes": 23577,
+              "rejectionReasons": {}
+            },
+            "mixed-exchange": {
+              "ready": 72,
+              "timingMs": {
+                "median": 71,
+                "p95": 87,
+                "max": 102
+              },
+              "proofNodes": {
+                "median": 364,
+                "p95": 450,
+                "max": 472
+              },
+              "proposedAttempts": 72,
+              "proposedProofNodes": 26842,
+              "rejectionReasons": {}
+            },
+            "runs-to-groups": {
+              "ready": 43,
+              "timingMs": {
+                "median": 87,
+                "p95": 98,
+                "max": 117
+              },
+              "proofNodes": {
+                "median": 175,
+                "p95": 195,
+                "max": 202
+              },
+              "proposedAttempts": 43,
+              "proposedProofNodes": 7461,
+              "rejectionReasons": {}
+            },
+            "split-and-join": {
+              "ready": 40,
+              "timingMs": {
+                "median": 172,
+                "p95": 197,
+                "max": 295
+              },
+              "proofNodes": {
+                "median": 2052,
+                "p95": 2945,
+                "max": 4242
+              },
+              "proposedAttempts": 40,
+              "proposedProofNodes": 83157,
+              "rejectionReasons": {}
+            }
+          },
+          "slowest": [
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-dev-68"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 295,
+              "proofNodes": 2204
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-dev-246"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 212,
+              "proofNodes": 4082
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-dev-209"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 197,
+              "proofNodes": 4242
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-dev-165"
+              },
+              "family": "groups-to-runs",
+              "elapsedMs": 192,
+              "proofNodes": 143
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-dev-247"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 191,
+              "proofNodes": 2706
+            }
+          ],
+          "longestFamilyStreak": 4
+        },
+        {
+          "tier": 4,
+          "requested": 256,
+          "ready": 256,
+          "quotaPass": false,
+          "failedGates": [
+            {
+              "name": "minimum:group-only",
+              "passes": false,
+              "actual": 22,
+              "bound": 26
+            }
+          ],
+          "families": {
+            "combined-repair": 53,
+            "groups-to-runs": 34,
+            "interior-extraction": 51,
+            "mixed-exchange": 62,
+            "runs-to-groups": 25,
+            "split-and-join": 31
+          },
+          "compositions": {
+            "group-only": 22,
+            "mixed": 127,
+            "run-only": 107
+          },
+          "timingMs": {
+            "median": 365,
+            "p95": 818,
+            "max": 1063
+          },
+          "proofNodes": {
+            "median": 1136,
+            "p95": 8977,
+            "max": 16146
+          },
+          "byFamily": {
+            "combined-repair": {
+              "ready": 53,
+              "timingMs": {
+                "median": 635,
+                "p95": 887,
+                "max": 965
+              },
+              "proofNodes": {
+                "median": 2746,
+                "p95": 10527,
+                "max": 10883
+              },
+              "proposedAttempts": 53,
+              "proposedProofNodes": 189221,
+              "rejectionReasons": {}
+            },
+            "groups-to-runs": {
+              "ready": 34,
+              "timingMs": {
+                "median": 143,
+                "p95": 192,
+                "max": 225
+              },
+              "proofNodes": {
+                "median": 575,
+                "p95": 1372,
+                "max": 1405
+              },
+              "proposedAttempts": 34,
+              "proposedProofNodes": 24037,
+              "rejectionReasons": {}
+            },
+            "interior-extraction": {
+              "ready": 51,
+              "timingMs": {
+                "median": 543,
+                "p95": 666,
+                "max": 719
+              },
+              "proofNodes": {
+                "median": 1638,
+                "p95": 3377,
+                "max": 3535
+              },
+              "proposedAttempts": 51,
+              "proposedProofNodes": 103050,
+              "rejectionReasons": {}
+            },
+            "mixed-exchange": {
+              "ready": 62,
+              "timingMs": {
+                "median": 65,
+                "p95": 86,
+                "max": 98
+              },
+              "proofNodes": {
+                "median": 502,
+                "p95": 560,
+                "max": 568
+              },
+              "proposedAttempts": 62,
+              "proposedProofNodes": 28559,
+              "rejectionReasons": {}
+            },
+            "runs-to-groups": {
+              "ready": 25,
+              "timingMs": {
+                "median": 355,
+                "p95": 438,
+                "max": 442
+              },
+              "proofNodes": {
+                "median": 617,
+                "p95": 784,
+                "max": 784
+              },
+              "proposedAttempts": 25,
+              "proposedProofNodes": 16326,
+              "rejectionReasons": {}
+            },
+            "split-and-join": {
+              "ready": 31,
+              "timingMs": {
+                "median": 726,
+                "p95": 1005,
+                "max": 1063
+              },
+              "proofNodes": {
+                "median": 4054,
+                "p95": 16146,
+                "max": 16146
+              },
+              "proposedAttempts": 31,
+              "proposedProofNodes": 196966,
+              "rejectionReasons": {}
+            }
+          },
+          "slowest": [
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-dev-69"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 1063,
+              "proofNodes": 16146
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-dev-109"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 1005,
+              "proofNodes": 16146
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-dev-65"
+              },
+              "family": "combined-repair",
+              "elapsedMs": 965,
+              "proofNodes": 3259
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-dev-2"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 923,
+              "proofNodes": 9250
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-dev-10"
+              },
+              "family": "combined-repair",
+              "elapsedMs": 916,
+              "proofNodes": 10518
+            }
+          ],
+          "longestFamilyStreak": 4
+        }
+      ]
+    },
+    {
+      "block": "holdout",
+      "quotaPass": false,
+      "failures": [],
+      "tiers": [
+        {
+          "tier": 1,
+          "requested": 256,
+          "ready": 256,
+          "quotaPass": true,
+          "failedGates": [],
+          "families": {
+            "group-donation": 96,
+            "run-division": 88,
+            "run-donation": 72
+          },
+          "compositions": {
+            "mixed": 96,
+            "run-only": 160
+          },
+          "timingMs": {
+            "median": 47,
+            "p95": 65,
+            "max": 70
+          },
+          "proofNodes": {
+            "median": 60,
+            "p95": 240,
+            "max": 241
+          },
+          "byFamily": {
+            "group-donation": {
+              "ready": 96,
+              "timingMs": {
+                "median": 43,
+                "p95": 49,
+                "max": 66
+              },
+              "proofNodes": {
+                "median": 42,
+                "p95": 44,
+                "max": 45
+              },
+              "proposedAttempts": 96,
+              "proposedProofNodes": 4055,
+              "rejectionReasons": {}
+            },
+            "run-division": {
+              "ready": 88,
+              "timingMs": {
+                "median": 58,
+                "p95": 68,
+                "max": 70
+              },
+              "proofNodes": {
+                "median": 218,
+                "p95": 241,
+                "max": 241
+              },
+              "proposedAttempts": 88,
+              "proposedProofNodes": 17442,
+              "rejectionReasons": {}
+            },
+            "run-donation": {
+              "ready": 72,
+              "timingMs": {
+                "median": 47,
+                "p95": 56,
+                "max": 63
+              },
+              "proofNodes": {
+                "median": 194,
+                "p95": 238,
+                "max": 241
+              },
+              "proposedAttempts": 72,
+              "proposedProofNodes": 10325,
+              "rejectionReasons": {}
+            }
+          },
+          "slowest": [
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-holdout-11"
+              },
+              "family": "run-division",
+              "elapsedMs": 70,
+              "proofNodes": 240
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-holdout-20"
+              },
+              "family": "run-division",
+              "elapsedMs": 70,
+              "proofNodes": 241
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-holdout-123"
+              },
+              "family": "run-division",
+              "elapsedMs": 70,
+              "proofNodes": 161
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-holdout-109"
+              },
+              "family": "run-division",
+              "elapsedMs": 68,
+              "proofNodes": 160
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 1,
+                "seed": "variety-v6-holdout-192"
+              },
+              "family": "run-division",
+              "elapsedMs": 68,
+              "proofNodes": 221
+            }
+          ],
+          "longestFamilyStreak": 5
+        },
+        {
+          "tier": 2,
+          "requested": 256,
+          "ready": 256,
+          "quotaPass": true,
+          "failedGates": [],
+          "families": {
+            "groups-to-runs": 57,
+            "interior-extraction": 45,
+            "mixed-exchange": 58,
+            "runs-to-groups": 49,
+            "split-and-join": 47
+          },
+          "compositions": {
+            "mixed": 115,
+            "run-only": 141
+          },
+          "timingMs": {
+            "median": 52,
+            "p95": 65,
+            "max": 87
+          },
+          "proofNodes": {
+            "median": 168,
+            "p95": 407,
+            "max": 489
+          },
+          "byFamily": {
+            "groups-to-runs": {
+              "ready": 57,
+              "timingMs": {
+                "median": 49,
+                "p95": 55,
+                "max": 64
+              },
+              "proofNodes": {
+                "median": 87,
+                "p95": 107,
+                "max": 107
+              },
+              "proposedAttempts": 57,
+              "proposedProofNodes": 4386,
+              "rejectionReasons": {}
+            },
+            "interior-extraction": {
+              "ready": 45,
+              "timingMs": {
+                "median": 57,
+                "p95": 61,
+                "max": 63
+              },
+              "proofNodes": {
+                "median": 264,
+                "p95": 333,
+                "max": 351
+              },
+              "proposedAttempts": 45,
+              "proposedProofNodes": 12136,
+              "rejectionReasons": {}
+            },
+            "mixed-exchange": {
+              "ready": 58,
+              "timingMs": {
+                "median": 52,
+                "p95": 57,
+                "max": 65
+              },
+              "proofNodes": {
+                "median": 170,
+                "p95": 227,
+                "max": 231
+              },
+              "proposedAttempts": 58,
+              "proposedProofNodes": 10424,
+              "rejectionReasons": {}
+            },
+            "runs-to-groups": {
+              "ready": 49,
+              "timingMs": {
+                "median": 48,
+                "p95": 58,
+                "max": 81
+              },
+              "proofNodes": {
+                "median": 51,
+                "p95": 57,
+                "max": 60
+              },
+              "proposedAttempts": 49,
+              "proposedProofNodes": 2524,
+              "rejectionReasons": {}
+            },
+            "split-and-join": {
+              "ready": 47,
+              "timingMs": {
+                "median": 58,
+                "p95": 70,
+                "max": 87
+              },
+              "proofNodes": {
+                "median": 387,
+                "p95": 486,
+                "max": 489
+              },
+              "proposedAttempts": 47,
+              "proposedProofNodes": 17333,
+              "rejectionReasons": {}
+            }
+          },
+          "slowest": [
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-holdout-3"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 87,
+              "proofNodes": 461
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-holdout-169"
+              },
+              "family": "runs-to-groups",
+              "elapsedMs": 81,
+              "proofNodes": 60
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-holdout-212"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 72,
+              "proofNodes": 445
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-holdout-16"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 70,
+              "proofNodes": 410
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 2,
+                "seed": "variety-v6-holdout-105"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 70,
+              "proofNodes": 399
+            }
+          ],
+          "longestFamilyStreak": 4
+        },
+        {
+          "tier": 3,
+          "requested": 256,
+          "ready": 256,
+          "quotaPass": false,
+          "failedGates": [
+            {
+              "name": "minimum:group-only",
+              "passes": false,
+              "actual": 20,
+              "bound": 26
+            }
+          ],
+          "families": {
+            "groups-to-runs": 58,
+            "interior-extraction": 41,
+            "mixed-exchange": 64,
+            "runs-to-groups": 47,
+            "split-and-join": 46
+          },
+          "compositions": {
+            "group-only": 20,
+            "mixed": 102,
+            "run-only": 134
+          },
+          "timingMs": {
+            "median": 73,
+            "p95": 159,
+            "max": 182
+          },
+          "proofNodes": {
+            "median": 407,
+            "p95": 2522,
+            "max": 4242
+          },
+          "byFamily": {
+            "groups-to-runs": {
+              "ready": 58,
+              "timingMs": {
+                "median": 57,
+                "p95": 96,
+                "max": 101
+              },
+              "proofNodes": {
+                "median": 348,
+                "p95": 609,
+                "max": 611
+              },
+              "proposedAttempts": 58,
+              "proposedProofNodes": 19584,
+              "rejectionReasons": {}
+            },
+            "interior-extraction": {
+              "ready": 41,
+              "timingMs": {
+                "median": 86,
+                "p95": 96,
+                "max": 99
+              },
+              "proofNodes": {
+                "median": 443,
+                "p95": 632,
+                "max": 663
+              },
+              "proposedAttempts": 41,
+              "proposedProofNodes": 19723,
+              "rejectionReasons": {}
+            },
+            "mixed-exchange": {
+              "ready": 64,
+              "timingMs": {
+                "median": 58,
+                "p95": 68,
+                "max": 72
+              },
+              "proofNodes": {
+                "median": 387,
+                "p95": 444,
+                "max": 467
+              },
+              "proposedAttempts": 64,
+              "proposedProofNodes": 24128,
+              "rejectionReasons": {}
+            },
+            "runs-to-groups": {
+              "ready": 47,
+              "timingMs": {
+                "median": 72,
+                "p95": 87,
+                "max": 94
+              },
+              "proofNodes": {
+                "median": 181,
+                "p95": 196,
+                "max": 202
+              },
+              "proposedAttempts": 47,
+              "proposedProofNodes": 8236,
+              "rejectionReasons": {}
+            },
+            "split-and-join": {
+              "ready": 46,
+              "timingMs": {
+                "median": 147,
+                "p95": 181,
+                "max": 182
+              },
+              "proofNodes": {
+                "median": 2078,
+                "p95": 3642,
+                "max": 4242
+              },
+              "proposedAttempts": 46,
+              "proposedProofNodes": 95719,
+              "rejectionReasons": {}
+            }
+          },
+          "slowest": [
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-holdout-198"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 182,
+              "proofNodes": 3595
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-holdout-12"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 181,
+              "proofNodes": 3082
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-holdout-80"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 181,
+              "proofNodes": 4242
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-holdout-26"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 179,
+              "proofNodes": 2539
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 3,
+                "seed": "variety-v6-holdout-77"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 177,
+              "proofNodes": 3614
+            }
+          ],
+          "longestFamilyStreak": 4
+        },
+        {
+          "tier": 4,
+          "requested": 256,
+          "ready": 256,
+          "quotaPass": false,
+          "failedGates": [
+            {
+              "name": "minimum:group-only",
+              "passes": false,
+              "actual": 20,
+              "bound": 26
+            }
+          ],
+          "families": {
+            "combined-repair": 68,
+            "groups-to-runs": 30,
+            "interior-extraction": 51,
+            "mixed-exchange": 62,
+            "runs-to-groups": 28,
+            "split-and-join": 17
+          },
+          "compositions": {
+            "group-only": 20,
+            "mixed": 140,
+            "run-only": 96
+          },
+          "timingMs": {
+            "median": 340,
+            "p95": 657,
+            "max": 932
+          },
+          "proofNodes": {
+            "median": 837,
+            "p95": 5168,
+            "max": 15913
+          },
+          "byFamily": {
+            "combined-repair": {
+              "ready": 68,
+              "timingMs": {
+                "median": 568,
+                "p95": 740,
+                "max": 831
+              },
+              "proofNodes": {
+                "median": 2527,
+                "p95": 10519,
+                "max": 10859
+              },
+              "proposedAttempts": 68,
+              "proposedProofNodes": 205787,
+              "rejectionReasons": {}
+            },
+            "groups-to-runs": {
+              "ready": 30,
+              "timingMs": {
+                "median": 140,
+                "p95": 169,
+                "max": 170
+              },
+              "proofNodes": {
+                "median": 513,
+                "p95": 1339,
+                "max": 1579
+              },
+              "proposedAttempts": 30,
+              "proposedProofNodes": 20867,
+              "rejectionReasons": {}
+            },
+            "interior-extraction": {
+              "ready": 51,
+              "timingMs": {
+                "median": 509,
+                "p95": 566,
+                "max": 589
+              },
+              "proofNodes": {
+                "median": 1733,
+                "p95": 3488,
+                "max": 3534
+              },
+              "proposedAttempts": 51,
+              "proposedProofNodes": 103088,
+              "rejectionReasons": {}
+            },
+            "mixed-exchange": {
+              "ready": 62,
+              "timingMs": {
+                "median": 60,
+                "p95": 67,
+                "max": 73
+              },
+              "proofNodes": {
+                "median": 502,
+                "p95": 568,
+                "max": 568
+              },
+              "proposedAttempts": 62,
+              "proposedProofNodes": 29253,
+              "rejectionReasons": {}
+            },
+            "runs-to-groups": {
+              "ready": 28,
+              "timingMs": {
+                "median": 353,
+                "p95": 384,
+                "max": 392
+              },
+              "proofNodes": {
+                "median": 701,
+                "p95": 784,
+                "max": 784
+              },
+              "proposedAttempts": 28,
+              "proposedProofNodes": 19171,
+              "rejectionReasons": {}
+            },
+            "split-and-join": {
+              "ready": 17,
+              "timingMs": {
+                "median": 624,
+                "p95": 932,
+                "max": 932
+              },
+              "proofNodes": {
+                "median": 3435,
+                "p95": 15913,
+                "max": 15913
+              },
+              "proposedAttempts": 17,
+              "proposedProofNodes": 80172,
+              "rejectionReasons": {}
+            }
+          },
+          "slowest": [
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-holdout-42"
+              },
+              "family": "split-and-join",
+              "elapsedMs": 932,
+              "proofNodes": 15913
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-holdout-8"
+              },
+              "family": "combined-repair",
+              "elapsedMs": 831,
+              "proofNodes": 10859
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-holdout-9"
+              },
+              "family": "combined-repair",
+              "elapsedMs": 796,
+              "proofNodes": 10519
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-holdout-62"
+              },
+              "family": "combined-repair",
+              "elapsedMs": 754,
+              "proofNodes": 10403
+            },
+            {
+              "identity": {
+                "version": 1,
+                "generatorVersion": 6,
+                "difficultyTier": 4,
+                "seed": "variety-v6-holdout-233"
+              },
+              "family": "combined-repair",
+              "elapsedMs": 740,
+              "proofNodes": 10607
+            }
+          ],
+          "longestFamilyStreak": 6
+        }
+      ]
+    }
+  ],
+  "loadedOfflineRelease": "v4",
+  "expectedOfflineRelease": "v4",
+  "offlineUpdateWaiting": false
+}

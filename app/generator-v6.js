@@ -9,8 +9,8 @@ const MAX_NODES = V6_MAX_NODES;
 const MIX = [null,
   [['run-donation', 1], ['group-donation', 1], ['run-division', 1]],
   [['interior-extraction', 1], ['split-and-join', 1], ['groups-to-runs', 1], ['runs-to-groups', 1], ['mixed-exchange', 1]],
-  [['interior-extraction', 18], ['split-and-join', 18], ['groups-to-runs', 20], ['runs-to-groups', 19], ['mixed-exchange', 25]],
-  [['interior-extraction', 40], ['split-and-join', 20], ['groups-to-runs', 30], ['runs-to-groups', 20], ['mixed-exchange', 45], ['combined-repair', 45]],
+  [['interior-extraction', 16], ['split-and-join', 16], ['groups-to-runs', 26], ['runs-to-groups', 16], ['mixed-exchange', 26]],
+  [['interior-extraction', 32], ['split-and-join', 20], ['groups-to-runs', 40], ['runs-to-groups', 16], ['mixed-exchange', 46], ['combined-repair', 46]],
 ];
 
 function freeze(value) {
@@ -49,7 +49,12 @@ export function generateVarietyPuzzle({ version = 1, generatorVersion = 6, diffi
     let ticket = integer(1, mix.reduce((sum, [, weight]) => sum + weight, 0));
     const family = mix.find(([, weight]) => { ticket -= weight; return ticket <= 0; })[0];
     const patterns = PATTERNS_V6.filter((p) => p.difficultyTier === difficultyTier && p.family === family);
-    const pattern = patterns[integer(0, patterns.length - 1)];
+    // Give group-only inventories margin above the composition floor while
+    // retaining the audited mixed duplicate/support variants.
+    const weights = patterns.map((p) => family === 'groups-to-runs' && difficultyTier >= 3
+      && p.board.every((row) => classifyRow(row).kind === 'group') ? (difficultyTier === 3 ? 8 : 2) : 1);
+    let patternTicket = integer(1, weights.reduce((sum, weight) => sum + weight, 0));
+    const pattern = patterns.find((_, i) => { patternTicket -= weights[i]; return patternTicket <= 0; });
     const sourceColours = ['black', 'blue', 'red', 'orange'];
     const colours = shuffle([...sourceColours]);
     const reflected = integer(0, 1) === 1;

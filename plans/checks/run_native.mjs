@@ -46,6 +46,7 @@ try {
   await run('offline-package', () => offline.runOfflinePackageChecks(path => fs.readFile(new URL(path === './' ? 'index.html' : path, app))));
   const structural = await module('structural');
   await run('structural-v5', () => structural.runStructuralChecks(awaitedV5, v5));
+  await run('variety-benchmark', () => module('variety-benchmark').then(m => m.runVarietyBenchmarkChecks(v6)));
   await run('benchmark', () => module('benchmark').then(m => m.runBenchmarkChecks(v5)));
   const flow = await module('puzzle-flow'), workers = await module('worker'), variety = await module('variety');
   await run('flow', () => flow.runPuzzleFlowChecks(sample));
