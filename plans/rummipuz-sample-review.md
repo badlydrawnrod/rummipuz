@@ -2,6 +2,10 @@
 
 This records agent hand analysis and verification separately from player feedback. The user approved the revision-5 samples on 11 October 2026 and requested that the review step be marked complete; no tuning was requested. The earlier revision-4 review follows unchanged. Neither hand analysis nor structural proofs establish observed human difficulty.
 
+## Revision-6 family and sequence review — approved 12 October 2026
+
+See [the revision-6 review guide](rummipuz-revision-6-sample-review.md) for reproducible codes, starting layouts, spoiler-hidden explanations and independently derived physical solutions. It covers all 19 tier/family pairings, five variant comparisons and four unchanged consecutive 16-seed sequences (71 distinct replays). All 3,499 native assertions and the independent audit across 1,183 physical partitions pass. The user reported “We've tested. All good.” on 12 October 2026, approving the review without further tuning. This is overall acceptance, with no itemised feedback or timings. Revision 5 stays default until the separate switch step. No runtime/offline change or commit was made for review preparation.
+
 ## Revision-5 user review — prepared 11 October 2026
 
 **Status:** Complete. On 11 October 2026, the user reported “It worked well” and requested that the sample-review step be marked complete. The samples are approved without further tuning. Revision 5 is now the default following the separate verified default-switch step. No agent-side browser access was used and no runtime/interface changes were made.

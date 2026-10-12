@@ -220,3 +220,9 @@ The user authorised retuning unreleased revision 6 on 12 October 2026 after init
 
 
 Revision-6 variety/preparation verification is complete: both fixed blocks pass all quotas on native runtime and the user-reported laptop/tablet reruns, with no generation failures. The user confirmed both devices stayed responsive. All 1,284 native regression checks and the independent full-output/signature audits pass. Revision 5 remains default pending family/sequence user review; the tuned offline release is `v5`. Full results, limits and retained outliers are in the verification report.
+
+
+The [revision-6 family/sequence review guide](plans/rummipuz-revision-6-sample-review.md) is ready for player feedback: full replay codes, hidden explanations and checked physical solutions cover every tier/family, five variant comparisons and four fixed sequences. Start with the 19 main samples, then compare variants and consecutive replays. Revision 5 remains default until review approval and the separate default-switch step. No runtime/interface changes were made to prepare this review.
+
+
+The user approved the revision-6 family/sequence review on 12 October 2026 (“We've tested. All good.”), without further tuning. The review step is complete. Revision 5 remains the fresh default until the separate verified revision-6 default-switch step; no runtime change was made to record approval.
