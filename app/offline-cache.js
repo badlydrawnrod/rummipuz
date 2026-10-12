@@ -1,6 +1,6 @@
 // Increment this release whenever a cached file changes. Keep each installed
 // bundle intact until its replacement activates after all old windows close.
-export const OFFLINE_RELEASE = 'v8';
+export const OFFLINE_RELEASE = 'v9';
 export const OFFLINE_ASSETS = [
   './', './index.html', './styles.css', './main.js',
   './tiles.js', './rules.js', './state.js', './play-session.js', './play.js',

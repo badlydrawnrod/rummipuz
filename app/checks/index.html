@@ -19,6 +19,7 @@
     import { runAppearanceChecks } from './appearance.js';
     import { runPuzzleFlowChecks, runPuzzleFlowWorkerChecks } from './puzzle-flow.js';
     import { runPlayChecks } from './play.js';
+    import { runPlayRenderChecks } from './play-render.js';
     import { runProgressChecks } from './progress.js';
     import { runPreferenceChecks } from './preferences.js';
     import { runTouchChecks } from './touch.js';
@@ -63,7 +64,7 @@
         ...runDifficultyChecks(sample, ratedFixtures),
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
         ...await runWorkerLifecycleChecks(),
-        ...runPlayChecks(sample),
+        ...runPlayChecks(sample), ...runPlayRenderChecks(sample),
         ...await runPuzzleFlowChecks(sample),
         ...runProgressChecks(sample),
         ...runPreferenceChecks(),

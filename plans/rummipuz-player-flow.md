@@ -23,7 +23,7 @@ All panels restore focus to their opening control when closed. Buttons and feedb
 
 Appearance preferences are saved on the device. System follows the device's light/dark preference, including changes while the app is open. All themes retain tile symbols and colour names, readable feedback, and visible focus indicators. The alternative palette works with every theme and changes display colours only; a tile labelled “Blue 6” retains its logical colour and physical identity. If storage is unavailable, changes still apply for the current session with the existing unsaved-progress notice.
 
-Gameplay supports mouse and touch; a dedicated keyboard gameplay flow is outside the scope. The default interaction is select, then place. Select a tile in the rack or board; highlight it without removing it from its source. Choose a visible insertion position before, between, or after tiles, an empty row, or **New row**. Rack insertion positions also allow any tile to return to the rack. A successful placement is one undoable move; selection alone is not a move.
+Gameplay supports mouse and touch; a dedicated keyboard gameplay flow is outside the scope. The default interaction is select, then place. Select a tile in the rack or board; highlight it without removing it from its source. Choose a visible insertion position before, between, or after tiles, or **New row**. Rack insertion positions also allow any tile to return to the rack. A successful placement is one undoable move; selection alone is not a move.
 
 | Input | Select and place | Cancel or scroll |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ Gameplay supports mouse and touch; a dedicated keyboard gameplay flow is outside
 
 Dropping outside a destination or cancelling a drag leaves the state unchanged. Focus and selection identify a physical tile even when another tile has the same face. One move may leave invalid rows; the interface never blocks rearrangement solely because a row is temporarily invalid.
 
-Row feedback updates after each move: a valid marker, or a short reason such as “Needs at least 3 tiles”, “Repeated colour”, or “Run has a gap”. Use text/symbols as well as colour. Empty layout rows do not produce an error. The rack counter includes original board tiles temporarily moved there.
+Row feedback updates after each move: a valid marker, or a short reason such as “Needs at least 3 tiles”, “Repeated colour”, or “Run has a gap”. Use text/symbols as well as colour. Empty layout rows are hidden and do not produce an error; one **New row** destination remains during play, including when the entire board is empty. Temporary one- and two-tile rows stay visible. Labels, placement targets and Check feedback use consecutive visible row numbers. Underlying empty placeholders remain in state and saved history for exact Undo/Reset. Session row IDs retain horizontal view positions independently of visible numbering. The rack counter includes original board tiles temporarily moved there.
 
 ## Undo, reset, check, and completion
 

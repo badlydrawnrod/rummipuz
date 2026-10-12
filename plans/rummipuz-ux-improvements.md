@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-Planned on 12 October 2026 from user feedback. This document schedules work; no runtime changes have been made. It covers preserving horizontal position, distinguishing red/orange tiles, moving whole rows, collapsing empty rows, staying at the chosen difficulty, hints and revealing a solution.
+Planned on 12 October 2026 from user feedback. This document tracks implementation and acceptance. It covers preserving horizontal position, distinguishing red/orange tiles, moving whole rows, collapsing empty rows, staying at the chosen difficulty, hints and revealing a solution.
 
 Approved generator revision 6, puzzle rules, physical tile identities and exact revisions 1–6 replay remain unchanged. These changes affect presentation, live layout and assistance. Existing saved sessions and undo history must remain readable. Keep the buildless static app, worker computation and offline support.
 
@@ -61,13 +61,19 @@ Implementation record (12 October 2026): standard red is `#b51f3e` and orange is
 
 ## 3 — Collapse empty rows and establish reliable row targeting
 
-- [ ] Render only nonempty board rows and one New row destination. **Done when:** repeatedly emptying several rows leaves no blank row stacks, while every remaining tile and drop target stays usable. Emptying the whole board leaves the single New row target. Undo, Reset, reload and old saved sessions with empty placeholders work correctly.
+- [x] Render only nonempty board rows and one New row destination. **Done when:** repeatedly emptying several rows leaves no blank row stacks, while every remaining tile and drop target stays usable. Emptying the whole board leaves the single New row target. Undo, Reset, reload and old saved sessions with empty placeholders work correctly.
 
 Existing state intentionally retains empty arrays to keep indices stable. Prefer hiding those placeholders in the view while preserving exact old snapshots; map each visible row explicitly to its state row. Display labels, Check messages, hint text and drop targets must use the same visible-row mapping. New row placement must create or reuse one target consistently, with no duplicated blank destination. Keep transient one/two-tile invalid rows visible.
 
 Before implementation, document how row view identity follows edits, reordering and Undo. Use it for scroll retention and gesture targeting. A displayed ordinal or mutable tile-list string alone is insufficient. If state compaction or persisted row IDs prove necessary, specify backward-compatible save handling first; never rewrite immutable starting puzzles or existing undo snapshots merely for visual cleanup.
 
 **Verification:** tile conservation, hidden-placeholder destination mapping, undo/reset/reload, all-empty board and stale/cancelled gestures. Recheck step 1 after collapsing rows.
+
+Row identity policy (step 3): each play session assigns opaque view IDs to board slots, including hidden empty placeholders. IDs are separate from displayed ordinals and tile contents. Tile edits preserve a slot's ID; New row appends a fresh ID and remains the single visible creation destination. Position-to-ID mappings are retained outside immutable state for Undo and Reset. Reload reconstructs mappings from the original position, saved history and live position; viewport state starts fresh. Neither saves, starting puzzles nor undo snapshots gain fields or lose placeholders. Step 4 must explicitly permute these IDs with a moved row and retain the resulting position mapping for Undo; it must extend reload reconstruction for reordered histories before shipping reordering.
+
+The session exposes nonempty row views with an ID, actual state index and contiguous visible number. Rendering, placement labels and Check use that mapping; future hints must use it too. UI destinations carry the current position token and board view ID so stale targets are rejected. Scroll snapshots are cached by view ID, including while a row is hidden, so editing another row or undoing an emptied row cannot transfer its viewport to a different row.
+
+Implementation record (12 October 2026): step 3 is implemented without changing puzzle data, save schema or pure move semantics. Offline release is `v9` with the same 39 precached assets. All 1,314 native checks pass, including 15 new session/identity checks and 11 checks exercising the real renderer with simulated geometry: collapse, numbered labels/targets/Check, all-empty board, single New row, Undo/Reset and horizontal anchors. Session checks cover physical inventory, invalid partial rows, stale/cancelled gestures, branched Undo identities and old-format save/reload. Actual-worker and precache-only worker suites pass. The user directed that step 3 be marked complete. No browser was connected during implementation; the automated checks do not establish desktop/tablet scroll behaviour. The collapse walkthrough in the project README remains available for integration review in step 8.
 
 ## 4 — Drag whole rows to reorder the board
 
@@ -119,4 +125,4 @@ Release each practical UX fix for review as it becomes ready. Do not hold scroll
 
 ## Current position
 
-Steps 1, 2, 5 and 6 are implemented and user-approved. Step 6 adds a cancellable worker search and read-only verified preview. Next: step 3, collapse empty rows. Steps 3–4 must share a row identity/targeting policy; steps 6–7 must share cancellation, solution validation and current-position semantics.
+Steps 1, 2, 3, 5 and 6 are implemented and user-approved. Step 6 adds a cancellable worker search and read-only verified preview. Next implementation: step 4, whole-row dragging, extending the documented row identity/targeting policy. Steps 6–7 must share cancellation, solution validation and current-position semantics.

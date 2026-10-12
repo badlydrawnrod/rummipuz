@@ -31,6 +31,7 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   };
   let touch;
   let rowOverflow = [];
+  const rowScroll = new Map();
   let solutionOverflow = [];
   let solutionController = null;
   let solutionRequest = 0;
@@ -208,29 +209,6 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     controls.restoreScrollLeft(scroller.scrollLeft + offset - retained.offset);
   }
 
-  function matchRowScroll(oldRows, newRows) {
-    const matches = [];
-    oldRows.forEach((snapshot, oldIndex) => {
-      if (!snapshot) return;
-      const oldIds = new Set(snapshot.tiles.map(({ id }) => id));
-      newRows.forEach((row, newIndex) => {
-        const overlap = [...row.scroller.querySelectorAll('[data-tile-id]')]
-          .reduce((count, tile) => count + Number(oldIds.has(tile.dataset.tileId)), 0);
-        if (overlap) matches.push({ oldIndex, newIndex, overlap });
-      });
-    });
-    matches.sort((a, b) => b.overlap - a.overlap);
-    const usedOld = new Set();
-    const usedNew = new Set();
-    for (const match of matches) {
-      if (usedOld.has(match.oldIndex) || usedNew.has(match.newIndex)) continue;
-      usedOld.add(match.oldIndex);
-      usedNew.add(match.newIndex);
-      restoreScroll(newRows[match.newIndex].scroller, newRows[match.newIndex].controls,
-        oldRows[match.oldIndex]);
-    }
-  }
-
   function focusTile(id) {
     if (!id) return;
     // Canonical IDs contain no CSS metacharacters.
@@ -255,38 +233,39 @@ export function initialisePlay({ content, status, state, completed = false, onCh
 
   function render(focusId) {
     touch?.cancel();
-    const { state, selected, completed } = session.snapshot();
+    const { state, selected, completed, rows } = session.snapshot();
     const board = find('#board-rows');
-    const oldRows = [...board.querySelectorAll('.board-row')].map(captureScroll);
+    for (const row of board.querySelectorAll('.board-row')) {
+      rowScroll.set(row.dataset.rowId, captureScroll(row));
+    }
     const rackScroll = captureScroll(find('.rack-scroll'));
     for (const controls of rowOverflow) controls.dispose();
     rowOverflow = [];
     board.replaceChildren();
-    const newRows = [];
-    state.board.forEach((tiles, index) => {
+    rows.forEach(({ tiles, stateRow, number, id }) => {
       const container = document.createElement('div');
       container.className = 'board-row';
+      container.dataset.rowId = id;
       container.tabIndex = 0;
       container.setAttribute('role', 'region');
-      container.setAttribute('aria-label', `Board row ${index + 1}`);
+      container.setAttribute('aria-label', `Board row ${number}`);
       const label = document.createElement('p');
       label.className = 'board-row-label';
       const validity = classifyRow(tiles);
-      label.textContent = `Row ${index + 1} · ${tiles.length === 0 ? 'Empty' : validity.valid ? 'Valid' : validity.reason}`;
+      label.textContent = `Row ${number} · ${validity.valid ? 'Valid' : validity.reason}`;
       const list = document.createElement('ul');
       list.className = 'tile-row';
-      list.setAttribute('aria-label', `Tiles in row ${index + 1}`);
-      renderTileRow(tiles, list, { location: { area: 'board', row: index },
-        label: `row ${index + 1}`, selected, locked: completed });
+      list.setAttribute('aria-label', `Tiles in row ${number}`);
+      renderTileRow(tiles, list, { location: session.destination({ area: 'board', row: stateRow }),
+        label: `row ${number}`, selected, locked: completed });
       container.append(label, list);
       board.append(container);
-      const controls = createOverflowControls(container, `row ${index + 1}`);
+      const controls = createOverflowControls(container, `row ${number}`);
       rowOverflow.push(controls);
-      newRows.push({ scroller: container, controls });
+      restoreScroll(container, controls, rowScroll.get(id));
     });
-    matchRowScroll(oldRows, newRows);
     renderTileRow(state.rack, find('#rack-tiles'), {
-      location: { area: 'rack' }, label: 'rack', selected, locked: completed,
+      location: session.destination({ area: 'rack' }), label: 'rack', selected, locked: completed,
     });
     rackOverflow.refresh();
     restoreScroll(find('.rack-scroll'), rackOverflow, rackScroll);
@@ -297,6 +276,7 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     reset.disabled = !completed && state.history.length === 0;
     reset.textContent = completed ? 'Replay' : 'Reset';
     newRow.hidden = completed;
+    newRow.dataset.destination = JSON.stringify(session.destination({ area: 'new-row' }));
     check.disabled = completed;
     paintSelection();
     focusTile(focusId);
@@ -397,9 +377,11 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     const result = session.check();
     resetPanel.hidden = true;
     render();
+    const rows = session.snapshot().rows;
     status.textContent = result.won ? 'Puzzle complete! Every tile is placed in a valid row.'
       : [...result.errors, `${result.remainingRack} tiles remain in the rack.`,
-        ...result.invalidRows.map(({ row, reason }) => `Row ${row + 1}: ${reason}`)].join(' ');
+        ...result.invalidRows.map(({ row, reason }) =>
+          `Row ${rows.find(({ stateRow }) => stateRow === row).number}: ${reason}`)].join(' ');
     (result.won ? reset : check).focus();
   });
   listen(reveal, 'click', openSolution);

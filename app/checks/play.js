@@ -1,5 +1,6 @@
 import { createPlaySession } from '../play-session.js';
 import { createGameState, checkState } from '../state.js';
+import { createProgressStore } from '../progress.js';
 
 export function runPlayChecks(sample) {
   const passed = [];
@@ -96,5 +97,63 @@ export function runPlayChecks(sample) {
   assert(empty.snapshot().state.board[1].length === 0, 'Empty source rows remain placement destinations');
   empty.select('blue-3-2'); empty.place({ area: 'board', row: 1, index: 0 });
   assert(empty.snapshot().state.board[1][0] === 'blue-3-2', 'A tile can be placed into an empty row');
+
+  const collapsed = createPlaySession(initial);
+  const initialIds = collapsed.snapshot().rows.map(({ id }) => id);
+  const stale = collapsed.destination({ area: 'board', row: 1, index: 0 });
+  for (const id of initial.board[0]) {
+    collapsed.select(id); collapsed.place({ area: 'rack', index: 0 });
+  }
+  const remaining = collapsed.snapshot().rows;
+  assert(remaining.length === 1 && remaining[0].stateRow === 1 && remaining[0].number === 1
+    && remaining[0].id === initialIds[1], 'Hidden placeholders preserve row identity with contiguous visible numbering');
+  collapsed.select('blue-6-1');
+  const beforeStale = collapsed.snapshot().state;
+  assert(!collapsed.place(stale) && collapsed.snapshot().state === beforeStale,
+    'A stale placement token cannot edit a shifted visible row');
+  const wrongRow = { ...collapsed.destination({ area: 'board', row: 1, index: 0 }), rowId: initialIds[0] };
+  assert(!collapsed.place(wrongRow), 'A mismatched view identity cannot target another state row');
+  collapsed.place(collapsed.destination({ area: 'board', row: remaining[0].stateRow, index: 0 }));
+  assert(collapsed.snapshot().state.board[1][0] === 'blue-6-1' && collapsed.snapshot().rows[0].id === initialIds[1],
+    'Visible row one targets state row one after state row zero collapses');
+  collapsed.undo();
+  for (const id of initial.board[1]) {
+    collapsed.select(id); collapsed.place({ area: 'rack', index: 0 });
+  }
+  assert(collapsed.snapshot().rows.length === 0 && checkState(collapsed.snapshot().state).conserved,
+    'All-empty board hides every placeholder and conserves inventory');
+  collapsed.beginDrag('blue-6-1');
+  const cancelled = collapsed.destination({ area: 'new-row' });
+  collapsed.cancel();
+  assert(!collapsed.drop('blue-6-1', cancelled), 'Cancelled drag cannot create a new row after collapse');
+  collapsed.select('blue-6-1'); collapsed.place(collapsed.destination({ area: 'new-row' }));
+  const appendedId = collapsed.snapshot().rows[0].id;
+  assert(collapsed.snapshot().rows.length === 1 && collapsed.snapshot().rows[0].stateRow === 2
+    && collapsed.snapshot().rows[0].number === 1 && !initialIds.includes(appendedId),
+    'New row appends one fresh visible row after hidden placeholders');
+  collapsed.select('red-6-1'); collapsed.place(collapsed.destination({ area: 'board', row: 2, index: 1 }));
+  assert(collapsed.snapshot().rows[0].tiles.length === 2 && collapsed.snapshot().rows[0].id === appendedId,
+    'One- and two-tile temporary invalid rows remain visible with stable identity');
+
+  let saved;
+  const storage = { getItem: () => saved ?? null, setItem: (_, value) => { saved = value; } };
+  const store = createProgressStore({ getStorage: () => storage });
+  store.saveSession(collapsed.snapshot());
+  const restoredState = createProgressStore({ getStorage: () => storage }).snapshot().active.state;
+  const restored = createPlaySession(restoredState);
+  assert(JSON.stringify(restoredState) === JSON.stringify(collapsed.snapshot().state)
+    && restored.snapshot().rows[0].stateRow === 2, 'Old-format saves retain empty placeholders and exact undo snapshots on reload');
+  restored.undo(); restored.undo();
+  assert(restored.snapshot().rows.length === 0, 'Reloaded Undo removes an appended row without exposing blank stacks');
+  restored.undo();
+  assert(restored.snapshot().rows.length === 1 && restored.snapshot().rows[0].stateRow === 1,
+    'Reloaded Undo makes an emptied slot visible again');
+  collapsed.undo(); collapsed.undo();
+  collapsed.select('blue-6-1'); collapsed.place(collapsed.destination({ area: 'new-row' }));
+  assert(collapsed.snapshot().rows[0].id !== appendedId, 'A new branch after Undo gives its appended row a fresh identity');
+  collapsed.reset();
+  assert(collapsed.snapshot().rows.map(({ id }) => id).join() === initialIds.join()
+    && JSON.stringify(collapsed.snapshot().state) === JSON.stringify(initial),
+    'Reset restores original row identities and exact immutable starting puzzle');
   return passed;
 }
