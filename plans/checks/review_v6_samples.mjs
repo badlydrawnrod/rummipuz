@@ -16,7 +16,7 @@ try {
   const { easyMechanisms, coreMechanisms } = await import(app + 'mechanisms-v6.js');
   const data = JSON.parse(await fs.readFile(new URL('../revision-6-sample-review.json', import.meta.url), 'utf8'));
   const designs = JSON.parse(await fs.readFile(new URL('../revision-6-patterns.json', import.meta.url), 'utf8')).patterns;
-  equal(RATED_GENERATOR_VERSION, 5, 'Review does not change the approved default');
+  equal(RATED_GENERATOR_VERSION, 6, 'Approved revision 6 supplies the fresh default');
   equal(data.samples.filter(s => s.featured).length, 24, 'Every featured review sample is retained');
   equal(new Set(data.samples.map(s => s.replayCode)).size, data.samples.length, 'Review records have unique full identities');
   const coverage = new Set();

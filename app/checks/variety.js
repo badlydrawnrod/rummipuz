@@ -10,7 +10,13 @@ export function runVarietyChecks(designs, fixtures) {
   const passed = [];
   const assert = (ok, name) => { if (!ok) throw new Error(`Failed: ${name}`); passed.push(name); };
   const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-  assert(RATED_GENERATOR_VERSION === 5, 'Revision 6 leaves the approved default at revision 5');
+  assert(RATED_GENERATOR_VERSION === 6, 'Approved revision 6 is the default');
+  for (let tier = 1; tier <= 4; tier += 1) {
+    const identity = { difficultyTier: tier, seed: 'default-v6' };
+    const result = generatePuzzle(identity);
+    assert(result.status === 'ready' && same(result, generatePuzzle({ ...identity, generatorVersion: 6 })),
+      `Omitted revision uses exact approved revision-6 output at tier ${tier}`);
+  }
   for (const { design: p, expected: e } of designs) {
     const puzzle = { version: 1, generatorVersion: 6, seed: p.name, difficultyTier: p.difficultyTier, board: p.board, rack: p.rack };
     const before = JSON.stringify(puzzle), result = rateVarietyPuzzle(puzzle);

@@ -1,6 +1,6 @@
 # Revision-6 family and sequence review
 
-**Status:** Complete. User approval recorded on 2026-10-12: “We've tested. All good.” No tuning was requested. Revision 5 remains the default. No runtime or offline-package change is made by this review step, and no commit or agent-side browser use. The preceding native/laptop/tablet variety and preparation checks passed.
+**Status:** Complete. User approval recorded on 2026-10-12: “We've tested. All good.” No tuning was requested. Approved revision 6 is now the default after the separate verified switch. No runtime or offline-package change was made by this review step, and no commit or agent-side browser use. The preceding native/laptop/tablet variety and preparation checks passed.
 
 This guide has **19 tier/family samples**, **five additional variant comparisons**, and **four fixed consecutive 16-puzzle sequences**. The [exact review data](revision-6-sample-review.json) contains 71 distinct full replay identities, saved generated results, independently derived physical solutions and their provenance. Shared samples are stored once. This is a deliberate family/overlay review, not another frequency survey.
 
@@ -8,7 +8,7 @@ Use **Replay puzzle** to paste a full code below. Start and Next continue to gen
 
 Play the main samples **E1–E3, M1–M5, H1–H5 and X1–X6** first, keeping answers closed. E4/E5, H6 and X7/X8 compare important variants. For sequence review, start with the first four consecutive codes in each tier; the complete fixed 16-code sequences are provided for a longer comparison. Preserve their order and include repeats. There is no solving-time limit. Undo, resets, getting stuck, and apparently repetitive puzzles are useful observations.
 
-Feedback should address whether the three Easy mechanisms stay approachable; whether higher-tier families require different ideas; whether duplicate/competing-placement examples are meaningful; and whether consecutive same-tier puzzles feel repetitive. Formal gates and preparation performance do not answer those questions. The user has approved this review. The default switch remains a separate step.
+Feedback should address whether the three Easy mechanisms stay approachable; whether higher-tier families require different ideas; whether duplicate/competing-placement examples are meaningful; and whether consecutive same-tier puzzles feel repetitive. Formal gates and preparation performance do not answer those questions. The user has approved this review. The separate default-switch step is now complete.
 
 ## Main samples and variant comparisons
 
@@ -1918,11 +1918,11 @@ The answer is transported from the independently hand-reviewed `expert-longer-co
 
 ## Verification and user acceptance
 
-The native checker re-generates all 71 exact outputs twice, validates each reviewed physical solution and minimum `R`, checks the certified mechanism, verifies every transport against the original fixture rows/rack, confirms all 19 tier/family pairings and all four unchanged sequences, and retains default revision 5. It passed 3,499 assertions. The independent physical oracle audits every review inventory and solution using both enumeration paths; evidence is in [revision-6-sample-audit.json](revision-6-sample-audit.json).
+The native checker re-generates all 71 exact outputs twice, validates each reviewed physical solution and minimum `R`, checks the certified mechanism, verifies every transport against the original fixture rows/rack, confirms all 19 tier/family pairings and all four unchanged sequences, and now checks approved default revision 6. It passed 3,499 assertions again after the default switch. The independent physical oracle audits every review inventory and solution using both enumeration paths; evidence is in [revision-6-sample-audit.json](revision-6-sample-audit.json).
 
 ```bash
 node plans/checks/review_v6_samples.mjs
 PYTHONDONTWRITEBYTECODE=1 python3 plans/checks/review_v6_samples.py
 ```
 
-The user reported “We've tested. All good.” on 2026-10-12, accepting the family/sequence review without further tuning. This is overall acceptance; no per-puzzle results or timings were supplied. The plan review item is complete. Revision 5 remains default until the separate verified default-switch step; no runtime change was made to record approval.
+The user reported “We've tested. All good.” on 2026-10-12, accepting the family/sequence review without further tuning. This is overall acceptance; no per-puzzle results or timings were supplied. The plan review item is complete. The separate verified revision-6 default switch is now complete; no runtime change was made to record approval itself.

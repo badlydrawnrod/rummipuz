@@ -42,16 +42,16 @@ export async function runPuzzleFlowChecks(sample) {
   const flow = createPuzzleFlow({ service, progress, loadSample: async () => sample, newSeed: () => `fresh-${seed++}` });
   const before = JSON.stringify(progress.snapshot());
   let ready = await flow.prepare({ kind: 'next' });
-  assert(ready.chosenTier === 2 && ready.state.difficultyTier === 2 && ready.state.generatorVersion === 5, 'Next uses revision 5 and chosen-tier credit to propose Medium');
+  assert(ready.chosenTier === 2 && ready.state.difficultyTier === 2 && ready.state.generatorVersion === 6, 'Next uses revision 6 and chosen-tier credit to propose Medium');
   assert(JSON.stringify(progress.snapshot()) === before, 'Preparation alone never replaces progress or commits promotion');
   ready = await flow.prepare({ kind: 'start', tier: 1 });
-  assert(ready.chosenTier === 1 && ready.state.generatorVersion === 5, 'Manual Easy uses revision 5 and overrides its earned promotion');
+  assert(ready.chosenTier === 1 && ready.state.generatorVersion === 6, 'Manual Easy uses revision 6 and overrides its earned promotion');
   ready = await flow.prepare({ kind: 'start', tier: 4 });
   assert(ready.state.difficultyTier === 4, 'Expert is immediately selectable');
   progress.setChosenDifficulty(4);
   ready = await flow.prepare({ kind: 'next' });
   assert(ready.chosenTier === 4, 'Expert Next continues indefinitely');
-  for (const revision of [2, 3, 4, 5]) {
+  for (const revision of [2, 3, 4, 5, 6]) {
     ready = await flow.prepare({ kind: 'replay', code: `rummipuz:1:${revision}:1:Case_Sensitive` });
     assert(ready.chosenTier === null && ready.state.generatorVersion === revision && ready.state.seed === 'Case_Sensitive', `Replay preserves revision ${revision} without changing chosen tier`);
   }
@@ -99,7 +99,7 @@ export async function runPuzzleFlowChecks(sample) {
 // rated publication at every tier and exact supported replay revisions.
 export async function runPuzzleFlowWorkerChecks(sample, workerFactory) {
   const { createPuzzleService } = await import('../puzzle-service.js');
-  const { rateStructuralPuzzle } = await import('../structural-difficulty.js');
+  const { rateVarietyPuzzle } = await import('../difficulty-v6.js');
   const passed = [];
   const assert = (ok, name) => { if (!ok) throw new Error(`Failed: ${name}`); passed.push(name); };
   const storage = { raw: null, getItem() { return this.raw; }, setItem(key, value) { this.raw = value; } };
@@ -112,21 +112,21 @@ export async function runPuzzleFlowWorkerChecks(sample, workerFactory) {
       const ready = await flow.prepare({ kind: 'start', tier });
       const puzzle = { ...ready.state.initial, version: ready.state.version, generatorVersion: ready.state.generatorVersion,
         seed: ready.state.seed, difficultyTier: ready.state.difficultyTier };
-      assert(ready.chosenTier === tier && ready.state.generatorVersion === 5 && rateStructuralPuzzle(puzzle).tier === tier,
-        `Worker Start publishes a structurally proven revision-5 tier-${tier} play session`);
+      assert(ready.chosenTier === tier && ready.state.generatorVersion === 6 && rateVarietyPuzzle(puzzle).tier === tier,
+        `Worker Start publishes a tier/family-certified revision-6 tier-${tier} play session`);
       progress.saveSession({ state: ready.state, completed: false });
       progress.setChosenDifficulty(tier);
       const next = await flow.prepare({ kind: 'next' });
-      assert(next.chosenTier === tier && next.state.generatorVersion === 5 && puzzleIdentity(next.state) !== puzzleIdentity(ready.state),
-        `Tier-${tier} Next produces a fresh revision-5 puzzle`);
-      assert(rateStructuralPuzzle({ ...next.state.initial, version: next.state.version, generatorVersion: next.state.generatorVersion,
+      assert(next.chosenTier === tier && next.state.generatorVersion === 6 && puzzleIdentity(next.state) !== puzzleIdentity(ready.state),
+        `Tier-${tier} Next produces a fresh revision-6 puzzle`);
+      assert(rateVarietyPuzzle({ ...next.state.initial, version: next.state.version, generatorVersion: next.state.generatorVersion,
         seed: next.state.seed, difficultyTier: next.state.difficultyTier }).tier === tier,
-        `Worker Next retains revision-5 structural proof at tier ${tier}`);
+        `Worker Next retains revision-6 tier/family proof at tier ${tier}`);
       const replay = await flow.prepare({ kind: 'replay', code: puzzleIdentity(next.state) });
       assert(JSON.stringify(replay.state) === JSON.stringify(next.state) && replay.chosenTier === null,
         `Tier-${tier} replay reproduces the exact generated puzzle`);
     }
-    for (const revision of [1, 2, 3, 4, 5]) {
+    for (const revision of [1, 2, 3, 4, 5, 6]) {
       const replay = await flow.prepare({ kind: 'replay', code: revision === 1 ? puzzleIdentity(sample) : `rummipuz:1:${revision}:1:replay-flow` });
       assert(replay.state.generatorVersion === revision && replay.chosenTier === null,
         `Playable replay supports generator revision ${revision}`);

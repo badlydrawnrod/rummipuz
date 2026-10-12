@@ -4,13 +4,13 @@ import { classifyRow } from './rules.js';
 import { createGameState } from './state.js';
 import { ratePuzzle, TIER_BOUNDS } from './difficulty.js';
 
-export const RATED_GENERATOR_VERSION = 5;
+export const RATED_GENERATOR_VERSION = 6;
 
 // Sampling envelopes stay inside the tier policy's full size bounds. Smaller
 // boards reduce incidental copy choices and the cost of minimum-R proofs.
 const REVIEWED_BOUNDS = [null, [2, 3, 2, 3], [4, 5, 3, 4], [4, 6, 4, 5], [5, 7, 4, 5]];
 
-/** Generate approved revision-5 tiers by default; preserve explicit old replay. */
+/** Generate approved revision-6 tiers by default; preserve explicit old replay. */
 export function generatePuzzle({ version = 1, generatorVersion = RATED_GENERATOR_VERSION, difficultyTier = 1, seed } = {}) {
   if (generatorVersion === 6) return generateVarietyPuzzle({ version, generatorVersion, difficultyTier, seed });
   if (generatorVersion === 5) return generateStructuralPuzzle({ version, generatorVersion, difficultyTier, seed });
