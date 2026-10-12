@@ -2,6 +2,10 @@
 
 Start with the [implementation plan](rummipuz-implementation.md) for current status and remaining acceptance work. Use the [project README](../README.md) for launch, gameplay and offline instructions.
 
+## Active change plans
+
+- [UX improvements and assistance](rummipuz-ux-improvements.md): seven requested changes, implementation sequence and acceptance criteria; implementation has not started.
+
 ## Current specifications
 
 - [Rules](rummipuz-rules.md)
