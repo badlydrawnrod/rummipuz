@@ -2,7 +2,7 @@
 
 ## Current status
 
-Generator work is complete through Phase 7. Approved generator revision 6 supplies fresh Start/Next puzzles and omitted-revision generation. Revisions 1–6 retain exact replay identities and saved layouts/undo history. Fixed difficulty selection is implemented and configured for offline release `v7` with the existing 39 assets; the user has not asked to commit the current UX changes.
+Generator work is complete through Phase 7. Approved generator revision 6 supplies fresh Start/Next puzzles and omitted-revision generation. Revisions 1–6 retain exact replay identities and saved layouts/undo history. Fixed difficulty selection and the read-only solution preview are implemented and configured for offline release `v8` with the existing 39 assets; the user has not asked to commit the current UX changes.
 
 Latest generator verification before the fixed-difficulty change: 1,288 native checks passed, including 62 worker checks from only the precached assets. Approved sample checkers passed 42 revision-5 and 3,499 revision-6 assertions. Both full revision-6 variety/preparation blocks passed on native runtime, laptop and user-reported tablet; the user confirmed both devices stayed responsive and approved the family/sequence review on 12 October 2026 without tuning. The focused checks were updated for fixed difficulty but have not been run.
 
@@ -10,7 +10,7 @@ Mouse, touch and overflow controls have user approval. Appearance/palette prefer
 
 ## Planned UX improvements
 
-The user requested scroll retention, clearer red/orange tiles, whole-row reordering, collapsed empty rows, fixed difficulty selection, hints and solution reveal on 12 October 2026. See the [UX improvements and assistance plan](rummipuz-ux-improvements.md) for work order and acceptance criteria. Steps 1, 2 and 5 have runtime changes; step 2 is user-approved. Complete the remaining checks below against the revised app.
+The user requested scroll retention, clearer red/orange tiles, whole-row reordering, collapsed empty rows, fixed difficulty selection, hints and solution reveal on 12 October 2026. See the [UX improvements and assistance plan](rummipuz-ux-improvements.md) for work order and acceptance criteria. Steps 1, 2, 5 and 6 are implemented and user-approved. Complete the remaining checks below against the revised app.
 
 ## Remaining work
 

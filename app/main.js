@@ -91,6 +91,7 @@ function showPuzzle() {
 function install(state, completed = false) {
   play?.dispose();
   play = initialisePlay({ content, status, state, completed,
+    solve: (currentState, options) => service.solve(currentState, options),
     onChange: (snapshot) => { progress.saveSession(snapshot); refreshNavigation(); } });
   find('#puzzle-title').textContent = `${TIER_NAMES[state.difficultyTier - 1]} · ${['rework one row', 'connect changes across two rows', 'coordinate three rows', 'rebuild four or more rows'][state.difficultyTier - 1]}`;
   progress.saveSession(play.snapshot());

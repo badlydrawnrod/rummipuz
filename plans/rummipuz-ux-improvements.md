@@ -41,7 +41,7 @@ Give each implementation run one step and its acceptance criteria, rather than t
 
 ## 1 — Preserve horizontal position
 
-- [ ] Fix scroll retention through rendering and overflow refresh. **Done when:** removing or inserting a tile near the middle/end of an overflowing row preserves the visible neighbourhood; editing another row does not reset it. The rack follows the same policy. Test repeated removals, selection, Check, Undo, Reset and viewport resizing. Keep focus changes from scrolling the row unintentionally.
+- [x] Fix scroll retention through rendering and overflow refresh. **Done when:** removing or inserting a tile near the middle/end of an overflowing row preserves the visible neighbourhood; editing another row does not reset it. The rack follows the same policy. Test repeated removals, selection, Check, Undo, Reset and viewport resizing. Keep focus changes from scrolling the row unintentionally.
 
 `app/play.js` currently destroys every board-row element in `render()`. `app/overflow.js` can also adjust positions while showing/hiding arrows and exposing placement gaps. Address both paths. Capture positions before DOM replacement and restore them after layout, or retain row elements; do not key retention solely by displayed row number, since empty-row collapse and reordering will change it.
 
@@ -88,7 +88,7 @@ Change `nextDifficulty`/fresh generation policy in `app/puzzle-flow.js` and the 
 
 ## 6 — Reveal a verified complete solution
 
-- [ ] Add a cancellable solution request for the current puzzle and a Reveal solution preview. **Done when:** the preview shows every puzzle tile exactly once in valid rows, with an empty rack, and uses the common tile palette/appearance. It is usable on desktop and tablet, including long rows, and closes back to the exact live arrangement, selection, undo history and view position. Revealing alone neither completes the puzzle nor writes completion credit.
+- [x] Add a cancellable solution request for the current puzzle and a Reveal solution preview. **Done when:** the preview shows every puzzle tile exactly once in valid rows, with an empty rack, and uses the common tile palette/appearance. It is usable on desktop and tablet, including long rows, and closes back to the exact live arrangement, selection, undo history and view position. Revealing alone neither completes the puzzle nor writes completion credit.
 
 The existing worker-backed solver can solve the conserved inventory even when the live board is temporarily invalid. Use a bounded request and verify its physical output with the rules module. Reject corrupt inventory and distinguish cancellation, exhausted work and a proved lack of solution. A supported published puzzle should remain solvable after legal tile moves; an unexpected failure needs clear retry feedback, not a fabricated answer.
 
@@ -119,4 +119,4 @@ Release each practical UX fix for review as it becomes ready. Do not hold scroll
 
 ## Current position
 
-Steps 2 and 5 are implemented and user-approved. Step 1 has runtime changes in place; desktop/tablet verification remains. Next: step 3, collapse empty rows. Steps 3–4 must share a row identity/targeting policy; steps 6–7 must share cancellation, solution validation and current-position semantics.
+Steps 1, 2, 5 and 6 are implemented and user-approved. Step 6 adds a cancellable worker search and read-only verified preview. Next: step 3, collapse empty rows. Steps 3–4 must share a row identity/targeting policy; steps 6–7 must share cancellation, solution validation and current-position semantics.

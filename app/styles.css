@@ -146,6 +146,28 @@ button.tile:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px
 .reset-confirmation button { margin: 4px; }
 .rack { background: var(--rack); padding: 24px; border-radius: 0 0 14px 14px; }
 .rack-scroll { overflow-x: auto; padding: 8px 4px; }
+.solution-dialog {
+  color: var(--text);
+  background: var(--page);
+}
+dialog#solution-dialog {
+  width: min(900px, calc(100vw - 32px));
+  max-width: none;
+  max-height: min(88vh, 900px);
+  padding: 0;
+  color: var(--text);
+  background: var(--page);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+}
+dialog#solution-dialog::backdrop { background: rgb(0 0 0 / 62%); }
+.solution-dialog-content { padding: clamp(16px, 4vw, 28px); overflow-y: auto; max-height: min(88vh, 900px); }
+.solution-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.solution-dialog-heading h2 { margin: 0; }
+#solution-status { line-height: 1.5; }
+.solution-rows { margin-top: 16px; }
+.solution-row { margin-block: 8px; }
+.solution-row-label { margin: 0 0 4px; font-size: 12px; font-weight: 650; }
 .seed-label { line-height: 1.7; }
 code { font-size: 12px; overflow-wrap: anywhere; }
 .difficulty { border-top: 1px solid var(--line); padding-block: 32px; }

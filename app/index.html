@@ -88,7 +88,20 @@
             <button id="reset-puzzle" type="button" disabled>Reset</button>
             <button id="check-puzzle" type="button">Check</button>
             <button id="cancel-selection" type="button" disabled>Cancel selection</button>
+            <button id="reveal-solution" type="button">Reveal solution</button>
           </div>
+          <dialog id="solution-dialog" class="solution-dialog" aria-labelledby="solution-title" aria-describedby="solution-status">
+            <div class="solution-dialog-content">
+              <div class="solution-dialog-heading">
+                <h2 id="solution-title" tabindex="-1">Verified solution</h2>
+                <button id="close-solution" type="button">Close</button>
+              </div>
+              <p id="solution-status" role="status" aria-live="polite">Preparing a solution preview…</p>
+              <button id="cancel-solution" type="button" hidden>Cancel search</button>
+              <button id="retry-solution" type="button" hidden>Try again</button>
+              <div id="solution-rows" class="solution-rows" aria-label="Solution rows"></div>
+            </div>
+          </dialog>
           <div id="reset-confirmation" class="reset-confirmation" role="group" aria-labelledby="reset-question" hidden>
             <p id="reset-question">Restart this puzzle?</p>
             <button id="confirm-reset" type="button">Restart</button>

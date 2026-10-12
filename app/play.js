@@ -6,8 +6,9 @@ import { initialiseTouch } from './touch.js';
 import { createOverflowControls } from './overflow.js';
 
 const dragType = 'application/x-rummipuz-tile';
+const SOLUTION_NODE_LIMIT = 1_000_000;
 
-export function initialisePlay({ content, status, state, completed = false, onChange }) {
+export function initialisePlay({ content, status, state, completed = false, onChange, solve }) {
   const session = createPlaySession(state, { completed, onChange });
   const document = content.ownerDocument;
   const find = (selector) => content.querySelector(selector);
@@ -17,6 +18,12 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   const newRow = find('#new-row');
   const cancel = find('#cancel-selection');
   const check = find('#check-puzzle');
+  const reveal = find('#reveal-solution');
+  const solutionDialog = find('#solution-dialog');
+  const solutionStatus = find('#solution-status');
+  const solutionRows = find('#solution-rows');
+  const cancelSolutionButton = find('#cancel-solution');
+  const retrySolutionButton = find('#retry-solution');
   const listeners = [];
   const listen = (target, type, handler) => {
     target.addEventListener(type, handler);
@@ -24,7 +31,139 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   };
   let touch;
   let rowOverflow = [];
+  let solutionOverflow = [];
+  let solutionController = null;
+  let solutionRequest = 0;
+  let solutionBoard = null;
   const rackOverflow = createOverflowControls(find('.rack-scroll'), 'rack');
+
+  function clearSolutionRows() {
+    solutionOverflow.forEach((controls) => controls.dispose());
+    solutionOverflow = [];
+    solutionRows.replaceChildren();
+  }
+
+  function renderSolution(board) {
+    clearSolutionRows();
+    board.forEach((tiles, index) => {
+      const row = document.createElement('div');
+      row.className = 'board-row solution-row';
+      row.tabIndex = 0;
+      row.setAttribute('role', 'region');
+      row.setAttribute('aria-label', `Solution row ${index + 1}`);
+      const label = document.createElement('p');
+      label.className = 'solution-row-label';
+      label.textContent = `Row ${index + 1}`;
+      const list = document.createElement('ul');
+      list.className = 'tile-row';
+      list.setAttribute('aria-label', `Tiles in solution row ${index + 1}`);
+      renderTileRow(tiles, list);
+      row.append(label, list);
+      solutionRows.append(row);
+      solutionOverflow.push(createOverflowControls(row, `solution row ${index + 1}`));
+    });
+    solutionOverflow.forEach((controls) => controls.refresh());
+  }
+
+  function verifiedSolution(currentState, board) {
+    if (!Array.isArray(board) || board.length === 0 || board.some((row) => !Array.isArray(row) || row.length === 0)) {
+      return false;
+    }
+    const result = checkState({ inventory: currentState.inventory, rack: [], board });
+    return result.conserved && result.won;
+  }
+
+  function cancelSolutionSearch({ announce = true } = {}) {
+    if (!solutionController) return;
+    const controller = solutionController;
+    solutionController = null;
+    solutionRequest += 1;
+    controller.abort();
+    cancelSolutionButton.hidden = true;
+    if (announce && solutionDialog.open) {
+      solutionStatus.textContent = 'Solution search cancelled. The puzzle is unchanged.';
+      retrySolutionButton.hidden = false;
+    }
+  }
+
+  async function requestSolution() {
+    const currentState = session.snapshot().state;
+    if (!checkState(currentState).conserved) {
+      solutionStatus.textContent = 'The puzzle inventory is inconsistent. Restart the puzzle before requesting a solution.';
+      cancelSolutionButton.hidden = true;
+      retrySolutionButton.hidden = false;
+      return;
+    }
+    if (typeof solve !== 'function') {
+      solutionStatus.textContent = 'Solution search is unavailable in this browser. The puzzle is unchanged.';
+      retrySolutionButton.hidden = false;
+      return;
+    }
+    if (solutionController) cancelSolutionSearch({ announce: false });
+    const controller = new AbortController();
+    const token = ++solutionRequest;
+    solutionController = controller;
+    solutionBoard = null;
+    clearSolutionRows();
+    solutionStatus.textContent = 'Searching for a complete solution… The puzzle is unchanged.';
+    cancelSolutionButton.hidden = false;
+    retrySolutionButton.hidden = true;
+    try {
+      const result = await solve(currentState, { signal: controller.signal, maxNodes: SOLUTION_NODE_LIMIT });
+      if (token !== solutionRequest || !solutionDialog.open || controller.signal.aborted
+          || session.snapshot().state !== currentState) return;
+      solutionController = null;
+      cancelSolutionButton.hidden = true;
+      if (result?.status === 'limit') {
+        solutionStatus.textContent = 'The search reached its work limit before proving a result. You can try again; the puzzle is unchanged.';
+        retrySolutionButton.hidden = false;
+        return;
+      }
+      if (result?.status === 'unsolvable') {
+        solutionStatus.textContent = 'No complete solution exists for this tile inventory. The puzzle is unchanged.';
+        retrySolutionButton.hidden = false;
+        return;
+      }
+      if (result?.status !== 'solved' || !verifiedSolution(currentState, result.board)) {
+        solutionStatus.textContent = 'A complete solution could not be verified. You can try again; the puzzle is unchanged.';
+        retrySolutionButton.hidden = false;
+        return;
+      }
+      solutionBoard = result.board.map((row) => [...row]);
+      renderSolution(solutionBoard);
+      solutionStatus.textContent = `Verified solution: all ${currentState.inventory.length} tiles are placed in valid rows, and the rack is empty. This preview does not change the puzzle.`;
+      retrySolutionButton.hidden = true;
+    } catch (error) {
+      if (token !== solutionRequest || !solutionDialog.open) return;
+      solutionController = null;
+      cancelSolutionButton.hidden = true;
+      solutionStatus.textContent = error.name === 'AbortError'
+        ? 'Solution search cancelled. The puzzle is unchanged.'
+        : 'Solution search failed before a result could be verified. You can try again; the puzzle is unchanged.';
+      retrySolutionButton.hidden = false;
+    }
+  }
+
+  function openSolution() {
+    if (solutionDialog.open) return;
+    solutionDialog.showModal();
+    find('#solution-title').focus({ preventScroll: true });
+    if (solutionBoard) {
+      renderSolution(solutionBoard);
+      solutionStatus.textContent = `Verified solution: all ${session.snapshot().state.inventory.length} tiles are placed in valid rows, and the rack is empty. This preview does not change the puzzle.`;
+      retrySolutionButton.hidden = true;
+    } else void requestSolution();
+  }
+
+  function closeSolution() {
+    if (solutionController) cancelSolutionSearch({ announce: false });
+    if (solutionDialog.open) solutionDialog.close();
+  }
+
+  function onSolutionClose() {
+    if (solutionController) cancelSolutionSearch({ announce: false });
+    reveal.focus({ preventScroll: true });
+  }
 
   function captureScroll(scroller) {
     const bounds = scroller.getBoundingClientRect();
@@ -263,12 +402,20 @@ export function initialisePlay({ content, status, state, completed = false, onCh
         ...result.invalidRows.map(({ row, reason }) => `Row ${row + 1}: ${reason}`)].join(' ');
     (result.won ? reset : check).focus();
   });
+  listen(reveal, 'click', openSolution);
+  listen(find('#close-solution'), 'click', closeSolution);
+  listen(cancelSolutionButton, 'click', () => cancelSolutionSearch());
+  listen(retrySolutionButton, 'click', () => void requestSolution());
+  listen(solutionDialog, 'close', onSolutionClose);
   touch = initialiseTouch({ content, status, session, paintSelection, afterMove });
   render();
   return { ...session, dispose() {
+    cancelSolutionSearch({ announce: false });
+    if (solutionDialog.open) solutionDialog.close();
     touch.dispose();
     listeners.forEach((remove) => remove());
     rowOverflow.forEach((controls) => controls.dispose());
+    solutionOverflow.forEach((controls) => controls.dispose());
     rackOverflow.dispose();
     resetPanel.hidden = true;
   } };
