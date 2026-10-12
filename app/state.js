@@ -75,6 +75,33 @@ export function moveTile(state, id, destination) {
   return freezeState(next);
 }
 
+/**
+ * Move one complete nonempty board row to a pre-removal insertion gap. Gaps
+ * run from zero through board.length. The rack, initial position, inventory,
+ * and tile order within every row are preserved exactly.
+ */
+export function reorderRow(state, sourceRow, insertionIndex) {
+  assertSession(state);
+  assertConserved(state);
+  if (!Number.isInteger(sourceRow) || sourceRow < 0 || sourceRow >= state.board.length
+      || state.board[sourceRow].length === 0) {
+    throw new Error('Row reorder requires an existing nonempty source row.');
+  }
+  if (!Number.isInteger(insertionIndex) || insertionIndex < 0 || insertionIndex > state.board.length) {
+    throw new Error('Row insertion gap is out of range.');
+  }
+  if (insertionIndex === sourceRow || insertionIndex === sourceRow + 1) return state;
+
+  const position = copyPosition(state);
+  const [row] = position.board.splice(sourceRow, 1);
+  const target = insertionIndex - (sourceRow < insertionIndex ? 1 : 0);
+  position.board.splice(target, 0, row);
+  const next = { ...state, ...position,
+    history: [...state.history, freezePosition(copyPosition(state))] };
+  assertConserved(next);
+  return freezeState(next);
+}
+
 /** Restore the preceding position, including empty rows and exact ordering. */
 export function undoMove(state) {
   assertSession(state);

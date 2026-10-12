@@ -79,6 +79,9 @@ export function runPlayChecks(sample) {
     assert(play.check().won && play.snapshot().completed,
       `${method}: Check completes the sample puzzle`);
     const finished = play.snapshot().state;
+    const finishedRows = play.snapshot().rows;
+    assert(!play.reorder(finishedRows[0].id, play.rowDestination(null)),
+      `${method}: completed sessions reject row reorder`);
     assert(!play.select('blue-6-1') && !play.beginDrag('blue-6-1'),
       `${method}: completion locks tile editing`);
     play.undo();
@@ -100,6 +103,97 @@ export function runPlayChecks(sample) {
 
   const collapsed = createPlaySession(initial);
   const initialIds = collapsed.snapshot().rows.map(({ id }) => id);
+  const reordered = createPlaySession(initial);
+  const originalOrderIds = reordered.snapshot().rows.map(({ id }) => id);
+  const destination = reordered.rowDestination(null);
+  reordered.select('blue-6-1');
+  reordered.beginDrag('blue-6-1');
+  assert(reordered.reorder(originalOrderIds[0], destination)
+    && reordered.snapshot().rows.map(({ id }) => id).join() === originalOrderIds.slice().reverse().join()
+    && reordered.snapshot().state.board[1].join() === initial.board[0].join()
+    && reordered.snapshot().selected === null && reordered.snapshot().dragging === null,
+  'Row reorder carries its ID and exact tile order, then clears tile transients');
+  assert(reordered.snapshot().state.history.length === 1
+    && reordered.undo() === undefined
+    && reordered.snapshot().rows.map(({ id }) => id).join() === originalOrderIds.join()
+    && JSON.stringify(reordered.snapshot().state) === JSON.stringify(initial),
+  'Undo restores the prior row order and row identities');
+  reordered.select('blue-6-1');
+  const keepSelection = reordered.snapshot().selected;
+  assert(!reordered.reorder(originalOrderIds[0], destination)
+    && reordered.snapshot().selected === keepSelection,
+  'A stale row destination is rejected without clearing selection');
+  const noOpToken = reordered.rowDestination(originalOrderIds[1]);
+  assert(!reordered.reorder(originalOrderIds[0], noOpToken)
+    && reordered.snapshot().selected === keepSelection,
+  'Dropping before the next visible row is a no-op and keeps selection');
+  reordered.reset();
+  assert(reordered.snapshot().rows.map(({ id }) => id).join() === originalOrderIds.join(),
+    'Reset restores original row identities after reorder');
+
+  const hiddenGap = createPlaySession(initial);
+  for (const id of initial.board[1]) {
+    hiddenGap.select(id); hiddenGap.place({ area: 'rack', index: 0 });
+  }
+  hiddenGap.select('blue-6-1'); hiddenGap.place(hiddenGap.destination({ area: 'new-row' }));
+  const gapRows = hiddenGap.snapshot().rows;
+  hiddenGap.beginDrag('blue-6-1');
+  assert(gapRows.length === 2 && gapRows[0].stateRow === 0 && gapRows[1].stateRow === 2
+    && !hiddenGap.reorder(gapRows[0].id, hiddenGap.rowDestination(gapRows[1].id))
+    && hiddenGap.snapshot().dragging === 'blue-6-1'
+    && hiddenGap.snapshot().state.history.length === initial.history.length + 4,
+  'Hidden placeholders do not create a visible reorder, and no-op keeps drag state');
+  assert(!hiddenGap.reorder('missing-row-id', hiddenGap.rowDestination(null)),
+    'Unknown row identities cannot be reordered');
+
+  const reloadReorder = createPlaySession(initial);
+  const reloadIds = reloadReorder.snapshot().rows.map(({ id }) => id);
+  reloadReorder.reorder(reloadIds[0], reloadReorder.rowDestination(null));
+  let reorderedSave;
+  const reorderStorage = { getItem: () => reorderedSave ?? null, setItem: (_, value) => { reorderedSave = value; } };
+  createProgressStore({ getStorage: () => reorderStorage }).saveSession(reloadReorder.snapshot());
+  const reloadedState = createProgressStore({ getStorage: () => reorderStorage }).snapshot().active.state;
+  const reloaded = createPlaySession(reloadedState);
+  const reloadedOrderIds = reloaded.snapshot().rows.map(({ id }) => id);
+  reloaded.undo();
+  assert(reloaded.snapshot().rows.map(({ id }) => id).join() === reloadedOrderIds.slice().reverse().join()
+    && JSON.stringify(reloaded.snapshot().state) === JSON.stringify(initial),
+  'Reload reconstructs permuted row identities through saved history for exact Undo');
+
+  const middle = createPlaySession(initial);
+  middle.select(initial.rack[0]); middle.place({ area: 'new-row' });
+  const threeIds = middle.snapshot().rows.map(({ id }) => id);
+  const beforeMiddle = JSON.stringify(middle.snapshot().state);
+  assert(middle.reorder(threeIds[2], middle.rowDestination(threeIds[1]))
+    && middle.snapshot().rows.map(({ id }) => id).join() === [threeIds[0], threeIds[2], threeIds[1]].join(),
+    'Last row can move upward into a middle visible insertion gap');
+  const afterMiddle = JSON.stringify(middle.snapshot().state);
+  middle.select(initial.rack[1]); middle.place({ area: 'board', row: 1, index: 1 });
+  let mixedSave;
+  const mixedStorage = { getItem: () => mixedSave ?? null, setItem: (_, value) => { mixedSave = value; } };
+  createProgressStore({ getStorage: () => mixedStorage }).saveSession(middle.snapshot());
+  const mixed = createPlaySession(createProgressStore({ getStorage: () => mixedStorage }).snapshot().active.state);
+  const mixedIds = mixed.snapshot().rows.map(({ id }) => id);
+  mixed.undo();
+  assert(JSON.stringify(mixed.snapshot().state) === afterMiddle
+    && mixed.snapshot().rows.map(({ id }) => id).join() === mixedIds.join(),
+    'Reloaded tile-edit Undo preserves reordered row identities');
+  mixed.undo();
+  assert(JSON.stringify(mixed.snapshot().state) === beforeMiddle
+    && mixed.snapshot().rows.map(({ id }) => id).join() === [mixedIds[0], mixedIds[2], mixedIds[1]].join(),
+    'Mixed reload history restores exact state and identities before middle reorder');
+  middle.undo(); middle.undo();
+  assert(middle.reorder(threeIds[0], middle.rowDestination(threeIds[2]))
+    && middle.snapshot().rows.map(({ id }) => id).join() === [threeIds[1], threeIds[0], threeIds[2]].join(),
+    'First row can move downward into a middle visible insertion gap');
+  const oldTileTarget = middle.destination({ area: 'board', row: 1, index: 0 });
+  middle.reorder(threeIds[2], middle.rowDestination(threeIds[1]));
+  middle.select('blue-6-1');
+  assert(!middle.place(oldTileTarget), 'Row reorder invalidates previously rendered tile destinations');
+  middle.reset();
+  assert(JSON.stringify(middle.snapshot().state) === JSON.stringify(initial),
+    'Reset after mixed tile moves and row reorders restores the exact initial layout');
+
   const stale = collapsed.destination({ area: 'board', row: 1, index: 0 });
   for (const id of initial.board[0]) {
     collapsed.select(id); collapsed.place({ area: 'rack', index: 0 });

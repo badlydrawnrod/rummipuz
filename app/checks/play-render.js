@@ -18,8 +18,8 @@ export function runPlayRenderChecks(sample) {
       removeEventListener(type, fn) {
         this.listeners.set(type, (this.listeners.get(type) ?? []).filter((entry) => entry !== fn));
       },
-      emit(type, target = this) {
-        const event = { target, detail: 0, stopImmediatePropagation() {}, stopPropagation() {}, preventDefault() {} };
+      emit(type, target = this, values = {}) {
+        const event = { target, detail: 0, stopImmediatePropagation() {}, stopPropagation() {}, preventDefault() {}, ...values };
         for (const fn of this.listeners.get(type) ?? []) fn(event);
       },
     });
@@ -45,13 +45,18 @@ export function runPlayRenderChecks(sample) {
         this.hidden = false;
         this.disabled = false;
         this.offset = 0;
+        this.classList = {
+          add: (name) => { if (!this.matches(`.${name}`)) this.className += ` ${name}`; },
+          remove: (name) => { this.className = this.className.split(' ').filter((item) => item !== name).join(' '); },
+          contains: (name) => this.matches(`.${name}`),
+        };
       }
       setAttribute(key, value) { this.attributes[key] = value; }
       matches(selector) {
         if (selector.startsWith('#')) return this.id === selector.slice(1);
         if (selector.startsWith('.')) return this.className.split(' ').includes(selector.slice(1));
-        const attr = selector.match(/^\[data-(tile-id|destination)\]$/);
-        if (attr) return this.dataset[attr[1] === 'tile-id' ? 'tileId' : 'destination'] !== undefined;
+        const attr = selector.match(/^\[data-([a-z-]+)\]$/);
+        if (attr) return this.dataset[attr[1].replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] !== undefined;
         const tile = selector.match(/^\[data-tile-id="([^"]+)"\]$/);
         return tile ? this.dataset.tileId === tile[1] : false;
       }
@@ -144,7 +149,7 @@ export function runPlayRenderChecks(sample) {
   assert(rows().length === 0 && h.content.querySelectorAll('#new-row').length === 1 && !h.find('#new-row').hidden,
     'An all-empty board shows exactly one New row destination without blank stacks');
   h.click(h.find('[data-tile-id="blue-6-1"]')); h.click(h.find('#new-row'));
-  assert(rows().length === 1 && /Row 1/.test(rows()[0].querySelector('.board-row-label').textContent)
+  assert(rows().length === 1 && /Row 1/.test(rows()[0].closest('.row-shell').querySelector('.board-row-label').textContent)
     && rows()[0].querySelector('[data-tile-id]').dataset.tileId === 'blue-6-1',
     'Single New row creates a visible one-tile row from an all-empty board');
   h.click(h.find('#undo-move'));
@@ -169,5 +174,45 @@ export function runPlayRenderChecks(sample) {
   assert(long.find(`[data-tile-id="${visibleTile}"]`).getBoundingClientRect().left === offset,
     'Editing a later tile retains a surviving physical tile and its viewport offset');
   long.play.dispose();
+
+  const reordered = harness(initial);
+  const boardRows = () => reordered.find('#board-rows').querySelectorAll('.board-row');
+  const originalIds = boardRows().map((row) => row.dataset.rowId);
+  boardRows()[0].scrollLeft = 160;
+  boardRows()[1].scrollLeft = boardRows()[1].scrollWidth - boardRows()[1].clientWidth;
+  const offsets = boardRows().map((row) => row.scrollLeft);
+  const handle = reordered.content.querySelectorAll('[data-row-handle]')[0];
+  assert(!handle.closest('.board-row') && !handle.dataset.tileId,
+    'Dedicated row handles stay outside horizontal tile scrollers');
+  const headings = reordered.content.querySelectorAll('.board-row-heading');
+  assert(headings.every((heading) => heading.children[0].dataset.rowHandle
+    && heading.querySelectorAll('[data-row-handle]').length === 1)
+    && reordered.content.querySelectorAll('[data-row-move]').length === 0,
+    'Each row header has one drag handle on the left and no up/down controls');
+  assert(handle.querySelector('.row-grip').children.length === 6
+    && handle.querySelector('.row-grip').attributes['aria-hidden'] === 'true'
+    && /Drag row 1/.test(handle.attributes['aria-label']),
+    'Six-dot grip is decorative and the handle retains its accessible drag label');
+  const document = reordered.content.ownerDocument;
+  const pointer = { pointerType: 'mouse', isPrimary: true, button: 0, pointerId: 1, clientX: 24 };
+  document.emit('pointerdown', handle, { ...pointer, clientY: 10 });
+  document.emit('pointermove', handle, { ...pointer, clientY: 90 });
+  document.emit('pointerup', handle, { ...pointer, clientY: 90 });
+  assert(boardRows().map((row) => row.dataset.rowId).join() === [...originalIds].reverse().join()
+    && boardRows()[0].scrollLeft === offsets[1] && boardRows()[1].scrollLeft === offsets[0],
+    'Handle drag reorders entire rows and retains both horizontal viewports');
+  assert(JSON.stringify(reordered.play.snapshot().state.board) === JSON.stringify([...initial.board].reverse())
+    && reordered.play.snapshot().state.history.length === 1,
+    'Handle drag creates exactly one move without changing tile order');
+  assert(reordered.content.ownerDocument.activeElement.dataset.rowHandle === originalIds[0],
+    'Reordering returns focus to the moved row handle without scrolling');
+  reordered.click(reordered.find('#undo-move'));
+  assert(boardRows().map((row) => row.dataset.rowId).join() === originalIds.join()
+    && boardRows().every((row, index) => row.scrollLeft === offsets[index]),
+    'Undo restores row ordering and horizontal positions');
+  for (const id of initial.board[0]) reordered.moveToRack(id);
+  assert(boardRows().length === 1 && reordered.content.querySelectorAll('[data-row-handle]')[0].disabled,
+    'Only visible rows control move availability after hidden-row collapse');
+  reordered.play.dispose();
   return passed;
 }

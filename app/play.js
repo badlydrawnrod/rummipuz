@@ -4,12 +4,13 @@ import { checkState } from './state.js';
 import { createPlaySession } from './play-session.js';
 import { initialiseTouch } from './touch.js';
 import { createOverflowControls } from './overflow.js';
+import { initialiseRowDrag } from './row-drag.js';
 
 const dragType = 'application/x-rummipuz-tile';
 const SOLUTION_NODE_LIMIT = 1_000_000;
 
 export function initialisePlay({ content, status, state, completed = false, onChange, solve }) {
-  const session = createPlaySession(state, { completed, onChange });
+  const session = createPlaySession(state, { completed, onChange: onSessionChange });
   const document = content.ownerDocument;
   const find = (selector) => content.querySelector(selector);
   const resetPanel = find('#reset-confirmation');
@@ -30,6 +31,7 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     listeners.push(() => target.removeEventListener(type, handler));
   };
   let touch;
+  let rowDrag;
   let rowOverflow = [];
   const rowScroll = new Map();
   let solutionOverflow = [];
@@ -37,6 +39,17 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   let solutionRequest = 0;
   let solutionBoard = null;
   const rackOverflow = createOverflowControls(find('.rack-scroll'), 'rack');
+
+  function onSessionChange(snapshot) {
+    cancelSolutionSearch();
+    solutionBoard = null;
+    if (solutionDialog.open) {
+      clearSolutionRows();
+      solutionStatus.textContent = 'The position changed. Select Retry to search again.';
+      retrySolutionButton.hidden = false;
+    }
+    onChange?.(snapshot);
+  }
 
   function clearSolutionRows() {
     solutionOverflow.forEach((controls) => controls.dispose());
@@ -147,6 +160,8 @@ export function initialisePlay({ content, status, state, completed = false, onCh
 
   function openSolution() {
     if (solutionDialog.open) return;
+    rowDrag.cancel();
+    touch.cancel();
     solutionDialog.showModal();
     find('#solution-title').focus({ preventScroll: true });
     if (solutionBoard) {
@@ -232,6 +247,7 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   }
 
   function render(focusId) {
+    rowDrag?.cancel();
     touch?.cancel();
     const { state, selected, completed, rows } = session.snapshot();
     const board = find('#board-rows');
@@ -242,7 +258,21 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     for (const controls of rowOverflow) controls.dispose();
     rowOverflow = [];
     board.replaceChildren();
+    function addRowMarker(beforeRowId) {
+      if (completed || rows.length < 2) return;
+      const marker = document.createElement('div');
+      marker.className = 'row-insertion';
+      marker.dataset.rowDestination = JSON.stringify(session.rowDestination(beforeRowId));
+      marker.setAttribute('aria-hidden', 'true');
+      board.append(marker);
+    }
     rows.forEach(({ tiles, stateRow, number, id }) => {
+      addRowMarker(id);
+      const shell = document.createElement('div');
+      shell.className = 'row-shell';
+      shell.dataset.rowView = id;
+      const heading = document.createElement('div');
+      heading.className = 'board-row-heading';
       const container = document.createElement('div');
       container.className = 'board-row';
       container.dataset.rowId = id;
@@ -253,17 +283,32 @@ export function initialisePlay({ content, status, state, completed = false, onCh
       label.className = 'board-row-label';
       const validity = classifyRow(tiles);
       label.textContent = `Row ${number} · ${validity.valid ? 'Valid' : validity.reason}`;
+      const handle = document.createElement('button');
+      handle.type = 'button';
+      handle.className = 'row-handle';
+      handle.dataset.rowHandle = id;
+      const grip = document.createElement('span');
+      grip.className = 'row-grip';
+      grip.setAttribute('aria-hidden', 'true');
+      for (let dot = 0; dot < 6; dot += 1) grip.append(document.createElement('span'));
+      handle.append(grip);
+      handle.setAttribute('aria-label', `Drag row ${number} to reorder. On touch, hold briefly then move.`);
+      handle.title = `Drag row ${number}`;
+      handle.disabled = completed || rows.length < 2;
+      heading.append(handle, label);
       const list = document.createElement('ul');
       list.className = 'tile-row';
       list.setAttribute('aria-label', `Tiles in row ${number}`);
       renderTileRow(tiles, list, { location: session.destination({ area: 'board', row: stateRow }),
         label: `row ${number}`, selected, locked: completed });
-      container.append(label, list);
-      board.append(container);
+      container.append(list);
+      shell.append(heading, container);
+      board.append(shell);
       const controls = createOverflowControls(container, `row ${number}`);
       rowOverflow.push(controls);
       restoreScroll(container, controls, rowScroll.get(id));
     });
+    addRowMarker(null);
     renderTileRow(state.rack, find('#rack-tiles'), {
       location: session.destination({ area: 'rack' }), label: 'rack', selected, locked: completed,
     });
@@ -289,7 +334,16 @@ export function initialisePlay({ content, status, state, completed = false, onCh
       ? 'Ready to check. Select Check to finish.' : 'Tile placed. Temporary invalid rows are allowed.';
   }
 
+  function afterReorder(rowId) {
+    resetPanel.hidden = true;
+    render();
+    [...content.querySelectorAll('[data-row-handle]')]
+      .find((handle) => handle.dataset.rowHandle === rowId)?.focus({ preventScroll: true });
+    status.textContent = 'Row moved. Tile order is unchanged. Undo restores the previous order.';
+  }
+
   function onClick(event) {
+    rowDrag.cancel();
     touch.cancel();
     const tile = event.target.closest('[data-tile-id]');
     if (tile && content.contains(tile)) {
@@ -341,6 +395,7 @@ export function initialisePlay({ content, status, state, completed = false, onCh
 
   function onKeyDown(event) {
     if (event.key === 'Escape') {
+      rowDrag.cancel();
       touch.cancel();
       session.cancel();
       paintSelection();
@@ -359,7 +414,7 @@ export function initialisePlay({ content, status, state, completed = false, onCh
     (undo.disabled ? check : undo).focus();
     status.textContent = 'Move undone.';
   });
-  listen(cancel, 'click', () => { session.cancel(); paintSelection(); });
+  listen(cancel, 'click', () => { rowDrag.cancel(); touch.cancel(); session.cancel(); paintSelection(); });
   listen(reset, 'click', () => {
     if (session.snapshot().completed) {
       session.reset(); render(); status.textContent = 'Puzzle restarted.'; check.focus();
@@ -390,11 +445,14 @@ export function initialisePlay({ content, status, state, completed = false, onCh
   listen(retrySolutionButton, 'click', () => void requestSolution());
   listen(solutionDialog, 'close', onSolutionClose);
   touch = initialiseTouch({ content, status, session, paintSelection, afterMove });
+  rowDrag = initialiseRowDrag({ content, board: find('#board-rows'), status,
+    session, paintSelection, afterReorder });
   render();
   return { ...session, dispose() {
     cancelSolutionSearch({ announce: false });
     if (solutionDialog.open) solutionDialog.close();
     touch.dispose();
+    rowDrag.dispose();
     listeners.forEach((remove) => remove());
     rowOverflow.forEach((controls) => controls.dispose());
     solutionOverflow.forEach((controls) => controls.dispose());

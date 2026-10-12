@@ -109,6 +109,20 @@ h3 { font-size: 13px; margin: 0 0 16px; font-weight: 650; }
 .board .scroll-arrow:hover { color: var(--board); background: var(--board-text); }
 .board .scroll-arrow:focus-visible { outline-color: var(--board-text); }
 .board-row-label { margin: 0 0 4px; font-size: 12px; font-weight: 650; line-height: 1.35; }
+.row-shell { position: relative; }
+.board-row-heading { display: flex; align-items: center; gap: 8px; padding-inline: 4px; }
+.board-row-heading .board-row-label { flex: 1 1 auto; min-width: 0; margin: 0; }
+.row-handle { display: flex; align-items: center; justify-content: center; flex: 0 0 48px; width: 48px; min-height: 48px; padding: 0; color: var(--board-text); background: transparent; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.row-handle:hover { background: rgb(127 127 127 / 18%); }
+.row-handle:focus-visible { outline-color: var(--board-text); outline-offset: -3px; }
+.row-grip { display: grid; grid-template-columns: repeat(2, 4px); gap: 4px; pointer-events: none; }
+.row-grip > span { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+.row-drag-source { opacity: .65; }
+.row-insertion { position: relative; height: 0; pointer-events: none; }
+.row-insertion::after { content: ''; display: none; position: absolute; z-index: 1; top: -2px; left: 4px; right: 4px; border-top: 2px dashed var(--board-text); }
+.row-dragging .row-insertion::after { display: block; }
+.row-dragging .row-insertion-active::after { border-top: 4px solid var(--board-text); }
+.row-drag-preview { position: fixed; z-index: 1001; pointer-events: none; padding: 8px 12px; border: 2px solid var(--board-text); border-radius: 6px; color: var(--board-text); background: var(--board); font-weight: 650; transform: translate(-50%, -120%); }
 .board-row:focus-visible, .rack-scroll:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
 .tile-row { display: flex; gap: 4px; list-style: none; padding: 4px; margin: 0; width: max-content; min-width: 100%; }
 .tile { flex: 0 0 64px; width: 64px; height: 94px; background: var(--tile); border: 1px solid var(--tile-border); border-radius: 6px; box-shadow: var(--tile-shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }

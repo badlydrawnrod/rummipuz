@@ -1,5 +1,5 @@
 import { parseTile, classifyRow } from '../rules.js';
-import { createGameState, getTileLocations, checkState, moveTile, undoMove, resetGame } from '../state.js';
+import { createGameState, getTileLocations, checkState, moveTile, reorderRow, undoMove, resetGame } from '../state.js';
 
 // Dependency-free checks, runnable in a browser or any native-module JS runtime.
 export function runCoreChecks(sample) {
@@ -136,6 +136,36 @@ export function runCoreChecks(sample) {
   assert(moveTile(state, 'blue-3-1', { area: 'board', row: 0, index: 2 }) === state
     && moveTile(state, 'blue-3-1', { area: 'board', row: 0, index: 3 }) === state,
   'adjacent insertion gaps do not add undo entries');
+  const reorderedFirst = reorderRow(state, 0, state.board.length);
+  assert(reorderedFirst.board.map((row) => row[0]).join() === 'blue-3-2,blue-1-1'
+    && reorderedFirst.board.at(-1).join() === state.board[0].join()
+    && reorderedFirst.rack.join() === state.rack.join() && reorderedFirst.initial === state.initial
+    && reorderedFirst.inventory === state.inventory && reorderedFirst.history.length === 1,
+  'row reorder moves the first complete row to the end and preserves trusted data');
+  const reorderedLast = reorderRow(state, state.board.length - 1, 0);
+  assert(reorderedLast.board[0].join() === state.board.at(-1).join()
+    && reorderedLast.board.at(-1).join() === state.board[0].join(),
+  'row reorder moves the last complete row to the first gap');
+  assert(reorderRow(state, 0, 0) === state && reorderRow(state, 0, 1) === state,
+    'raw gaps immediately before or after a row are no-ops');
+  const withEmptyPlaceholder = { ...state, board: [...state.board, []] };
+  const downAcrossPlaceholder = reorderRow(withEmptyPlaceholder, 0, 2);
+  const upAcrossPlaceholder = reorderRow(withEmptyPlaceholder, 1, 0);
+  assert(downAcrossPlaceholder.board[0].join() === state.board[1].join()
+    && downAcrossPlaceholder.board[1].join() === state.board[0].join()
+    && downAcrossPlaceholder.board[2].length === 0
+    && upAcrossPlaceholder.board[0].join() === state.board[1].join()
+    && upAcrossPlaceholder.board[1].join() === state.board[0].join(),
+  'Row reorder handles downward and upward insertion across hidden placeholders');
+  assert(throws(() => reorderRow(state, -1, 0)) && throws(() => reorderRow(state, 0, 3))
+    && throws(() => reorderRow(state, 0, 1.5)) && throws(() => reorderRow(withEmptyPlaceholder, 2, 0)),
+  'row reorder rejects invalid sources, empty rows and invalid gaps');
+  assert(layout(undoMove(reorderedFirst)) === startLayout
+    && reorderedFirst.history.every((position) => Object.isFrozen(position)
+      && position.board.every(Object.isFrozen))
+    && reorderedFirst.board.every(Object.isFrozen) && layout(state) === startLayout,
+  'row reorder adds one immutable undo snapshot and leaves old positions untouched');
+  assert(throws(() => reorderRow(duplicate, 0, 1)), 'row reorder rejects corrupt inventory');
   let emptied = moveTile(state, 'blue-1-1', { area: 'new-row' });
   emptied = moveTile(emptied, 'blue-1-1', { area: 'board', row: 1, index: 1 });
   assert(emptied.board[2].length === 0 && emptied.board[1][1] === 'blue-1-1'

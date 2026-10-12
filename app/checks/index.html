@@ -23,6 +23,7 @@
     import { runProgressChecks } from './progress.js';
     import { runPreferenceChecks } from './preferences.js';
     import { runTouchChecks } from './touch.js';
+    import { runRowDragChecks } from './row-drag.js';
     import { runOverflowChecks } from './overflow.js';
     import { runWorkerLifecycleChecks, runWorkerChecks } from './worker.js';
     const results = document.querySelector('#results');
@@ -68,7 +69,7 @@
         ...await runPuzzleFlowChecks(sample),
         ...runProgressChecks(sample),
         ...runPreferenceChecks(),
-        ...runAppearanceChecks(styles), ...runTouchChecks(sample, styles), ...runOverflowChecks()];
+        ...runAppearanceChecks(styles), ...runTouchChecks(sample, styles), ...runRowDragChecks(), ...runOverflowChecks()];
       results.textContent = `${passed.length} checks passed. Testing real module workers…`;
       passed.push(...await runWorkerChecks(sample,
         [candidateFixtures[0], ratedFixtures[0], reviewedFixtures[0]]));

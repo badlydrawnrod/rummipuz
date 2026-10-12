@@ -37,7 +37,7 @@ try {
   for (const [name, args] of [['core', [sample]], ['solver', [sample]], ['generator', [v2]],
     ['difficulty', [sample, v3]], ['review', [v4, await json('checks/fixtures/reviewed-v4.json')]],
     ['play', [sample]], ['play-render', [sample]], ['progress', [sample]], ['preferences', []], ['appearance', [styles]],
-    ['touch', [sample, styles]], ['overflow', []]]) {
+    ['touch', [sample, styles]], ['row-drag', []], ['overflow', []]]) {
     const mod = await module(name);
     await run(name, () => Object.values(mod)[0](...args));
   }
