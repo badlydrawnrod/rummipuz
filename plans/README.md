@@ -4,7 +4,7 @@ Start with the [implementation plan](rummipuz-implementation.md) for current sta
 
 ## Active change plans
 
-- [UX improvements and assistance](rummipuz-ux-improvements.md): seven requested changes, implementation sequence, progress and acceptance criteria.
+- [UX improvements and assistance](rummipuz-ux-improvements.md): eight requested changes, implementation sequence, progress and acceptance criteria.
 
 ## Current specifications
 

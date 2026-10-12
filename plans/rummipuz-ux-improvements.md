@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-Planned on 12 October 2026 from user feedback. This document tracks implementation and acceptance. It covers preserving horizontal position, distinguishing red/orange tiles, moving whole rows, collapsing empty rows, staying at the chosen difficulty, hints and revealing a solution.
+Planned on 12 October 2026 from user feedback. This document tracks implementation and acceptance. It covers preserving horizontal position, distinguishing red/orange tiles, moving whole rows, collapsing empty rows, making the layout more compact, staying at the chosen difficulty, hints and revealing a solution.
 
 Approved generator revision 6, puzzle rules, physical tile identities and exact revisions 1–6 replay remain unchanged. These changes affect presentation, live layout and assistance. Existing saved sessions and undo history must remain readable. Keep the buildless static app, worker computation and offline support.
 
@@ -16,6 +16,7 @@ This plan takes priority over the remaining finishing checks in the [implementat
 | Red versus orange | Distinguish the inks more clearly and strengthen a visible cue independent of colour. Logical colours, symbols and names remain consistent. |
 | Drag a row | Drag a dedicated row handle to reorder the whole row vertically among board rows. Tile order and contents travel together. |
 | Collapse empty rows | Hide emptied board rows and show exactly one New row destination during play. |
+| Compact layout | Make the + signs and their visible placement controls smaller, reduce the space they occupy between tiles, and tighten vertical spacing between board rows. Keep tiles readable and placement comfortable on mouse and touch. |
 | Difficulty | Start/Next stay at the chosen tier indefinitely. Only a deliberate difficulty choice changes the tier for fresh puzzles. |
 | Hint | Show one concrete, explained tile move from the current position, highlighting its source and destination. The player performs it. |
 | Reveal solution | Open a clearly labelled, dismissible, read-only complete solution preview. Closing it restores the unchanged play view. |
@@ -31,6 +32,7 @@ Use **GPT-6 Luna High** for bounded, well-specified changes, reflecting the user
 | 1 — Scroll retention | GPT-6 Luna High | Concrete bug with identifiable rendering paths and clear acceptance checks. |
 | 2 — Red/orange distinction | GPT-6 Luna High | Mostly presentation work; user review on the actual display is decisive. |
 | 3 — Collapse empty rows | GPT-6 Luna High after GPT-6.1 Sol High settles/reviews row mapping | Hiding rows is straightforward; targeting, scroll identity and undo require a shared design. |
+| 3a — Compact layout | GPT-6 Luna High | Bounded presentation changes, with desktop/tablet review of spacing and placement targets. |
 | 4 — Whole-row dragging | GPT-6.1 Sol High | Combines state operations, touch gestures, scrolling, cancellation and persistence. |
 | 5 — Fixed difficulty | GPT-6 Luna High | A specified policy change with predictable compatibility checks. |
 | 6 — Reveal solution | GPT-6 Luna High | Existing worker/solver support bounds the read-only preview work. |
@@ -74,6 +76,16 @@ Row identity policy (step 3): each play session assigns opaque view IDs to board
 The session exposes nonempty row views with an ID, actual state index and contiguous visible number. Rendering, placement labels and Check use that mapping; future hints must use it too. UI destinations carry the current position token and board view ID so stale targets are rejected. Scroll snapshots are cached by view ID, including while a row is hidden, so editing another row or undoing an emptied row cannot transfer its viewport to a different row.
 
 Implementation record (12 October 2026): step 3 is implemented without changing puzzle data, save schema or pure move semantics. Offline release is `v9` with the same 39 precached assets. All 1,314 native checks pass, including 15 new session/identity checks and 11 checks exercising the real renderer with simulated geometry: collapse, numbered labels/targets/Check, all-empty board, single New row, Undo/Reset and horizontal anchors. Session checks cover physical inventory, invalid partial rows, stale/cancelled gestures, branched Undo identities and old-format save/reload. Actual-worker and precache-only worker suites pass. The user directed that step 3 be marked complete. No browser was connected during implementation; the automated checks do not establish desktop/tablet scroll behaviour. The collapse walkthrough in the project README remains available for integration review in step 8.
+
+## 3a — Make placement controls and row spacing more compact
+
+- [ ] Make the + controls smaller and reduce space between board rows. **Done when:** compared with the user's supplied board screenshot at the same viewport and zoom, the + glyphs and outlined placement controls are visibly smaller, insertion gaps consume less horizontal space, and board rows occupy less vertical space. Tile numbers, symbols and colour names remain readable at their current tile size. Row labels and validity feedback, including wrapped messages, remain clear. Mouse placement, tap-to-place and touch dragging remain comfortable and unambiguous.
+
+Review `.placement`, `.placement-slot`, `.tile-row`, `.board-row`, `.board-row-label` and the surrounding overflow wrappers in `app/styles.css`. Reduce both the visible + control footprint and unnecessary spacing around it; reducing the glyph alone does not address the width used by insertion targets. Apply the placement-control treatment consistently to board and rack. Tighten row padding and label-to-tile spacing while keeping enough separation to distinguish neighbouring rows. Keep New row easy to recognise as the single row-creation destination.
+
+Keep touch hit areas comfortably sized and non-overlapping with adjacent tiles or destinations; a compact visible cue may use a larger hit area where space allows. Review actual tablet targeting before settling dimensions. Preserve selection, focus outlines, drag destination highlights, accessible placement labels, row identity and horizontal scroll retention. Recheck the overflow controller's measured tile/marker spacing, arrow movement and leading/trailing placement gaps after changing dimensions. Coordinate the tighter layout with the dedicated row handles planned in step 4.
+
+**Verification:** compare before/after at matching viewport sizes on desktop and tablet, including portrait/landscape, long overflowing rows, one/two-tile invalid rows and wrapped validity text. Exercise board/rack + targets by click, tap and drag; check neighbouring-target accuracy, cancellation, Undo/Reset, hidden-row numbering and scroll retention. Review all appearances and both palettes. Record user acceptance of compactness and touch comfort; native geometry checks alone cannot establish either.
 
 ## 4 — Drag whole rows to reorder the board
 
@@ -119,10 +131,10 @@ Hints and Reveal requests must carry puzzle/state identity tokens. Any tile move
 
 - [ ] Update current specifications and instructions. **Done when:** player flow, difficulty policy, save/undo documentation where affected, and README describe the new row controls, fixed difficulty, Hint and Reveal. Remove hints from deferred scope; leave jokers, scoring, timed/daily puzzles and device sync deferred.
 - [ ] Package and run appropriate checks. **Done when:** relevant native regressions and exact replay/save fixtures pass; assistance and row operations preserve physical inventory; actual-worker cancellation and offline-import checks pass. Increment `OFFLINE_RELEASE` for cached runtime changes and add all assistance imports/assets to `OFFLINE_ASSETS`. Run worker checks from only the precached bundle, including assistance for a resumed session without stored solution metadata.
-- [ ] Obtain desktop/tablet acceptance for the seven changes. **Done when:** the user confirms scroll retention, red/orange distinction on their display modes, single New row behaviour, comfortable row movement, fixed tier selection and useful hints/solution preview. Include reload, Undo/Reset, appearance/palette changes and offline assistance. Record device/browser and unresolved limitations; keep installed-launch/HTTPS acceptance in the main plan.
+- [ ] Obtain desktop/tablet acceptance for the eight changes. **Done when:** the user confirms scroll retention, red/orange distinction on their display modes, single New row behaviour, compact placement controls and row spacing, comfortable row movement, fixed tier selection and useful hints/solution preview. Include reload, Undo/Reset, appearance/palette changes and offline assistance. Record device/browser and unresolved limitations; keep installed-launch/HTTPS acceptance in the main plan.
 
 Release each practical UX fix for review as it becomes ready. Do not hold scroll/colour/progression fixes behind the more involved hint planner. If a step reveals a need to change puzzle rules, generator outputs or saved-data format, document the proposal and compatibility handling before implementing it.
 
 ## Current position
 
-Steps 1, 2, 3, 5 and 6 are implemented and user-approved. Step 6 adds a cancellable worker search and read-only verified preview. Next implementation: step 4, whole-row dragging, extending the documented row identity/targeting policy. Steps 6–7 must share cancellation, solution validation and current-position semantics.
+Steps 1, 2, 3, 5 and 6 are implemented and user-approved. Step 6 adds a cancellable worker search and read-only verified preview. Step 3a is newly planned from the user's board screenshot: smaller + controls and tighter row spacing. Next implementation: step 3a, followed by step 4, whole-row dragging, extending the documented row identity/targeting policy. Steps 6–7 must share cancellation, solution validation and current-position semantics.
