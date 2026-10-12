@@ -1,232 +1,208 @@
 # Rummipuz
 
-A local Rummikub-style puzzle game for PC and tablet. The current app opens a playable sample board and rack, shows readable tiles with distinct symbols and colour names, all four difficulty descriptions, the rules, and Classic / Light, Dark, High Contrast, and System appearance choices plus an independent alternative tile palette. Pure rules, reversible moves, a solver, seeded generation with proven tiers, and cancellable worker execution are implemented. Mouse selection/placement and drag/drop, touch tap-to-place and press-and-hold dragging, Undo, confirmed Reset, Check, current-position Hint, read-only Reveal solution, and sample replay are implemented. The user manually approved tablet touch controls after context-menu and destination-targeting refinements. Current puzzle state, undo history, chosen difficulty, and completed replay identities are saved locally. Unlimited generated play is available through module workers: choose any difficulty and Start puzzle, continue with Next Puzzle after completion, or enter a full replay code. The sample remains available, and saved sessions can resume. PWA packaging now includes a standalone manifest, install icons, and offline caching of the full app and puzzle-worker dependencies; installed-browser verification remains pending.
+Rummipuz is a Rummikub-style tile puzzle for a computer or tablet. Rearrange the board, use every tile, and empty your rack. You can play a sample or generate puzzles at four difficulty levels. Rummipuz saves your current puzzle in browser storage when it is available.
 
-## Run on a PC
+This guide is organised so you can start playing first, then look up specific tasks and details. It follows the four-part Diataxis structure: tutorial, how-to guides, reference, and explanation. The writing uses the plain-language aims of ISO 24495-1: help readers find, understand, and use the information they need.
 
-Python 3 is the only launch dependency. From this project directory:
+## Tutorial: Play your first puzzle
+
+### Start the app on a computer
+
+From the project directory, start the built-in Python web server:
 
 ```bash
 python3 -m http.server 8000 --bind 127.0.0.1 --directory app
 ```
 
-Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in a modern browser, then select **Open sample puzzle**. On systems where Python is named `python` or `py`, substitute that command for `python3`. Stop the server with Ctrl+C. If the port is occupied, use another port in both the command and URL.
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in a modern browser and select **Open sample puzzle**. To stop the server, return to the terminal and press Ctrl+C.
 
-Use the HTTP server rather than opening `index.html` as a file: native JavaScript modules and the sample JSON are loaded over HTTP. There is no build step, package manager, application server, or external asset request.
+Python 3 is the only launch requirement. Use `python` or `py` if that is the command name on your computer. If port 8000 is already in use, choose another port in the command and URL.
 
-## Open on a tablet over your local network
+Use the server address instead of opening `index.html` directly. The app loads JavaScript modules and a puzzle file, which browsers do not load correctly from a local file. Rummipuz has no build step or package installation.
 
-1. Connect the PC and tablet to the same local network.
-2. Start the server from the project directory with:
+### Make a move
+
+The goal is to empty your rack and leave every board row valid.
+
+1. Select a tile in the rack or on the board.
+2. Select a **+** between tiles, or choose **New row** to start a row.
+3. Continue until the rack is empty and every row is valid.
+4. Select **Check** to finish.
+
+You can also drag a tile to a **+** or **New row**. On a tablet, tap a tile and then its destination, or hold a tile briefly and drag it. A temporary invalid row is allowed while you work. Select **Undo** to reverse a move. Select **Reset** to restart the puzzle.
+
+Try this sequence in the sample:
+
+1. Move **Blue 6** from the end of board row 1 to **New row**.
+2. Move **Red 6** from the rack to the position after Blue 6 in the new row.
+3. Move **Black 6** from the rack to the position after Red 6.
+4. Select **Check** to finish.
+
+Select **How to play** below the puzzle for the full rules.
+
+## How-to guides
+
+### Start another puzzle
+
+Choose **Easy**, **Medium**, **Hard**, or **Expert** under **Difficulty for a new puzzle**, then select **Start puzzle**. Rummipuz prepares the puzzle in the background. You can cancel preparation while your current puzzle remains available.
+
+After you finish, select **Next Puzzle** to get another puzzle at your saved difficulty. To change difficulty, choose a different tier and select **Start puzzle**. Rummipuz saves the new tier after the puzzle is ready.
+
+If you try to replace an unfinished puzzle, choose **Start another** to continue or **Keep playing** to return to it. If preparation fails, select **Retry** or keep playing the current puzzle.
+
+### Resume a saved puzzle
+
+Rummipuz saves your puzzle and Undo history in this browser. After a reload, select **Resume puzzle** to continue. The save belongs to the address you used: a tablet and computer, or two different addresses, may have separate saves.
+
+If browser storage is unavailable, you can still play in the current session, but progress will not survive a reload.
+
+### Replay a puzzle
+
+Each puzzle has a replay code below the rack. Select **Copy replay code**, then paste the code into the **Replay code** box on the start screen and select **Play replay**. You can also copy the visible code manually if clipboard access is unavailable.
+
+A replay code identifies the puzzle version, generator revision, difficulty, and seed. For example, `rummipuz:1:1:1:sample-rearrangement-001` opens the sample puzzle. A seed by itself is not enough. An unsupported or invalid code reports an error and leaves your current puzzle alone.
+
+### Use a hint or view a solution
+
+- Select **Hint** for one explained tile move. The highlighted source and destination show what to move; you make the move yourself.
+- Select **Show tile** or **Show destination** if either part is off screen.
+- Select **Reveal solution** to open a read-only solution preview. Close it to return to your unchanged puzzle.
+
+Hints and solution previews do not change the board or Undo history. Search can take time; you can cancel it or retry if it reaches its work limit.
+
+### Change appearance or tile colours
+
+Use **Appearance** to select **System**, **Classic / Light**, **Dark**, or **High Contrast**. System follows your device's light or dark setting. Use **Tile palette** to choose **Standard** or **Alternative** independently.
+
+The app saves these choices in the browser. Tile symbols and colour names stay the same in both palettes.
+
+### Open the app on a tablet over your home network
+
+This is a convenient way to preview and play while the computer and tablet are on the same network. It does not set up tablet installation or offline use; those require trusted HTTPS.
+
+1. Connect the computer and tablet to the same Wi-Fi or local network.
+2. In the project directory, start the server so other devices can reach it:
 
    ```bash
    python3 -m http.server 8000 --bind 0.0.0.0 --directory app
    ```
 
-3. Find the PC's local IPv4 address in its network settings, for example `192.168.1.25`.
-4. On the tablet, open `http://192.168.1.25:8000`, substituting the actual PC address. Keep the PC awake and the server running. If needed, permit incoming TCP port 8000 on the PC's private-network firewall; guest Wi-Fi/client isolation can prevent device-to-device access.
-5. Open the sample, compare the tile symbols and names with the legend, expand **How to play**, and check portrait and landscape. Longer board rows and the rack scroll horizontally without shrinking the tiles; focus their scroll areas with Tab to scroll using the keyboard.
+3. Find the computer's local IPv4 address in its network settings. It may look like `192.168.1.25`.
+4. On the tablet, open `http://192.168.1.25:8000`, replacing the example address with the computer's address. Keep the computer awake and the server running.
 
-The `--directory app` option serves only the public app files, rather than repository metadata and configuration. Local HTTP is sufficient for this preview. This LAN HTTP address supports ordinary play. Offline setup and PWA installation on the tablet require an HTTPS address trusted by that device; see **Install and verify offline use** below.
+If the page does not load, check that both devices are on the same network and that the computer's firewall allows connections on port 8000. Guest Wi-Fi may block connections between devices.
 
-## Project layout
+### Install the app for offline use
 
-- `app/index.html`, `styles.css`, `main.js`, and `tiles.js`: buildless static app and native browser modules.
-- `app/play-session.js`, `play.js`, `touch.js`, and `row-drag.js`: transient selection/drag, mouse and touch tile placement, whole-row reordering, interactive board/rack rendering, and completion controls using the pure state module.
-- `app/overflow.js`: directional arrow cues beside overflowing board rows and the rack, refreshed on scroll, rendering, and resize.
-- `app/puzzle-flow.js`: cancellable puzzle preparation, fresh seeds, fixed chosen-tier selection, and exact replay resolution.
-- `app/progress.js`: versioned local progress storage, saved-session validation, resume, chosen-tier persistence, and completion identity deduplication.
-- `app/appearance.js`: appearance and tile-palette switching with live device preference tracking, independent of puzzle state.
-- `app/preferences.js`: local appearance/palette preferences, validation, and session fallback when storage is unavailable.
-- `app/rules.js` and `state.js`: pure row classification, puzzle validation, tile tracking, win detection, reversible moves, and undo/reset.
-- `app/solver.js`: pure deterministic search for a complete valid arrangement of every puzzle tile.
-- `app/assistance.js`: bounded current-layout preferences, physical-copy matching and a verified tile-move route used by Hint and Reveal.
-- `app/hints.js`: inline hint text, precise highlights, explicit source/destination navigation and stale-request cancellation.
-- `app/generator.js`: seeded, solver-verified candidate generation with versioned replay behavior.
-- `app/preservation.js` and `difficulty.js`: constrained physical-row preservation and minimum rearrangement proofs.
-- `app/rated-generator.js`: approved revision-6 default generation with tier/family proofs and preserved older replay.
-- `app/generator-v5.js` and `structural-difficulty.js`: revision-5 generation with connected rearrangement criteria and exhaustive physical-tile alternative proofs; preserved for explicit revision-5 replay.
-- `app/generator-v6.js`, `patterns-v6.js`, `difficulty-v6.js`, `partitions-v6.js`, `mechanisms-v6.js`, and `signatures-v6.js`: approved revision-6 generation, physical proofs, family certification, and semantic diagnostics.
-- `app/puzzle-service.js` and `puzzle-worker.js`: asynchronous module-worker boundary for generation, solving, assistance and rating, with cancellation and cleanup.
-- **Reveal solution** uses that worker boundary to show a verified complete arrangement in a read-only modal; it does not change the live board or completion state.
-- `app/manifest.webmanifest`, `icons/`, `service-worker.js`, `offline-cache.js`, and `offline.js`: installation metadata, scoped offline app cache, and offline-readiness status.
-- `app/checks/`: dependency-free checks, including independent exhaustive searches and saved replay fixtures.
-- `app/puzzles/sample.json`: public runtime copy of `plans/sample-puzzle.json`; keep these files identical when updating the fixture.
-- `plans/`: current specifications, the remaining acceptance checklist and stable check data; `plans/archive/` retains completed designs/reviews/evidence.
+Offline setup needs a secure address. On the same computer, `localhost` is secure. A tablet needs an HTTPS address with a certificate it trusts. The local-network HTTP address above is for play and preview; it is not enough to install the app for offline use.
 
-Follow [the implementation plan](plans/rummipuz-implementation.md) for the next step.
+1. Open Rummipuz from its secure address while connected to the internet.
+2. Wait for **Ready for offline use on this device**.
+3. Use the browser's **Install app** command or install icon if available. On an iPad, use Safari's Share menu and choose **Add to Home Screen**.
+4. Start a puzzle and make a move so there is progress to resume. Close every Rummipuz tab and app window.
+5. Turn off networking, then open Rummipuz from its installed app icon. Confirm that the puzzle resumes and that you can make moves, use Undo and Check, start a puzzle, and replay a code.
 
-## Core modules and checks
+Offline setup can fail if the browser blocks or runs out of cache storage. Rummipuz will still work online and show a message; reload while connected to try setup again. A readiness message confirms that setup succeeded at that time. Browsers can later clear stored data.
 
-The pure modules have no browser, storage, or external dependency. The generator owns a deterministic seeded random stream. The asynchronous service uses browser module workers:
+For more detail about HTTPS and installation support, see [MDN's PWA installation guide](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable).
 
-| API | Result |
+## Reference
+
+### Rules and controls
+
+- A **group** has three or four tiles with the same number and different colours.
+- A **run** has at least three consecutive numbers of one colour, in ascending order.
+- Numbers run from 1 to 13. They do not wrap from 13 to 1.
+- Matching tiles are separate physical tiles. Use every tile exactly once.
+- There are no jokers and no opening-point requirement.
+- You win when your rack is empty and every board row is valid. The final arrangement can differ from the supplied solution.
+
+Select a tile, then a **+** to place it before, between, or after tiles. Choose **New row** to start a row. The same controls let you move a tile from the board to the rack. One- and two-tile rows stay visible while you work.
+
+Drag the six-dot handle beside a row label to move a whole row. Its tiles keep their order. **Undo** reverses a tile move or row move. **Reset** asks before restoring a changed puzzle to its original arrangement. After a win, **Replay** restarts that puzzle.
+
+### Difficulty levels
+
+| Level | What the puzzle asks you to do |
 | --- | --- |
-| `parseTile(id)` | Decoded physical tile identity, colour, number, and copy; `null` for an invalid ID. |
-| `classifyRow(row)` | `{ valid, kind, reason }`, with kind `group`, `run`, `empty`, or `invalid`. |
-| `createGameState(puzzle)` | Detached, frozen state containing puzzle metadata, the original `inventory`, `rack`, `board`, immutable `initial` layout, and empty `history`; throws for malformed starting data or an invalid supplied solution. |
-| `getTileLocations(state)` | Map of physical IDs to location arrays: `{ area: 'rack', index }` or `{ area: 'board', row, index }`. Multiple locations expose duplicates. |
-| `checkState(state)` | `{ won, conserved, remainingRack, invalidRows, errors }`. Row indices are zero-based. Invalid temporary rows are unfinished positions; inventory failures are state errors. |
-| `moveTile(state, id, destination)` | New frozen state with one undo entry; destinations are `{ area: 'rack', index }`, `{ area: 'board', row, index }`, or `{ area: 'new-row' }`. Rejects missing tiles, invalid destinations, and corrupt inventory without changing the input. |
-| `reorderRow(state, sourceRow, insertionIndex)` | New frozen state moving one complete nonempty board row to a pre-removal board gap, from zero through `board.length`. Preserves tile order and inventory; gaps immediately before/after the source return the input. Adds one undo entry for a changed layout. |
-| `undoMove(state)` | New frozen state restoring the preceding layout and removing its history entry; returns the input when history is empty. |
-| `resetGame(state)` | New frozen state restoring `initial` and clearing history, preserving puzzle metadata and inventory. Can recover a corrupt live layout when the original layout is intact. |
-| `solveState(state, { maxNodes = Infinity })` | `{ status, board, nodes }`, where status is `solved`, `unsolvable`, or `limit`. A solved board contains every original tile exactly once in valid rows; otherwise board is `null`. Throws for malformed/nonconserved states or invalid budgets. |
-| `planAssistance(state, { maxNodes = 200000, preferredBoard = null })` | `{ status, board, moves, nodes }`. A solved result includes a verified complete target and a finite route of physical tile moves from the supplied position. Current-layout preferences are bounded; a limit is inconclusive. |
-| `generateCandidate({ version = 1, generatorVersion = 2, difficultyTier = 1, seed })` | `{ status, puzzle, attempts, rejected }`. Status is `candidate` for an immutable solver-verified puzzle or `exhausted` with a null puzzle. Unsupported identities throw. Requested tier size bounds are enforced; rearrangement difficulty remains unproven. |
-| `ratePuzzle(puzzle, { maxNodes = 200000 })` | `{ status, tier, board, nodes, features }`. Status is `rated`, `excluded`, `unsolvable`, or `limit`. Awards the actual tier only after proving minimum rearrangement and checking size bounds. Supports up to nine starting rows. |
-| `rearrangedRows(state, board)` | Original row indices not preserved in a complete conserved solution, using physical identities. |
-| `generatePuzzle({ version = 1, generatorVersion = 4, difficultyTier = 1, seed })` | `{ status, puzzle, attempts, rejected }`. `ready` includes an immutable puzzle, solution, and rating features; `exhausted` has a null puzzle. Only the requested tier is accepted. |
-| `createPuzzleService()` | Worker-backed `generate(identity, { signal })`, `solve(state, { signal, maxNodes })`, `assist(state, { signal, maxNodes, preferredBoard })`, `rate(puzzle, { signal, maxNodes })`, and `dispose()`. Requests return promises with the same results as the pure modules. |
+| Easy | Rework one row |
+| Medium | Connect changes across two rows |
+| Hard | Coordinate three rows |
+| Expert | Rebuild four or more rows |
 
-Insertion indices are gaps in the destination **before** removal, from zero through its length. Moving within the same location adjusts the gap after removal; gaps immediately before/after the selected tile return the input without adding history. Moves permit temporary invalid rows and retain empty source rows as layout placeholders. The interface hides empty rows and numbers the remaining rows consecutively, with exactly one **New row** destination during play. One- and two-tile rows stay visible. Undo restores tile order and row layout exactly. All returned positions and history snapshots are immutable. Reset confirmation, selection, and completion records belong to the interface/session layer.
+All levels are available whenever you start a puzzle. Completing puzzles does not change your selected level. **Next Puzzle** uses the last level you successfully started.
 
-Keep the original inventory when constructing later positions; never derive a new inventory from moved tiles. Win checking accepts any valid complete arrangement, independent of supplied solution metadata. Starting puzzles without solution metadata require `solveState` to return `solved` before publication.
+### Saved information
 
-The solver enumerates every available run interval and three/four-colour group, then searches for an exact partition using face counts, the most constrained remaining face, and memoized failed positions. Physical copy IDs are assigned deterministically to the result, which is verified through `checkState`. Current tile placement and stored solution metadata do not influence the search; temporary invalid rows are accepted when inventory is conserved. It returns a final arrangement, rather than a move sequence or difficulty rating. Search is synchronous and exhaustive by default. A finite node budget bounds search work; `limit` is inconclusive and must never be used as proof of unsolvability or tier membership. The puzzle service runs searches in a worker; difficulty proofs are provided by the rating module.
+Rummipuz saves the active puzzle, its Undo history, your selected difficulty, and completed puzzle identities in browser storage. It saves appearance and tile-palette choices separately. It does not sync data between devices or addresses, and it does not need an account.
 
-The separate assistance planner favours compatible valid rows and useful partial work, matches physical duplicate copies, and retains existing group order. It searches at most 64 preservation subsets of up to nine valid rows within the request's node budget, then verifies the entire route through normal tile moves and final win checking. These are bounded preferences, with no guarantee of the easiest human solution. Hint and Reveal share a verified target for the current position and consider it alongside later player progress. Generator algorithms and replay identities are unchanged.
+The app keeps one active puzzle. Replacing an unfinished puzzle replaces its saved session after the new puzzle is ready. Replay opens the puzzle's original arrangement. Resume restores the saved position and history.
 
-Rated generation rejects zero-rearrangement, size-mismatched, tier-mismatched, unsolvable, and inconclusive candidates. Revision 6 is the approved default, with three limited one-row Easy mechanisms and certified connected rearrangement families at higher tiers. Explicit revisions 3–5 preserve their original replay, revision 2 preserves candidate replay, and revision 1 resolves through the stored sample. Algorithms and budgets are specified in [the generation contract](plans/rummipuz-generator.md). Rating treats selected original rows as indivisible physical-tile blocks, permits valid extensions and merges, and exhausts every choice of fewer changed rows before proving the minimum. Features include rack size, board rows, minimum rearrangement, a witness's changed-row indices, and competing placements counted as initially valid rack-tile insertion gaps. The app prepares generated play through the worker service. The [sample review](plans/archive/rummipuz-sample-review.md) records eight hand-derived solutions and smaller revision-4 sampling envelopes. This is historical revision-4 evidence; revision-6 preparation and player review have since been approved. Complete browser sessions and installed offline use remain outstanding.
+### Troubleshooting
 
-The interface uses the service for interactive preparation; keep direct search calls in the worker or pure-module checks. Each request has a dedicated worker. Abort terminates even synchronous search, rejects with `AbortError`, and ignores late replies. `dispose()` cancels every pending request and prevents new ones. Worker construction/loading, search, and cloning errors reject without a synchronous fallback. Cloned results are deeply frozen again. Preparation has no reference to an active session; a caller replaces it only after a `ready` result and retains it on cancellation, failure, or exhaustion. Revision 2 generation returns its original `candidate` result; revisions 3/4/5 retain `ready` results. The revision-1 fixture is loaded directly rather than generated.
+| Problem | What to try |
+| --- | --- |
+| The page is blank when I open `index.html` | Start the Python web server and open its HTTP address instead. |
+| A tablet cannot reach the computer | Check the local IP address, same-network connection, firewall, and guest Wi-Fi restrictions. |
+| Tablet offline setup is unavailable | Use a trusted HTTPS address. Local-network HTTP supports ordinary play only. |
+| A puzzle will not prepare | Select **Retry**. The current puzzle remains available if preparation fails or is cancelled. |
+| My puzzle did not resume | Reopen it using the same browser and address. Private browsing, cleared site data, or blocked storage can prevent saving. |
+| Offline use stopped working | Reconnect, reload, and wait for **Ready for offline use on this device**. Browser storage may have been cleared or evicted. |
 
-```js
-import { createPuzzleService } from './puzzle-service.js';
-const preparation = createPuzzleService();
-const controller = new AbortController();
-const pending = preparation.generate(
-  { difficultyTier: 1, seed: 'example' },
-  { signal: controller.signal },
-);
-// Cancel button: controller.abort();
-const result = await pending;
-// Replace the current session only when result.status === 'ready'.
-// On application teardown: preparation.dispose();
+## Explanation
+
+### What the difficulty level means
+
+Difficulty describes how much of the starting board a puzzle requires you to rearrange. Higher levels require changes across more connected rows. It is not a timer or a score, and it does not increase automatically. The short descriptions in the table are a guide to the kind of rearrangement involved.
+
+### How generated puzzles and replay codes work
+
+Generated puzzles use a recorded seed and generator revision. This lets Rummipuz recreate supported puzzles from their replay codes. The app keeps older revisions available for replay when possible, even as it changes which revision it uses for new puzzles. A replay always refers to the puzzle's original arrangement, not its current saved position.
+
+### What offline readiness means
+
+When the browser reports that Rummipuz is ready for offline use, it has cached the app and the files needed to prepare puzzles. The browser may later remove those files, so readiness is not a promise of permanent storage. Progress and appearance settings are stored separately from the offline app files.
+
+## For contributors
+
+### Run the checks
+
+Start the Python server from the project directory:
+
+```bash
+python3 -m http.server 8000 --bind 127.0.0.1 --directory app
 ```
 
-Module workers load over HTTP through the same static server. A browser without module-worker support receives an error; it never runs preparation on the main thread. The playable sample loads its stored fixture directly. Generated-puzzle session wiring is implemented; desktop/tablet verification remains pending.
+Then open [http://127.0.0.1:8000/checks/](http://127.0.0.1:8000/checks/). The page runs the dependency-free checks in the browser and reports failures. It is not included in the offline app cache.
 
-With the same Python server running, open [http://127.0.0.1:8000/checks/](http://127.0.0.1:8000/checks/). The page reports all checks or the first failure. The revision-5 switch ran 869 checks (80 core, 36 solver, 51 generator, 64 difficulty, 33 review, 15 worker lifecycle, 11 real-worker checks, 96 appearance/palette checks, 41 preference-persistence checks, 37 play-session checks, 40 progress-persistence checks, 81 touch-controller checks, 39 overflow-control checks, 40 puzzle-flow checks, 28 real-worker play-flow checks, 39 offline lifecycle/status checks, 11 offline-package checks, 103 revision-5 structural/generation checks, 11 revision-5 real-worker checks, and 13 benchmark-accounting/diagnostic checks). These include independent search oracles, saved replay fixtures, hand-derived solutions, a 200-move undo sequence, worker error/cleanup races, concurrent cancellation, and main-thread heartbeat progress during search. Pure and lifecycle checks run in native-module runtimes; real-worker checks also accept a worker adapter. The original 290 passed using native worker threads executing the actual worker module; appearance/palette and play-session checks passed separately. For preference saving, all 409 relevant checks passed (38 preferences, 40 progress, 37 overflow, 81 touch, 80 core, 37 play-session, and 96 appearance/palette); unchanged solver/generator/worker suites were not rerun. The touch suite uses deterministic events, clocks, and hit-test stubs to exercise the actual controller. It cannot verify native pointer capture, browser scrolling, layout, or tablet comfort. No browser was available in that session. No Node installation or package manager is needed for the browser runner.
+The checks cover rules, state, generation, replay, worker cancellation, saving, appearance, input handling, and offline packaging. Simulated touch and layout checks do not replace review in a real browser on a computer and tablet.
 
-## Verify appearance manually
+### Find the code for a task
 
-Use the **Appearance** selector above the sample preview. Switch through Classic / Light, Dark, and High Contrast before and after opening the puzzle. Check that numbers, symbols, names, controls, loading feedback, and keyboard focus remain readable. Tiles and replay code should stay unchanged. High Contrast has plain backgrounds, strong borders, bold numbers, and no tile shadows; Dark retains light tiles.
+| If you are changing… | Start here |
+| --- | --- |
+| Page structure or styles | `app/index.html`, `app/styles.css` |
+| Game rules and moves | `app/rules.js`, `app/state.js` |
+| Board interactions | `app/play.js`, `app/play-session.js`, `app/touch.js`, `app/row-drag.js` |
+| Hints and solution preview | `app/hints.js`, `app/assistance.js`, `app/solver.js` |
+| Puzzle creation and difficulty | `app/generator.js`, `app/rated-generator.js`, `app/generator-v6.js`, `app/difficulty-v6.js` |
+| Replay, save, and resume | `app/puzzle-flow.js`, `app/progress.js`, `app/preferences.js` |
+| Offline setup | `app/offline.js`, `app/offline-cache.js`, `app/service-worker.js` |
 
-Select **System**, then change the device's light/dark preference while the page is open: the appearance and status should follow. Select an explicit mode and repeat the device change: the selected mode should remain active. Inspect narrow/tablet layouts and 200% zoom. Reload should restore the chosen appearance. With System selected, change the device preference before reloading: the app should keep System selected and use the current device appearance.
+The app uses plain JavaScript modules and static files. Puzzle generation, solving, and assistance run in module workers so they do not block the interface. Pure game rules and state operations are kept separate from browser storage and display code.
 
-Use **Tile palette → Alternative** with each appearance mode. The legend and tiles should use charcoal, deep blue, purple, and ochre inks while keeping the same numbers, symbols, and logical colour names (a purple heart still says “Red”). Switch appearances and change the device preference in System mode: the palette choice should remain selected. Switching back to Standard restores the original inks without changing the puzzle or replay code. Reload should restore the chosen palette independently of appearance. If storage is unavailable, both settings remain usable until reload and the appearance note explains that choices cannot be saved.
+### Update the offline package
 
-## Verify mouse play manually
+When you change a file served to players, increase `OFFLINE_RELEASE` in `app/offline-cache.js`. Add any new runtime file to `OFFLINE_ASSETS`, including its worker imports. Deploy all app files together. The service worker stages the new cache before it activates the update.
 
-Open the sample. Click any tile: its selection outline and the selection message should identify it. Click it again or **Cancel selection** to clear selection without moving it. Click a selected tile, then a **+** target before, between, or after tiles, or **New row**. Temporary invalid rows are allowed and their reasons appear beside the row number. Dragging to the same targets is an equivalent move; dropping outside them or cancelling a drag must leave every tile in place.
+### Read the specifications
 
-Placement controls use an 18px **+** inside a 28×36px dashed cue. Each button keeps a 48×48px hit area; adjacent targets touch the tile bounds without overlapping them. The board and rack share this sizing. Board rows have tighter label and tile spacing while tiles remain 64×94px; check that wrapped validity text stays legible in each appearance and palette.
+- [Current implementation plan](plans/rummipuz-implementation.md): remaining device and offline acceptance work.
+- [Player flow](plans/rummipuz-player-flow.md): screen behavior and interactions.
+- [Rules](plans/rummipuz-rules.md): tile and row rules.
+- [Difficulty policy](plans/rummipuz-difficulty.md): tier definitions and persistence.
+- [Puzzle format](plans/rummipuz-puzzle-format.md): saved puzzle and replay identity.
+- [Generator contract](plans/rummipuz-generator.md): generation and rating behavior.
+- [Plans index](plans/README.md): current specifications and archived design records.
 
-Complete this sample:
-
-1. Move **Blue 6** from the end of row 1 to **New row**.
-2. Move **Red 6** from the rack to the **+** after Blue 6 in row 3.
-3. Move **Black 6** from the rack to the **+** after Red 6 in row 3.
-4. The rack should be empty and the status should say **Ready to check**. Select **Check** to complete; tile editing then stops. **Replay** restores the starting arrangement.
-
-Try that sequence once with clicks and once with dragging. Also check **Undo**, moving a board tile back into the rack, moving within a row, and **Reset → Keep playing** versus **Reset → Restart**. Checking an unfinished position should report the remaining rack count and invalid rows. Switch appearances and palettes during play: selection, tile positions, and undo history should remain unchanged. Reopening the puzzle preserves the current session; after a page reload, **Resume puzzle** restores the saved position and undo history. The user reviewed and approved mouse controls; agent-side browser verification remains unavailable.
-
-## Verify touch play manually
-
-On a tablet, complete the same three-move sample first by tapping a tile and then a **+** or **New row**. Tap the selected tile again to cancel. Insertion hit areas are 48×48 CSS pixels; the visible dashed cue is smaller so neighbouring targets remain distinct. Try board-to-rack moves, insertion within a row, and creating a row with **New row**. Compare the tighter vertical row spacing in portrait and landscape, including one/two-tile rows and wrapped validity text. The user reviewed and approved the compact layout on desktop and tablet on 12 October 2026.
-
-Empty several board rows into the rack: emptied rows should disappear and the remaining labels and placement targets should follow their visible numbers. Empty the whole board: only one **New row** target should remain. Create a one-tile row, add a second tile, then try Undo, confirmed Reset and reload/Resume. Saved sessions retain their exact underlying placeholders and undo history. Scroll a long surviving row near its middle/end before emptying an earlier row; its visible tiles should stay in place. Repeat on desktop and tablet when reviewing the compact layout; native rendering checks use simulated geometry.
-
-Repeat with touch dragging: hold a tile still for about a quarter of a second until a preview appears, then move the visible tile over a **+** or **New row**. Targeting follows the visible tile rather than your finger. Its centre selects a target directly; overlapping a nearby target, with a small extra margin, selects the nearest visible destination. The chosen destination gets a solid outline; release when the intended destination is highlighted. Holding a playable tile should not open the browser context menu. Release there to place the tile. Move near a row's left/right edge to scroll it, or near the screen's top/bottom edge to scroll the page during dragging. A quick movement before the hold threshold cancels the gesture; it must not select or move a tile. Swipe row labels, gaps, or other whitespace to scroll normally; tile surfaces reserve gestures for selection and dragging.
-
-## Verify whole-row movement manually
-
-Each board row has one **six-dot grip** on the left of its stationary header, beside the row label. The grip has a 48×48px touch target and stays outside the horizontal tile scroller. Drag the handle with a mouse, or hold it briefly on touch and then move. A row-label preview and highlighted insertion line show where the complete row will go. Release within the board to place it before another row or after the last row. Hold near the screen's top/bottom edge to scroll vertically.
-
-Move rows to the top, middle and bottom on desktop and tablet. Tile order within each row, every physical tile and the rack must remain unchanged. One reorder adds one Undo entry; dropping into the same visible position adds none, including across hidden empty placeholders. Cancel with Escape, a second finger, or release outside the board: no rows should move. Dragging a handle must not select a tile or activate a +; swiping row whitespace must still scroll normally.
-
-Scroll two long rows to different horizontal positions, reorder one, then try Undo and confirmed Reset. Reordered and unaffected rows should retain their own viewports. Empty a row, reorder the remaining rows, reload/Resume, and Undo: the exact saved order and history should return. Check completed sessions lock row controls. Review all appearances and both palettes. Native state, gesture and rendering checks cover these paths with simulated geometry. The user approved whole-row dragging with the single left-hand grip on 12 October 2026; this walkthrough remains available for regression review.
-
-Release outside a destination, add a second finger, or switch away from the page while holding a tile. Every tile and undo entry must stay unchanged, and the preview/highlight must disappear. After a cancelled or successful drag, the next tap should work immediately, without an accidental selection from the drag's release. Try **Undo**, **Reset**, **Check**, and **Replay**, and repeat in portrait/landscape with each appearance and palette. Confirm tile editing stops after completion. The user manually approved the touch-controls step on 11 October 2026. This walkthrough remains available for regression checks; broader appearance verification remains in the implementation plan; the dedicated responsive-layout step was removed at the user’s request.
-
-## Verify overflow arrows manually
-
-Open the sample on a screen narrow enough for row 1 to overflow. A right arrow should appear beside the row; tap or click it to scroll one tile plus its **+** marker and the spacing between them. After scrolling, a left arrow should appear too. At either end, only the direction with more content should remain visible; the unavailable arrow should leave no empty space. The arrows sit outside the tiles and insertion targets. Swiping or dragging near the scroll edges should update the arrows as well.
-
-Move board tiles into the rack until it overflows and check the same cues there. Resize or rotate the device: arrows should disappear completely when the contents fit, then return when they overflow. Undo, Reset, Check, and Replay should refresh the cues after tile counts change. After removing a tile, a trailing **+** alone must not keep the right arrow visible: the placement marker should be exposed instead. The same rule applies to the leading **+** on the left; an arrow should appear only when a tile is clipped. If only the two end markers overflow, scrolling must not repeatedly jump between the ends. A right-arrow tap must advance smoothly through the leading **+** without snapping back; end-marker adjustments wait until scrolling stops. Scrolling with an arrow must preserve selection, tile positions, and undo history. Check all appearance modes and both palettes. Reduced-motion preferences should make arrow scrolling immediate. The user confirmed manual checks pass on 11 October 2026; overflow controls are approved. Automated checks use mocked dimensions and scroll events; this walkthrough remains available for regression checks.
-
-## Resume and local progress
-
-Each completed move, Undo, Reset, Replay, and successful Check saves the current puzzle and its undo history. Reload, then select **Resume puzzle** to return to that exact arrangement. A completed puzzle resumes with tile editing locked and Replay available. Selection, an unfinished drag, and transient confirmation panels are not restored. The original starting board and rack are saved separately from the current arrangement.
-
-Completion records use the full replay code, including puzzle version, generator revision, tier, and seed. Replaying a completed identity does not duplicate its record. Completion history does not affect difficulty. The chosen tier is stored independently, with Easy as the default. Starting a fresh puzzle commits a changed selection only after preparation succeeds; replay preserves this choice. Appearance and palette preferences are saved separately from puzzle progress; changing them preserves the current puzzle and undo history.
-
-Progress is stored in your browser for this site's address and port. Use the same address to resume; a PC and tablet keep separate progress. If storage is blocked or full, the app displays **Progress cannot be saved on this device** and keeps play and duplicate protection working in memory. An invalid or unsupported saved record cannot resume or award completion; the app explains this and offers the existing sample button to start again.
-
-For manual verification, make two sample moves, reload, and Resume. Confirm the rack, board, and undo history match; Undo should restore the preceding move. Test Reset after resuming, then finish the sample and Check. Reload and Resume again: the completed board should remain locked. Replay and complete it again; it should retain just one completed identity in the `rummipuz.progress.v1` local-storage record. Reload during a selection or unfinished drag: only the last completed move should resume. Repeat on tablet and with storage unavailable. Automated storage checks pass; browser/tablet reload verification remains pending.
-
-Preference persistence uses the separate `rummipuz.preferences.v1` local-storage record. Verify by choosing Dark and Alternative, reloading, and resuming the puzzle: both settings, tile positions, and Undo should remain as saved. Repeat with Light, High Contrast, and System. Invalid saved preferences fall back to System and Standard with an explanatory note; changing either setting replaces the invalid record. Browser/tablet reload verification remains pending.
-
-After a startup storage-access failure, changing an appearance or palette choice retries access so a temporary failure does not disable saving for the session. The user confirmed preference retention on desktop and tablet after the fix. All 41 preference and 96 appearance checks passed after the recovery fix.
-
-## Generated play, difficulty, and replay
-
-Choose Easy, Medium, Hard, or Expert and select **Start puzzle**. Every tier is available immediately. **Next Puzzle** always stays at the saved chosen tier, no matter how many puzzles you complete. A successful Start at a different selected tier changes the saved choice. Preparation runs in a module worker and offers **Cancel preparation**. When replacing an unfinished puzzle, confirm **Start another** or choose **Keep playing**. The saved puzzle, chosen tier, and undo history remain intact until a replacement is ready. Failure offers **Retry**; a generated retry uses a fresh seed. Cancelling or failure preserves the chosen tier.
-
-After a successful Check, **Next Puzzle** appears above the board and names the saved chosen tier. Completion records prevent duplicate counting but never change difficulty. Replay opens the exact puzzle at its recorded tier without changing the chosen tier for future fresh puzzles.
-
-Use **Copy replay code** below the rack, or copy the selectable code if clipboard access is unavailable. **Replay puzzle** focuses the code input; paste a full code and select **Play replay**. Surrounding whitespace is trimmed and seed case is preserved. A bare seed is insufficient. Replay first uses a matching saved starting puzzle, then the revision-1 sample fixture or a supported generator revision (2, 3, 4, 5, or 6). An unsupported or unavailable code reports an error without replacing play. Replay restores the initial arrangement with no undo history, and never changes the chosen tier for future generated puzzles. The existing **Replay** button after completion also restarts the current puzzle directly.
-
-Manual verification still needed on desktop and tablet:
-
-1. Start each tier, move tiles, then try replacing the unfinished puzzle. Cancel confirmation and cancel preparation; the board and Undo must stay intact. Start a replacement successfully and confirm old controls do not trigger duplicate moves.
-2. Complete several distinct puzzles at each tier. Next must remain at the saved tier. Start at another manually selected tier and confirm that tier becomes the saved choice. Cancel and fail preparation after choosing another tier and confirm the previous chosen tier remains saved. Reload and confirm Next still uses that tier. Older saves with three completions at one tier must not change it.
-3. Copy a generated code, start another puzzle, then replay the copied code. Its initial tiles and tier must match exactly. Try the sample code, a revision-2/3 code, an invalid code, and an unsupported revision. Errors must preserve the current position and Undo. Replay at a different tier must leave future generated difficulty unchanged.
-4. Reload during preparation: Resume must restore the previous saved puzzle. Reload after successful preparation: Resume must restore the new puzzle. Verify duplicate completion protection, appearances, palettes, mouse/touch movement, and overflow arrows on generated puzzles.
-
-All 679 native-runtime checks passed for this historical step, including actual worker-thread execution of the worker module and all-tier play-flow integration. Those checks covered deterministic generation, the then-current difficulty progression, exact replay, failure/exhaustion, stale replies, cancellation, and existing gameplay regressions. The fixed-tier policy above supersedes the earlier progression behavior. No browser was available for those checks; browser module loading, clipboard behavior, layout, and tablet interaction remained manual verification tasks. Offline packaging is covered by the following step.
-
-## Install and verify offline use
-
-On the PC, run the existing Python command and visit `http://127.0.0.1:8000`. Wait for **Ready for offline use on this device** below the start controls, then use the browser's Install app command or installation icon if offered. Installation UI varies by browser and platform. On a tablet, serve the contents of `app/` from an HTTPS address with a certificate trusted by the device, open that address, and wait for the same readiness message. Android browsers may offer Install app or Add to home screen; on iPad, use Share → Add to Home Screen in Safari. HTTPS, localhost, and loopback installation requirements are described in [MDN's PWA installation guide](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable).
-
-The PC's LAN address such as `http://192.168.1.25:8000` is not the tablet's localhost. Python's ordinary HTTP server is useful for local-network gameplay previews, but it does not supply tablet HTTPS. For HTTPS hosting, keep all public `app/` files together, including the manifest, icons, sample JSON, and both workers. Root and subdirectory deployment are supported; directory URLs should end with `/`. Serve JavaScript with a JavaScript content type and the manifest as `application/manifest+json`. No application server or external assets are needed for play.
-
-After setup succeeds, the installed app caches its HTML, styles, modules, icons, and sample fixture. The solver, generator, assistance planner and their worker imports are cached too, so **Start puzzle**, **Next Puzzle**, **Hint**, **Reveal solution** and supported replays use local computation while offline. Saved puzzle progress and appearance/palette preferences continue using their existing separate local-storage records. Installing from a different address, port, or protocol may use a different storage context; do not assume a desktop or HTTP-preview save will appear in an installed tablet app.
-
-Offline setup failure leaves ordinary play available and displays a retry notice. Reload while connected to retry. Cache storage can be blocked, full, cleared, or evicted by the browser; readiness indicates successful setup, rather than permanent storage. The automated check page is not packaged for offline use.
-
-Manual acceptance walkthrough (still pending):
-
-1. While connected, wait for the readiness message and install the app. Start a puzzle, move a tile, and choose a nondefault appearance and palette. Close all browser tabs and installed Rummipuz windows.
-2. Stop the Python server for the PC test, or disconnect networking on the HTTPS tablet. Launch the installed app from its icon. The app should open, and **Resume puzzle** should restore the saved arrangement, Undo history, appearance, and palette. Confirm Undo, Reset, mouse/touch play, and Check still work.
-3. While offline, generate puzzles at each tier and complete one to use **Next Puzzle**. Replay a copied code for a different puzzle and the sample code. This verifies that fresh module workers and their imports load without a network, rather than only testing a previously open page.
-4. Close and relaunch while still offline, then reconnect and reopen. Confirm progress and settings remain intact. If offline setup is unavailable, confirm ordinary online play still works and the notice explains why.
-
-## Maintaining the offline package
-
-The service worker installs a complete app cache before activation. A missing resource rejects installation and leaves the previous release active. It serves only known same-origin app resources from that release; unrelated paths and other applications' caches are untouched. Updates wait until every existing Rummipuz window closes, preserving the code used by an open puzzle. When an update is ready, the status says to close all Rummipuz windows. Reopen while connected to use it; no automatic reload changes an active game. This follows the [service-worker update lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
-
-Whenever changing a cached application file, increment `OFFLINE_RELEASE` in `app/offline-cache.js`. Add any new runtime resources to `OFFLINE_ASSETS`; keep the entire worker import graph in the list. Deploy all files together. The cache prefix includes the deployment path, so cleanup affects only old Rummipuz caches for that directory. Progress and preference storage are never removed by the worker. The SVG icon is the source artwork for the included 192/512-pixel PNGs and 180-pixel Apple touch icon; no image-rendering dependency is needed to launch or install the app.
-
-All 729 native-runtime checks passed for offline packaging, including 50 new cache/status/package checks. Real worker suites also passed using a temporary bundle containing only precached assets. Local HTTP checks confirmed all 31 packaged resources are served and the worker, manifest, and PNGs have suitable content types. These checks verify cache handling, scope isolation, failed installation, readiness notices, import coverage, and icon dimensions. No browser was available; actual service-worker installation, installed launch, cache persistence, and offline desktop/tablet acceptance remain pending.
-
-## Approved revision-6 default — 12 October 2026
-
-Fresh Start/Next and omitted-revision rated generation now use approved revision 6. Explicit revisions 1–6 and saved sessions preserve their recorded identities, layouts and undo history; resume uses stored puzzle data without regeneration. The four-tier selection interface remained unchanged by the revision switch; automatic tier promotion was later removed by the fixed difficulty policy. No revision-specific selection, proof predicates, budgets or replay data changed.
-
-All **1,288 native checks** pass, including all-tier actual-worker Start/Next, old golden replays and exact revision-1–6 save/reload with undo history. All **62 focused worker checks** pass from only the **39 precached assets** in offline release **`v6`**. The approved revision-5 and revision-6 sample checkers pass **42** and **3,499** assertions respectively. Close all Rummipuz tabs and installed windows when an update is waiting, then reopen while connected to receive the new default. No browser was available during native verification. Launch documentation review and whole-session/installed-offline acceptance remain in the [current plan](plans/rummipuz-implementation.md). The user has committed this default switch.
-
-
-Completed pattern designs, player reviews and preparation evidence are indexed in the [archive](plans/archive/README.md). Current rules, difficulty, generator and replay specifications are indexed in [plans/README.md](plans/README.md); exact JSON data and executable checks retain their existing paths. To repeat preparation measurements, use `/checks/revision-6-performance.html`; the current diagnostic expects offline release `v6` and leaves progress/preferences unchanged.
-
-## Verify hints manually
-
-The full Step 7 suite passed **2,334 checks**, including 700 planner checks, 20 hint-controller checks, 27 integrated renderer checks and 113 assistance-worker checks in each of the regular and precache-only bundles. The visibility refinement passes 286 focused hint, rendering, appearance, touch and offline checks. Current offline release `v14` includes 42 assets.
-
-Select **Hint** beside Reveal solution. The inline card should explain one move, with an amber dashed outline and badge **1** on the exact physical source tile, and a filled cue and badge **2** on its insertion gap. High Contrast uses black and white. Select the tile and place it normally: this should add exactly one Undo entry and clear the hint. Repeated requests before a move should give the same advice; Reveal should show the same target without changing the live arrangement.
-
-Scroll multiple rows independently, then request a hint. It should preserve selection and view position. **Show tile** and **Show destination** carry matching badges and should reveal only the requested area, leaving unrelated horizontal viewports unchanged. Each action briefly pulses the target cue; reduced-motion mode uses static emphasis. Check should preserve a still-applicable hint and its highlights. Moves, row reorders, Undo, Reset and replacement should clear old hints. Dismiss should cancel unfinished search and return focus without scrolling. Limits or errors offer **Try again**; a work-limit retry raises the budget from 200,000 to 1,000,000 nodes. Failures must not claim an unsolvable position without proof. A ready-to-win position should say to select Check, and completed play should disable Hint.
-
-Review the advice on desktop and tablet at every tier, with both palettes and all appearances, including duplicate faces, partial progress and long rows. Repeat after reload/Resume without solution metadata, and offline after the new release is cached. Native checks verify routes, convergence, UI state and worker cancellation; usefulness and device readability still require player review.
+The sample puzzle is stored in both `plans/sample-puzzle.json` and `app/puzzles/sample.json`. Keep the two files identical when changing the sample.

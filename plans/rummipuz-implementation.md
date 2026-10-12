@@ -14,15 +14,15 @@ The user requested scroll retention, clearer red/orange tiles, whole-row reorder
 
 ## Remaining work
 
-- [ ] Reconcile PC/tablet launch documentation. **Done when:** the README instructions are reviewed for Python HTTP launch, LAN access and trusted HTTPS for tablet PWA installation, and this previously outstanding documentation item is explicitly closed. These instructions already exist in the [README](../README.md#run-on-a-pc).
+- [x] Reconcile PC/tablet launch documentation. **Done when:** the README instructions are reviewed for Python HTTP launch, LAN access and trusted HTTPS for tablet PWA installation, and this previously outstanding documentation item is explicitly closed. The README now separates the computer launch, tablet LAN preview, and HTTPS offline setup instructions.
 - [ ] Set up trusted HTTPS for tablet installation. **Done when:** the tablet can open the app at a trusted HTTPS address and report readiness for offline use. Record the chosen setup in the launch instructions.
 - [ ] Verify complete play sessions on desktop and tablet. **Done when:** Start/Next, win, deliberate difficulty changes, exact replay, undo/reset and reload/resume work; saved arrangement, undo history, chosen tier and completion-identity deduplication survive reload. Include preparation cancellation/failure retaining the current session and replay-copy behaviour.
 - [ ] Verify appearance and readability on both devices. **Done when:** Light, Dark, High Contrast and System are readable with both tile palettes; System follows device changes; changing settings preserves gameplay and undo history. Include overflowing rows/rack and tablet orientations within the existing layout.
-- [ ] Verify installed offline use on both devices. **Done when:** after closing all app windows and stopping the server/disconnecting networking, the installed app launches, restores progress/settings, generates at every tier, supports Check/Next and replays, and survives another offline close/relaunch. Reconnect and verify a waiting update activates after all old windows close without losing progress. Use the [README walkthrough](../README.md#install-and-verify-offline-use).
+- [ ] Verify installed offline use on both devices. **Done when:** after closing all app windows and stopping the server/disconnecting networking, the installed app launches, restores progress/settings, generates at every tier, supports Check/Next and replays, and survives another offline close/relaunch. Reconnect and verify a waiting update activates after all old windows close without losing progress. Use the [README walkthrough](../README.md#install-the-app-for-offline-use).
 
 Fix issues found by these checks, then record device/browser, results and any limitations before checking an item. User-reported device testing can supply acceptance when no browser is available to the agent.
 
-**Next action:** Complete remaining UX integration/device acceptance, reconcile launch documentation and complete HTTPS/browser/device acceptance against the revised app.
+**Next action:** Set up trusted HTTPS, then complete browser/device acceptance against the revised app.
 
 ## Scope and decisions still in force
 
