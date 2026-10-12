@@ -1,3 +1,4 @@
+import { generateVarietyPuzzle } from './generator-v6.js';
 import { generateStructuralPuzzle } from './generator-v5.js';
 import { classifyRow } from './rules.js';
 import { createGameState } from './state.js';
@@ -11,6 +12,7 @@ const REVIEWED_BOUNDS = [null, [2, 3, 2, 3], [4, 5, 3, 4], [4, 6, 4, 5], [5, 7, 
 
 /** Generate approved revision-5 tiers by default; preserve explicit old replay. */
 export function generatePuzzle({ version = 1, generatorVersion = RATED_GENERATOR_VERSION, difficultyTier = 1, seed } = {}) {
+  if (generatorVersion === 6) return generateVarietyPuzzle({ version, generatorVersion, difficultyTier, seed });
   if (generatorVersion === 5) return generateStructuralPuzzle({ version, generatorVersion, difficultyTier, seed });
   if (version !== 1 || ![3, 4].includes(generatorVersion) || !Number.isInteger(difficultyTier)
       || difficultyTier < 1 || difficultyTier > 4 || typeof seed !== 'string'

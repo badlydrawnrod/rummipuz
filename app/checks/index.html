@@ -6,6 +6,7 @@
   <h1>Rummipuz core checks</h1>
   <pre id="results" role="status">Running…</pre>
   <script type="module">
+    import { runVarietyChecks, runVarietyWorkerChecks } from './variety.js';
     import { runOfflineChecks, runOfflinePackageChecks } from './offline.js';
     import { runBenchmarkChecks } from './benchmark.js';
     import { runStructuralChecks, runStructuralWorkerChecks } from './structural.js';
@@ -40,6 +41,8 @@
       if (!v5Response.ok || !structureResponse.ok) throw new Error('Revision-5 fixture request failed.');
       const v5Fixtures = await v5Response.json();
       const structuralDesigns = await structureResponse.json();
+      const v6Fixtures = await (await fetch('./fixtures/generated-v6.json')).json();
+      const v6Designs = await (await fetch('./fixtures/structural-v6.json')).json();
       const candidateFixtures = await fixturesResponse.json();
       const ratedFixtures = await ratedResponse.json();
       const stylesResponse = await fetch('../styles.css');
@@ -53,6 +56,7 @@
       const passed = [...await runOfflineChecks(), ...offlinePackage, ...runCoreChecks(sample), ...runSolverChecks(sample),
         ...runGeneratorChecks(candidateFixtures),
         ...runStructuralChecks(structuralDesigns, v5Fixtures),
+        ...runVarietyChecks(v6Designs, v6Fixtures),
         ...await runBenchmarkChecks(v5Fixtures),
         ...runDifficultyChecks(sample, ratedFixtures),
         ...runReviewChecks(reviewedFixtures, await handResponse.json()),
@@ -67,6 +71,7 @@
         [candidateFixtures[0], ratedFixtures[0], reviewedFixtures[0]]));
       passed.push(...await runPuzzleFlowWorkerChecks(sample));
       passed.push(...await runStructuralWorkerChecks(v5Fixtures));
+      passed.push(...await runVarietyWorkerChecks(v6Fixtures));
       results.textContent = `${passed.length} checks passed.\n\n${passed.join('\n')}`;
     } catch (error) {
       results.textContent = error.stack;

@@ -59,7 +59,7 @@ export function createPuzzleFlow({ service, progress, loadSample,
           puzzle = await loadSample({ signal: request.controller.signal });
           if (puzzleIdentity(puzzle) !== puzzleIdentity(identity)) throw new Error('That revision-1 puzzle is unavailable.');
         } else {
-          if (![2, 3, 4, 5].includes(identity.generatorVersion)) throw new Error('That generator revision is unavailable.');
+          if (![2, 3, 4, 5, 6].includes(identity.generatorVersion)) throw new Error('That generator revision is unavailable.');
           const result = await service.generate(identity, { signal: request.controller.signal });
           if (!['ready', 'candidate'].includes(result.status) || !result.puzzle) throw new Error('A puzzle could not be prepared for this seed. Try another puzzle or replay code.');
           puzzle = result.puzzle;

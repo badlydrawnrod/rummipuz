@@ -90,3 +90,55 @@ Offline release `v2` precaches all **33** runtime assets, including both new mod
 ### Approved default switch — 11 October 2026
 
 Revision 5 now supplies fresh Start/Next and omitted-revision rated generation. Explicit revisions 1–4 and saved sessions retain their recorded identities and layouts; no storage migration or regeneration occurs on resume. All 869 native checks passed, including new default-dispatch coverage, actual-worker structural checks at each tier, unchanged old golden replays, and exact revision-1/2/3/4/5 save/reload with undo history. The approved sample checker also passed its 42 assertions after updating its default expectation. All 39 focused worker checks passed using only offline release `v3`’s 33 precached assets. No new runtime assets were required; the new release covers the changed cached modules. Browser gameplay, update activation, and installed offline launch remain in Phase 5 acceptance.
+
+## Revision 6 — explicit variety generation (12 October 2026)
+
+Revision 6 is supported explicitly through `generatePuzzle`, worker generation/rating, and full replay codes. **Revision 5 remains the shared default** for Start, Next and omitted-revision generation. Revisions 1–5 keep their exact identities, algorithms, saved layouts and undo histories. The approved interface and controls are unchanged.
+
+### Finite construction envelope and draw order
+
+`app/patterns-v6.js` contains exactly the 36 independently audited inventories in `revision-6-patterns.json`, in their original file order, retaining only name, tier, family, board and rack. This is the finite permitted parameter envelope, including named noncosmetic variants. No intermediate lengths, added support rows, extra rack neighbours or new duplicate allocations are inferred safe. Colour bijections, reflection, legal global translations and face-wide copy swaps are the only additional transformations, and every transformed inventory is proved again.
+
+Hash `rummipuz:1:6:<tier>:<seed>` with FNV-1a and use the fixed Mulberry32, inclusive integer and descending Fisher–Yates implementations in `generator-v6.js`. Each attempt draws, in this order:
+
+1. One inclusive integer ticket from the sum of the following ordered family weights, assigning cumulative buckets in the listed order.
+2. One uniform pattern index from that tier/family's filtered source-order inventory list, even for a singleton bucket.
+3. Shuffle black/blue/red/orange; draw reflection; draw the common legal offset inclusively from `1 - min` through `13 - max` after reflection.
+4. Sort distinct original face strings in ASCII order and draw a swap bit for each face. Map copies bijectively, retaining all physical identities.
+5. Transform source rows in their original order; sort runs numerically ascending and shuffle each group. Shuffle the board, then the rack.
+6. Run the required proofs. Reject a wrong certified primary family as well as a wrong tier. Continue the same PRNG stream after rejection; publish the first accepted candidate.
+
+| Tier | Ordered family weights |
+| --- | --- |
+| Easy | run-donation 1, group-donation 1, run-division 1 |
+| Medium | interior-extraction 1, split-and-join 1, groups-to-runs 1, runs-to-groups 1, mixed-exchange 1 |
+| Hard | interior-extraction 18, split-and-join 18, groups-to-runs 20, runs-to-groups 19, mixed-exchange 25 |
+| Expert | interior-extraction 40, split-and-join 20, groups-to-runs 30, runs-to-groups 20, mixed-exchange 45, combined-repair 45 |
+
+Medium includes its audited optional mixed-exchange family. These are proposal weights, not evidence of accepted-output quotas. The specification's two fixed 256-seed blocks per tier, composition caps, family caps and sequence review still govern the next verification step. Selection is independent of game history; adjacent repeats are possible.
+
+### Required proof, certification and fixed limits
+
+Each attempt shares **200,000 proof nodes** across the unchanged exact minimum-`R` search, physical candidate expansion and exhaustive physical partition recursion. There are **32 attempts**. No time cutoff or main-thread fallback exists. Production implementation measurements, rather than Python oracle counts, informed this allowance: the 36 accepted inventories consumed at most 9,298 shared nodes; 32 transformed smoke requests consumed at most 11,368. This margin does not establish device performance or guarantee arbitrary future inventories fit. The measurements and identities are recorded in [revision-6-runtime-verification.json](revision-6-runtime-verification.json).
+
+`difficulty-v6.js` first runs the preserved `ratePuzzle` minimum-`R` proof and inclusive size bounds. `partitions-v6.js` then uses the same explicit run/group shape ordering, physical-copy expansion, BigInt masks and fewest-compatible-candidates traversal documented for revision 5. Sorted ASCII physical IDs break traversal ties. Charge one node per candidate-expansion call and partition-search call. No residual-inventory or face-count memoisation loses original provenance. The earlier revision-5 module is unchanged.
+
+For higher tiers, inspect **every complete physical partition**, including those above minimum `R`, for the same-component `C/N` gate. Reject on the first valid structural counterexample. For family certification, intersect the mechanism predicates over **every minimum-`R` partition**; keep their union separately as optional predicates. Choose the documented stable priority from the common set; no common recognised core means rejection. Mechanisms are evaluated inside qualifying components using exact physical contributions. Easy exhaustively collects its three exact witness predicates over minimum-`R = 1` partitions and chooses the first existential family by donation/group-donation/division priority, independently of the initial solver answer.
+
+Required search exhaustion returns `limit`, with null tier/board. Completed search without eligibility returns `excluded`. Generation tracks unsolvable, limit, excluded and tier/family mismatch separately; `diagnostics` accounts for attempts, rejections and total proof nodes by proposed family. Exhaustion returns a null puzzle, and the preparation controller cannot replace active play or commit difficulty. Cancellation terminates the dedicated worker; retries retain deterministic explicit replay.
+
+### Semantic diagnostics
+
+`signatures-v6.js` implements the literal 48 colour/orientation transforms, translated value geometry and tied-source index assignments from the specification. It retains physical origins while omitting cosmetic copy numbers from keys. ASCII comparison and numeric tuple sorting are explicit; no locale ordering is used. Mechanism profiles include source kinds, component `C/N`, canonical source/final contribution incidence, split/join counts and conversion directions.
+
+The proof enumerates all partitions, but detailed key/profile collection is limited to the **first 64 minimum physical partitions in fixed traversal order**. This diagnostic allowance is separate from the shared proof-node budget and cannot affect tier/family acceptance. Key sets are `complete` only when at most 64 minimum physical partitions exist; otherwise they are explicitly `truncated`, even when later partitions might yield duplicate keys. No uniqueness or absence claim uses a truncated set. Common/optional family predicates and physical counts remain exhaustive. Boundary distances are stored as the sorted pair `[distance to 1, distance to 13]`, deliberately invariant to reflection, separately from translation-normalised geometry.
+
+Published immutable annotations contain exact `proofNodes`, `structure.version = 2`, full/minimum physical partition counts, certified/common/optional families, exact Easy witness kinds, bypass witnesses for absent minimum-solution predicates, and bounded semantic records. They never substitute for recomputing required proofs. The first minimum partition is the higher-tier witness; Easy uses the first witness of its priority family.
+
+### Implementation verification and offline bundle
+
+All **1,267 native checks** pass through `plans/checks/run_native.mjs`, including portable game regressions, unchanged revision-2/3/4/5 golden replays, 317 revision-6 checks, actual generation/rating workers, explicit replay, exact save/reload with undo, cancellation/retry, and active-session retention on failure/exhaustion. The 36 accepted and nine rejected designs agree with the independent audit. A rejected Hard claim whose actual minimum is 4 rates as Expert and is never published at Hard.
+
+All 36 fixture geometry keys and full/bounded origin/profile records were compared with the independent Python audit. Eight golden generated replays independently pass both physical enumeration paths across **134 partitions**; the additional 32-output smoke set independently passes across **463 partitions** with matching mechanism/signature evidence. Rerun the golden audit with `python3 plans/checks/verify_v6_generated.py`. The smoke requests all succeeded, exercising all nine distinct core labels across tiers; this small set does **not** satisfy release-quota acceptance. The measured native smoke maximum was about 790 ms; Expert semantic diagnostics dominate some requests. Device timings and larger-block performance review remain next.
+
+Offline release **`v4`** precaches **39 assets**, adding the six revision-6 runtime modules. All **60 focused worker checks** pass from a fresh bundle containing only those assets (revision-5/default flow and revision-6 replay/rating). Package checks cover the complete import graph and atomic cache lifecycle. No browser access was available or used; service-worker activation and installed desktop/tablet offline launch remain Phase 5 acceptance. No commit was made.

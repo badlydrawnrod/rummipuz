@@ -1,13 +1,14 @@
 // Increment this release whenever a cached file changes. Keep each installed
 // bundle intact until its replacement activates after all old windows close.
-export const OFFLINE_RELEASE = 'v3';
+export const OFFLINE_RELEASE = 'v4';
 export const OFFLINE_ASSETS = [
   './', './index.html', './styles.css', './main.js',
   './tiles.js', './rules.js', './state.js', './play-session.js', './play.js',
   './touch.js', './overflow.js', './appearance.js', './preferences.js',
   './progress.js', './puzzle-flow.js', './puzzle-service.js', './puzzle-worker.js',
   './generator.js', './rated-generator.js', './solver.js', './difficulty.js',
-  './preservation.js', './generator-v5.js', './structural-difficulty.js', './offline.js', './offline-cache.js', './service-worker.js',
+  './preservation.js', './generator-v5.js', './generator-v6.js', './patterns-v6.js',
+  './difficulty-v6.js', './mechanisms-v6.js', './partitions-v6.js', './signatures-v6.js', './structural-difficulty.js', './offline.js', './offline-cache.js', './service-worker.js',
   './puzzles/sample.json', './manifest.webmanifest',
   './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png',
 ];

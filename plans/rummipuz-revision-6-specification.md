@@ -1,6 +1,6 @@
 # Revision-6 family and difficulty specification
 
-**Status:** Specification complete, with a documented fixture-driven amendment on 11 October 2026. [Independent fixture evidence](rummipuz-revision-6-patterns.md) replaces Expert's unproved boundary-repair primary target with a precisely certified combined repair. The six-family target and tier gates are unchanged. Revision 5 remains the runtime default; published revisions and offline release `v3` are unchanged.
+**Status:** Specification complete, with a documented fixture-driven amendment on 11 October 2026. [Independent fixture evidence](rummipuz-revision-6-patterns.md) replaces Expert's unproved boundary-repair primary target with a precisely certified combined repair. The six-family target and tier gates are unchanged. Explicit revision-6 runtime implementation is now complete (12 October 2026); revision 5 remains the runtime default and revisions 1–5 are preserved. Offline release is `v4`; fixed draws, proof limits and bounded diagnostics are recorded in [the generation contract](rummipuz-generator.md#revision-6--explicit-variety-generation-12-october-2026). Accepted-output quota, device and user review remain pending.
 
 ## Tier contract
 

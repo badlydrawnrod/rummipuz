@@ -1,0 +1,4533 @@
+[
+  {
+    "design": {
+      "name": "easy-run-donation",
+      "difficultyTier": 1,
+      "family": "run-donation",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "blue-3-2",
+          "blue-4-2",
+          "blue-5-2"
+        ]
+      ],
+      "rack": [
+        "red-6-1",
+        "black-6-1"
+      ],
+      "designPurpose": "Baseline endpoint donation; second run offers duplicate origins.",
+      "parameterInvestigation": "Source length 6; retained core 5; investigate source lengths 4\u20138, proving each inventory.",
+      "solution": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1"
+        ],
+        [
+          "blue-3-2",
+          "blue-4-2",
+          "blue-5-2"
+        ],
+        [
+          "blue-6-1",
+          "red-6-1",
+          "black-6-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "run-donation",
+      "minimumR": 1,
+      "physicalPartitions": 8,
+      "minimumPhysicalPartitions": 2,
+      "commonPredicates": [],
+      "optionalPredicates": [
+        "run-donation"
+      ],
+      "easyWitnessKinds": [
+        "run-donation"
+      ],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6]]],[\"run\",[[\"black\",2],[\"black\",3],[\"black\",4]]]],[[\"blue\",1],[\"orange\",1]]]",
+      "minimumOriginKeys": [
+        "[\"origin-v1\",[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6]]],[\"run\",[[\"black\",2],[\"black\",3],[\"black\",4]]]],[[\"blue\",1],[\"orange\",1]]],[[\"group\",[[\"black\",1,\"row:0\"],[\"blue\",1,\"rack\"],[\"orange\",1,\"rack\"]]],[\"run\",[[\"black\",2,\"row:0\"],[\"black\",3,\"row:0\"],[\"black\",4,\"row:0\"],[\"black\",5,\"row:0\"],[\"black\",6,\"row:0\"]]],[\"run\",[[\"black\",2,\"row:1\"],[\"black\",3,\"row:1\"],[\"black\",4,\"row:1\"]]]]]",
+        "[\"origin-v1\",[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6]]],[\"run\",[[\"black\",2],[\"black\",3],[\"black\",4]]]],[[\"blue\",1],[\"orange\",1]]],[[\"group\",[[\"black\",1,\"row:0\"],[\"blue\",1,\"rack\"],[\"orange\",1,\"rack\"]]],[\"run\",[[\"black\",2,\"row:0\"],[\"black\",3,\"row:0\"],[\"black\",4,\"row:0\"]]],[\"run\",[[\"black\",2,\"row:1\"],[\"black\",3,\"row:1\"],[\"black\",4,\"row:1\"],[\"black\",5,\"row:0\"],[\"black\",6,\"row:0\"]]]]]"
+      ],
+      "minimumMechanismProfiles": [
+        {
+          "predicates": [
+            "run-donation"
+          ],
+          "changedKinds": {
+            "run": 1
+          },
+          "components": [
+            [
+              1,
+              0
+            ]
+          ],
+          "contributions": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          "splittingSources": 1,
+          "joiningTargets": 0,
+          "directions": [
+            "run-to-group",
+            "run-to-run"
+          ]
+        },
+        {
+          "predicates": [],
+          "changedKinds": {
+            "run": 1
+          },
+          "components": [
+            [
+              1,
+              0
+            ]
+          ],
+          "contributions": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              3
+            ],
+            [
+              0,
+              2,
+              2
+            ],
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          "splittingSources": 1,
+          "joiningTargets": 0,
+          "directions": [
+            "run-to-group",
+            "run-to-run"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "design": {
+      "name": "easy-both-ends",
+      "difficultyTier": 1,
+      "family": "run-donation",
+      "board": [
+        [
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "red-2-1",
+        "black-2-1",
+        "red-6-1",
+        "black-6-1"
+      ],
+      "designPurpose": "Both ends feed different groups, retaining blue 3\u20135.",
+      "parameterInvestigation": "One tile per end; four rack tiles; review whether it feels like two chores.",
+      "variantOf": "easy-run-donation",
+      "solution": [
+        [
+          "black-2-1",
+          "blue-2-1",
+          "red-2-1"
+        ],
+        [
+          "black-6-1",
+          "blue-6-1",
+          "red-6-1"
+        ],
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "run-donation",
+      "minimumR": 1,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "run-donation"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [
+        "run-donation"
+      ],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5]]],[\"run\",[[\"blue\",9],[\"blue\",10],[\"blue\",11]]]],[[\"orange\",1],[\"orange\",5],[\"red\",1],[\"red\",5]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "easy-group-donation",
+      "difficultyTier": 1,
+      "family": "group-donation",
+      "board": [
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1",
+          "black-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-1",
+        "blue-5-1"
+      ],
+      "designPurpose": "Four-colour group donates blue 6 to a run.",
+      "parameterInvestigation": "Donor at end of run; retained group exactly 3.",
+      "solution": [
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "black-6-1",
+          "orange-6-1",
+          "red-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "group-donation",
+      "minimumR": 1,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "group-donation"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [
+        "group-donation"
+      ],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3],[\"red\",3]]],[\"run\",[[\"black\",7],[\"black\",8],[\"black\",9]]]],[[\"blue\",1],[\"blue\",2]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "easy-group-middle-donation",
+      "difficultyTier": 1,
+      "family": "group-donation",
+      "board": [
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1",
+          "black-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-5-1",
+        "blue-7-1"
+      ],
+      "designPurpose": "The donated tile fills the middle of a new run.",
+      "parameterInvestigation": "Donor position varies from endpoint to middle, with two rack neighbours.",
+      "variantOf": "easy-group-donation",
+      "solution": [
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "black-6-1",
+          "orange-6-1",
+          "red-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "group-donation",
+      "minimumR": 1,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "group-donation"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [
+        "group-donation"
+      ],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2],[\"red\",2]]],[\"run\",[[\"black\",6],[\"black\",7],[\"black\",8]]]],[[\"blue\",1],[\"blue\",3]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "easy-run-division",
+      "difficultyTier": 1,
+      "family": "run-division",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-2",
+        "blue-4-2"
+      ],
+      "designPurpose": "Two overlapping valid runs use the second physical copies.",
+      "parameterInvestigation": "Source length 6; one cut, prefix/suffix >=2; duplicate overlap width 2.",
+      "solution": [
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1"
+        ],
+        [
+          "blue-3-2",
+          "blue-4-2",
+          "blue-5-1",
+          "blue-6-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "run-division",
+      "minimumR": 1,
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "commonPredicates": [],
+      "optionalPredicates": [
+        "run-division"
+      ],
+      "easyWitnessKinds": [
+        "run-division"
+      ],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6]]]],[[\"blue\",3],[\"blue\",4]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "easy-longer-division",
+      "difficultyTier": 1,
+      "family": "run-division",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-2",
+        "blue-4-2"
+      ],
+      "designPurpose": "Same overlap with a longer suffix and different possible allocations.",
+      "parameterInvestigation": "Source length 7 instead of 6; do not assume further lengths preserve proof.",
+      "variantOf": "easy-run-division",
+      "solution": [
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ],
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-2",
+          "blue-4-2"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "run-division",
+      "minimumR": 1,
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "commonPredicates": [],
+      "optionalPredicates": [
+        "run-division"
+      ],
+      "easyWitnessKinds": [
+        "run-division"
+      ],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7]]]],[[\"blue\",3],[\"blue\",4]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "medium-interior-extraction",
+      "difficultyTier": 2,
+      "family": "interior-extraction",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "black-4-1",
+        "black-9-1",
+        "red-9-1",
+        "orange-9-1"
+      ],
+      "designPurpose": "Two runs split around a shared 4 group.",
+      "parameterInvestigation": "Both source runs length 7; support row required by minimum row count.",
+      "solution": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1"
+        ],
+        [
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "blue-4-1",
+          "red-4-1",
+          "black-4-1"
+        ],
+        [
+          "black-9-1",
+          "red-9-1",
+          "orange-9-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "interior-extraction",
+      "minimumR": 2,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "interior-extraction"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7]]],[\"run\",[[\"orange\",1],[\"orange\",2],[\"orange\",3],[\"orange\",4],[\"orange\",5],[\"orange\",6],[\"orange\",7]]]],[[\"black\",9],[\"blue\",9],[\"red\",4],[\"red\",9]]]",
+      "minimumOriginKeys": [
+        "[\"origin-v1\",[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7]]],[\"run\",[[\"orange\",1],[\"orange\",2],[\"orange\",3],[\"orange\",4],[\"orange\",5],[\"orange\",6],[\"orange\",7]]]],[[\"black\",9],[\"blue\",9],[\"red\",4],[\"red\",9]]],[[\"group\",[[\"black\",9,\"rack\"],[\"blue\",9,\"rack\"],[\"red\",9,\"rack\"]]],[\"group\",[[\"blue\",4,\"row:1\"],[\"orange\",4,\"row:2\"],[\"red\",4,\"rack\"]]],[\"run\",[[\"black\",10,\"row:0\"],[\"black\",11,\"row:0\"],[\"black\",12,\"row:0\"]]],[\"run\",[[\"blue\",1,\"row:1\"],[\"blue\",2,\"row:1\"],[\"blue\",3,\"row:1\"]]],[\"run\",[[\"blue\",5,\"row:1\"],[\"blue\",6,\"row:1\"],[\"blue\",7,\"row:1\"]]],[\"run\",[[\"orange\",1,\"row:2\"],[\"orange\",2,\"row:2\"],[\"orange\",3,\"row:2\"]]],[\"run\",[[\"orange\",5,\"row:2\"],[\"orange\",6,\"row:2\"],[\"orange\",7,\"row:2\"]]]]]"
+      ],
+      "minimumMechanismProfiles": [
+        {
+          "predicates": [
+            "interior-extraction"
+          ],
+          "changedKinds": {
+            "run": 2
+          },
+          "components": [
+            [
+              2,
+              2
+            ]
+          ],
+          "contributions": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ],
+            [
+              0,
+              2,
+              3
+            ],
+            [
+              1,
+              3,
+              3
+            ],
+            [
+              1,
+              4,
+              3
+            ],
+            [
+              2,
+              5,
+              3
+            ],
+            [
+              2,
+              6,
+              3
+            ]
+          ],
+          "splittingSources": 2,
+          "joiningTargets": 1,
+          "directions": [
+            "run-to-group",
+            "run-to-run"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "design": {
+      "name": "medium-asymmetric-interior",
+      "difficultyTier": 2,
+      "family": "interior-extraction",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "black-4-1",
+        "black-9-1",
+        "red-9-1",
+        "orange-9-1"
+      ],
+      "designPurpose": "Unequal surviving fragments introduce asymmetric lengths.",
+      "parameterInvestigation": "Blue length 8, red length 7; same forced extraction position.",
+      "variantOf": "medium-interior-extraction",
+      "solution": [
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "black-9-1",
+          "orange-9-1",
+          "red-9-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1"
+        ],
+        [
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "interior-extraction",
+      "minimumR": 2,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "interior-extraction"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7],[\"blue\",8]]],[\"run\",[[\"orange\",1],[\"orange\",2],[\"orange\",3],[\"orange\",4],[\"orange\",5],[\"orange\",6],[\"orange\",7]]]],[[\"black\",9],[\"orange\",9],[\"red\",4],[\"red\",9]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "medium-split-and-join",
+      "difficultyTier": 2,
+      "family": "split-and-join",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "orange-11-1",
+          "orange-12-1",
+          "orange-13-1"
+        ]
+      ],
+      "rack": [
+        "black-4-1",
+        "red-4-1",
+        "black-10-1",
+        "red-10-1"
+      ],
+      "designPurpose": "A short second-source remainder must join the divided first run.",
+      "parameterInvestigation": "Extract 4 and 10; second remainder length 2; no independent rack repair.",
+      "solution": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "blue-4-1",
+          "black-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-10-1",
+          "black-10-1",
+          "red-10-1"
+        ],
+        [
+          "orange-11-1",
+          "orange-12-1",
+          "orange-13-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "split-and-join",
+      "minimumR": 2,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "split-and-join"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",11],[\"black\",12],[\"black\",13]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7]]],[\"run\",[[\"blue\",8],[\"blue\",9],[\"blue\",10]]]],[[\"orange\",4],[\"orange\",10],[\"red\",4],[\"red\",10]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "medium-longer-split-join",
+      "difficultyTier": 2,
+      "family": "split-and-join",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1"
+        ],
+        [
+          "blue-9-1",
+          "blue-10-1",
+          "blue-11-1"
+        ],
+        [
+          "orange-11-1",
+          "orange-12-1",
+          "orange-13-1"
+        ]
+      ],
+      "rack": [
+        "black-4-1",
+        "red-4-1",
+        "black-11-1",
+        "red-11-1"
+      ],
+      "designPurpose": "Longer repaired run can be divided in more than one complete solution.",
+      "parameterInvestigation": "First run length 8, endpoint group 11; shared repaired interval length 6.",
+      "variantOf": "medium-split-and-join",
+      "solution": [
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "orange-11-1",
+          "orange-12-1",
+          "orange-13-1"
+        ],
+        [
+          "black-11-1",
+          "blue-11-1",
+          "red-11-1"
+        ],
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "split-and-join",
+      "minimumR": 2,
+      "physicalPartitions": 2,
+      "minimumPhysicalPartitions": 2,
+      "commonPredicates": [
+        "split-and-join"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",11],[\"black\",12],[\"black\",13]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7],[\"blue\",8]]],[\"run\",[[\"blue\",9],[\"blue\",10],[\"blue\",11]]]],[[\"orange\",4],[\"orange\",11],[\"red\",4],[\"red\",11]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "medium-groups-to-runs",
+      "difficultyTier": 2,
+      "family": "groups-to-runs",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "red-6-1",
+        "orange-3-1"
+      ],
+      "designPurpose": "Two groups supply three colour runs, with asymmetric rack endpoints.",
+      "parameterInvestigation": "Exactly two source groups; alternating low/high rack neighbours prevent a rack-only group.",
+      "solution": [
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ],
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1"
+        ],
+        [
+          "orange-3-1",
+          "orange-4-1",
+          "orange-5-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "groups-to-runs",
+      "minimumR": 2,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "groups-to-runs"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"run\",[[\"red\",8],[\"red\",9],[\"red\",10]]]],[[\"black\",1],[\"blue\",1],[\"orange\",4]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "medium-four-colour-conversion",
+      "difficultyTier": 2,
+      "family": "groups-to-runs",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1",
+          "black-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1",
+          "black-5-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "red-6-1",
+        "orange-3-1",
+        "black-6-1"
+      ],
+      "designPurpose": "Fourth colour creates another remainder to repair.",
+      "parameterInvestigation": "Group size 4 instead of 3; four rack endpoints.",
+      "variantOf": "medium-groups-to-runs",
+      "solution": [
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ],
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1"
+        ],
+        [
+          "orange-3-1",
+          "orange-4-1",
+          "orange-5-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "groups-to-runs",
+      "minimumR": 2,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "groups-to-runs"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2],[\"red\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3],[\"red\",3]]],[\"run\",[[\"black\",8],[\"black\",9],[\"black\",10]]]],[[\"black\",4],[\"blue\",1],[\"orange\",1],[\"red\",4]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "medium-runs-to-groups",
+      "difficultyTier": 2,
+      "family": "runs-to-groups",
+      "board": [
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "orange-4-1",
+        "black-5-1",
+        "orange-6-1"
+      ],
+      "designPurpose": "Three missing group partners force both short runs to break.",
+      "parameterInvestigation": "Missing partners use two colours; no three-tile rack run.",
+      "solution": [
+        [
+          "black-5-1",
+          "blue-5-1",
+          "red-5-1"
+        ],
+        [
+          "blue-4-1",
+          "orange-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-6-1",
+          "orange-6-1",
+          "red-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "runs-to-groups",
+      "minimumR": 2,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "runs-to-groups"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3]]],[\"run\",[[\"orange\",7],[\"orange\",8],[\"orange\",9]]]],[[\"orange\",1],[\"orange\",3],[\"red\",2]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "medium-adjacent-rack-partners",
+      "difficultyTier": 2,
+      "family": "runs-to-groups",
+      "board": [
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "orange-4-1",
+        "black-5-1",
+        "black-6-1"
+      ],
+      "designPurpose": "Adjacent same-colour rack partners differ from separated partners.",
+      "parameterInvestigation": "Rack same-colour pair at adjacent 5/6 rather than endpoints 4/6.",
+      "variantOf": "medium-runs-to-groups",
+      "solution": [
+        [
+          "black-5-1",
+          "blue-5-1",
+          "red-5-1"
+        ],
+        [
+          "black-6-1",
+          "blue-6-1",
+          "red-6-1"
+        ],
+        [
+          "blue-4-1",
+          "orange-4-1",
+          "red-4-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "runs-to-groups",
+      "minimumR": 2,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "runs-to-groups"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3]]],[\"run\",[[\"orange\",7],[\"orange\",8],[\"orange\",9]]]],[[\"orange\",1],[\"red\",2],[\"red\",3]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "medium-mixed-group-donation",
+      "difficultyTier": 2,
+      "family": "mixed-exchange",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1",
+          "black-4-1"
+        ],
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "blue-8-1",
+        "blue-9-1",
+        "red-6-1",
+        "orange-6-1"
+      ],
+      "designPurpose": "Group donation repairs one side of a broken short run; the other side uses the rack.",
+      "parameterInvestigation": "Optional Medium core; one four-colour group and one three-tile run, five rack tiles.",
+      "solution": [
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ],
+        [
+          "blue-6-1",
+          "orange-6-1",
+          "red-6-1"
+        ],
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1"
+        ],
+        [
+          "black-4-1",
+          "orange-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "mixed-exchange",
+      "minimumR": 2,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "linked-group-donation",
+        "mixed-exchange"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2],[\"red\",2]]],[\"run\",[[\"black\",3],[\"black\",4],[\"black\",5]]],[\"run\",[[\"blue\",8],[\"blue\",9],[\"blue\",10]]]],[[\"black\",1],[\"black\",6],[\"black\",7],[\"orange\",4],[\"red\",4]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "hard-interior-extraction",
+      "difficultyTier": 3,
+      "family": "interior-extraction",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "orange-4-2",
+        "black-5-1"
+      ],
+      "designPurpose": "A long run loses its middle block while two short runs convert to groups.",
+      "parameterInvestigation": "Long source length 9; duplicate group partners at 4; black 5 forces shared repair.",
+      "solution": [
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ],
+        [
+          "blue-6-1",
+          "orange-6-1",
+          "red-6-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1",
+          "red-5-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-4-1",
+          "orange-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-2",
+          "red-4-2"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "interior-extraction",
+      "minimumR": 3,
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "commonPredicates": [
+        "interior-extraction"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7],[\"blue\",8],[\"blue\",9]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]],[\"run\",[[\"red\",4],[\"red\",5],[\"red\",6]]]],[[\"black\",5],[\"blue\",4],[\"orange\",4],[\"red\",4]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "hard-split-and-join",
+      "difficultyTier": 3,
+      "family": "split-and-join",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "blue-11-1",
+          "blue-12-1",
+          "blue-13-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "black-4-1",
+        "black-7-1",
+        "orange-7-1",
+        "black-13-1",
+        "orange-13-1",
+        "blue-7-2"
+      ],
+      "designPurpose": "Shared extraction connects a red run to a divided blue run and a short blue remainder.",
+      "parameterInvestigation": "Duplicate repair tile blue 7; use orange 7, not red 7, to avoid the audited shortcut.",
+      "solution": [
+        [
+          "black-13-1",
+          "blue-13-1",
+          "orange-13-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1"
+        ],
+        [
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "black-7-1",
+          "blue-7-1",
+          "orange-7-1"
+        ],
+        [
+          "blue-10-1",
+          "blue-11-1",
+          "blue-12-1"
+        ],
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-2",
+          "blue-8-1",
+          "blue-9-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "split-and-join",
+      "minimumR": 3,
+      "physicalPartitions": 8,
+      "minimumPhysicalPartitions": 8,
+      "commonPredicates": [
+        "split-and-join"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"blue\",11],[\"blue\",12],[\"blue\",13]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7],[\"blue\",8],[\"blue\",9],[\"blue\",10]]],[\"run\",[[\"orange\",1],[\"orange\",2],[\"orange\",3],[\"orange\",4],[\"orange\",5],[\"orange\",6],[\"orange\",7]]]],[[\"black\",7],[\"black\",13],[\"blue\",7],[\"red\",4],[\"red\",7],[\"red\",13]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "hard-groups-to-runs",
+      "difficultyTier": 3,
+      "family": "groups-to-runs",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "blue-7-1",
+        "red-3-1",
+        "red-7-1"
+      ],
+      "designPurpose": "Three groups become three runs.",
+      "parameterInvestigation": "Three group sources; unchanged black run supplies required fourth starting row.",
+      "solution": [
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "groups-to-runs",
+      "minimumR": 3,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "groups-to-runs"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"run\",[[\"red\",8],[\"red\",9],[\"red\",10]]]],[[\"black\",1],[\"black\",5],[\"blue\",1],[\"blue\",5]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "hard-four-colour-group-only",
+      "difficultyTier": 3,
+      "family": "groups-to-runs",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1",
+          "black-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1",
+          "black-5-1"
+        ],
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1",
+          "black-6-1"
+        ],
+        [
+          "blue-10-1",
+          "red-10-1",
+          "orange-10-1",
+          "black-10-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "blue-7-1",
+        "red-3-1",
+        "red-7-1"
+      ],
+      "designPurpose": "Four-colour groups leave four valid colour runs; starting board is group-only.",
+      "parameterInvestigation": "Group size 4; unchanged 10 group supplies required fourth row.",
+      "variantOf": "hard-groups-to-runs",
+      "solution": [
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "black-10-1",
+          "blue-10-1",
+          "orange-10-1",
+          "red-10-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "groups-to-runs",
+      "minimumR": 3,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "groups-to-runs"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",1],[\"blue\",1],[\"orange\",1],[\"red\",1]]],[\"group\",[[\"black\",5],[\"blue\",5],[\"orange\",5],[\"red\",5]]],[\"group\",[[\"black\",6],[\"blue\",6],[\"orange\",6],[\"red\",6]]],[\"group\",[[\"black\",7],[\"blue\",7],[\"orange\",7],[\"red\",7]]]],[[\"black\",4],[\"black\",8],[\"blue\",4],[\"blue\",8]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "hard-duplicate-choice",
+      "difficultyTier": 3,
+      "family": "groups-to-runs",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ],
+        [
+          "red-4-2",
+          "red-5-2",
+          "red-6-2"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "blue-7-1",
+        "red-3-1",
+        "red-7-1"
+      ],
+      "designPurpose": "An extra matching red run creates alternate allocations without changing the core.",
+      "parameterInvestigation": "Duplicate row is optional useful overlap, not an additional family.",
+      "variantOf": "hard-groups-to-runs",
+      "solution": [
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ],
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "red-4-2",
+          "red-5-2",
+          "red-6-2",
+          "red-7-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "groups-to-runs",
+      "minimumR": 3,
+      "physicalPartitions": 16,
+      "minimumPhysicalPartitions": 4,
+      "commonPredicates": [
+        "groups-to-runs"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"run\",[[\"black\",2],[\"black\",3],[\"black\",4]]],[\"run\",[[\"red\",8],[\"red\",9],[\"red\",10]]]],[[\"black\",1],[\"black\",5],[\"blue\",1],[\"blue\",5]]]",
+      "minimumOriginKeys": [
+        "[\"origin-v1\",[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"run\",[[\"black\",2],[\"black\",3],[\"black\",4]]],[\"run\",[[\"red\",8],[\"red\",9],[\"red\",10]]]],[[\"black\",1],[\"black\",5],[\"blue\",1],[\"blue\",5]]],[[\"run\",[[\"black\",1,\"rack\"],[\"black\",2,\"row:0\"],[\"black\",3,\"row:1\"],[\"black\",4,\"row:2\"],[\"black\",5,\"rack\"]]],[\"run\",[[\"black\",2,\"row:3\"],[\"black\",3,\"row:3\"],[\"black\",4,\"row:3\"]]],[\"run\",[[\"blue\",1,\"rack\"],[\"blue\",2,\"row:0\"],[\"blue\",3,\"row:1\"],[\"blue\",4,\"row:2\"],[\"blue\",5,\"rack\"]]],[\"run\",[[\"orange\",2,\"row:0\"],[\"orange\",3,\"row:1\"],[\"orange\",4,\"row:2\"]]],[\"run\",[[\"red\",8,\"row:4\"],[\"red\",9,\"row:4\"],[\"red\",10,\"row:4\"]]]]]",
+        "[\"origin-v1\",[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"run\",[[\"black\",2],[\"black\",3],[\"black\",4]]],[\"run\",[[\"red\",8],[\"red\",9],[\"red\",10]]]],[[\"black\",1],[\"black\",5],[\"blue\",1],[\"blue\",5]]],[[\"run\",[[\"black\",1,\"rack\"],[\"black\",2,\"row:0\"],[\"black\",3,\"row:1\"],[\"black\",4,\"row:2\"]]],[\"run\",[[\"black\",2,\"row:3\"],[\"black\",3,\"row:3\"],[\"black\",4,\"row:3\"],[\"black\",5,\"rack\"]]],[\"run\",[[\"blue\",1,\"rack\"],[\"blue\",2,\"row:0\"],[\"blue\",3,\"row:1\"],[\"blue\",4,\"row:2\"],[\"blue\",5,\"rack\"]]],[\"run\",[[\"orange\",2,\"row:0\"],[\"orange\",3,\"row:1\"],[\"orange\",4,\"row:2\"]]],[\"run\",[[\"red\",8,\"row:4\"],[\"red\",9,\"row:4\"],[\"red\",10,\"row:4\"]]]]]",
+        "[\"origin-v1\",[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"run\",[[\"black\",2],[\"black\",3],[\"black\",4]]],[\"run\",[[\"red\",8],[\"red\",9],[\"red\",10]]]],[[\"black\",1],[\"black\",5],[\"blue\",1],[\"blue\",5]]],[[\"run\",[[\"black\",1,\"rack\"],[\"black\",2,\"row:3\"],[\"black\",3,\"row:3\"],[\"black\",4,\"row:3\"],[\"black\",5,\"rack\"]]],[\"run\",[[\"black\",2,\"row:0\"],[\"black\",3,\"row:1\"],[\"black\",4,\"row:2\"]]],[\"run\",[[\"blue\",1,\"rack\"],[\"blue\",2,\"row:0\"],[\"blue\",3,\"row:1\"],[\"blue\",4,\"row:2\"],[\"blue\",5,\"rack\"]]],[\"run\",[[\"orange\",2,\"row:0\"],[\"orange\",3,\"row:1\"],[\"orange\",4,\"row:2\"]]],[\"run\",[[\"red\",8,\"row:4\"],[\"red\",9,\"row:4\"],[\"red\",10,\"row:4\"]]]]]",
+        "[\"origin-v1\",[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"run\",[[\"black\",2],[\"black\",3],[\"black\",4]]],[\"run\",[[\"red\",8],[\"red\",9],[\"red\",10]]]],[[\"black\",1],[\"black\",5],[\"blue\",1],[\"blue\",5]]],[[\"run\",[[\"black\",1,\"rack\"],[\"black\",2,\"row:3\"],[\"black\",3,\"row:3\"],[\"black\",4,\"row:3\"]]],[\"run\",[[\"black\",2,\"row:0\"],[\"black\",3,\"row:1\"],[\"black\",4,\"row:2\"],[\"black\",5,\"rack\"]]],[\"run\",[[\"blue\",1,\"rack\"],[\"blue\",2,\"row:0\"],[\"blue\",3,\"row:1\"],[\"blue\",4,\"row:2\"],[\"blue\",5,\"rack\"]]],[\"run\",[[\"orange\",2,\"row:0\"],[\"orange\",3,\"row:1\"],[\"orange\",4,\"row:2\"]]],[\"run\",[[\"red\",8,\"row:4\"],[\"red\",9,\"row:4\"],[\"red\",10,\"row:4\"]]]]]"
+      ],
+      "minimumMechanismProfiles": [
+        {
+          "predicates": [
+            "groups-to-runs"
+          ],
+          "changedKinds": {
+            "group": 3
+          },
+          "components": [
+            [
+              3,
+              3
+            ]
+          ],
+          "contributions": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              2,
+              0,
+              1
+            ],
+            [
+              3,
+              1,
+              3
+            ],
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              4,
+              4,
+              3
+            ]
+          ],
+          "splittingSources": 3,
+          "joiningTargets": 3,
+          "directions": [
+            "group-to-run"
+          ]
+        },
+        {
+          "predicates": [
+            "groups-to-runs"
+          ],
+          "changedKinds": {
+            "group": 3
+          },
+          "components": [
+            [
+              3,
+              3
+            ]
+          ],
+          "contributions": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              2,
+              0,
+              1
+            ],
+            [
+              3,
+              1,
+              3
+            ],
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              4,
+              4,
+              3
+            ]
+          ],
+          "splittingSources": 3,
+          "joiningTargets": 3,
+          "directions": [
+            "group-to-run"
+          ]
+        },
+        {
+          "predicates": [
+            "groups-to-runs"
+          ],
+          "changedKinds": {
+            "group": 3
+          },
+          "components": [
+            [
+              3,
+              3
+            ]
+          ],
+          "contributions": [
+            [
+              3,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ],
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              4,
+              4,
+              3
+            ]
+          ],
+          "splittingSources": 3,
+          "joiningTargets": 3,
+          "directions": [
+            "group-to-run"
+          ]
+        },
+        {
+          "predicates": [
+            "groups-to-runs"
+          ],
+          "changedKinds": {
+            "group": 3
+          },
+          "components": [
+            [
+              3,
+              3
+            ]
+          ],
+          "contributions": [
+            [
+              3,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ],
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              4,
+              4,
+              3
+            ]
+          ],
+          "splittingSources": 3,
+          "joiningTargets": 3,
+          "directions": [
+            "group-to-run"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "design": {
+      "name": "hard-runs-to-groups",
+      "difficultyTier": 3,
+      "family": "runs-to-groups",
+      "board": [
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "orange-4-2",
+        "black-5-1"
+      ],
+      "designPurpose": "The missing fourth colour at 5 forces all three runs to break; duplicate 4s need two groups.",
+      "parameterInvestigation": "Three short runs, four rack tiles, six copies at value 4.",
+      "solution": [
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ],
+        [
+          "blue-6-1",
+          "orange-6-1",
+          "red-6-1"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1",
+          "red-5-1"
+        ],
+        [
+          "blue-4-1",
+          "orange-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-2",
+          "red-4-2"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "runs-to-groups",
+      "minimumR": 3,
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "commonPredicates": [
+        "runs-to-groups"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3]]],[\"run\",[[\"orange\",1],[\"orange\",2],[\"orange\",3]]],[\"run\",[[\"red\",7],[\"red\",8],[\"red\",9]]]],[[\"black\",1],[\"blue\",1],[\"orange\",1],[\"red\",2]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "hard-endpoint-missing-partner",
+      "difficultyTier": 3,
+      "family": "runs-to-groups",
+      "board": [
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "orange-4-2",
+        "black-6-1"
+      ],
+      "designPurpose": "The fourth-colour demand is at an endpoint instead of the middle.",
+      "parameterInvestigation": "Missing partner at 6 versus 5, with the duplicate pressure still at 4.",
+      "variantOf": "hard-runs-to-groups",
+      "solution": [
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ],
+        [
+          "blue-5-1",
+          "orange-5-1",
+          "red-5-1"
+        ],
+        [
+          "black-6-1",
+          "blue-6-1",
+          "orange-6-1",
+          "red-6-1"
+        ],
+        [
+          "blue-4-1",
+          "orange-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-2",
+          "red-4-2"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "runs-to-groups",
+      "minimumR": 3,
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "commonPredicates": [
+        "runs-to-groups"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3]]],[\"run\",[[\"orange\",1],[\"orange\",2],[\"orange\",3]]],[\"run\",[[\"red\",7],[\"red\",8],[\"red\",9]]]],[[\"black\",1],[\"blue\",1],[\"orange\",1],[\"red\",3]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "hard-mixed-exchange",
+      "difficultyTier": 3,
+      "family": "mixed-exchange",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "red-3-1",
+        "orange-3-1",
+        "red-7-1",
+        "orange-7-1",
+        "blue-9-1",
+        "blue-10-1"
+      ],
+      "designPurpose": "Two group conversions repair a short run split at its middle.",
+      "parameterInvestigation": "A tempting rack endpoint can extend the starting blue run but cannot remain with it in a completion.",
+      "solution": [
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "red-3-1",
+          "red-4-1",
+          "red-5-1"
+        ],
+        [
+          "orange-3-1",
+          "orange-4-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-7-1",
+          "red-7-1",
+          "orange-7-1"
+        ],
+        [
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "mixed-exchange",
+      "minimumR": 3,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "mixed-exchange"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"run\",[[\"black\",4],[\"black\",5],[\"black\",6]]],[\"run\",[[\"red\",8],[\"red\",9],[\"red\",10]]]],[[\"black\",1],[\"black\",7],[\"black\",8],[\"blue\",1],[\"blue\",5],[\"orange\",1],[\"orange\",5]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "hard-longer-mixed-repair",
+      "difficultyTier": 3,
+      "family": "mixed-exchange",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "red-3-1",
+        "orange-3-1",
+        "red-7-1",
+        "orange-7-1",
+        "blue-10-1",
+        "blue-11-1"
+      ],
+      "designPurpose": "Longer right-hand remainder changes the repair interval.",
+      "parameterInvestigation": "Blue source length 4; right repair length 4 rather than 3.",
+      "variantOf": "hard-mixed-exchange",
+      "solution": [
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ],
+        [
+          "blue-7-1",
+          "orange-7-1",
+          "red-7-1"
+        ],
+        [
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1",
+          "blue-11-1"
+        ],
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "orange-3-1",
+          "orange-4-1",
+          "orange-5-1"
+        ],
+        [
+          "red-3-1",
+          "red-4-1",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "mixed-exchange",
+      "minimumR": 3,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [
+        "mixed-exchange"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"run\",[[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7]]],[\"run\",[[\"red\",8],[\"red\",9],[\"red\",10]]]],[[\"black\",1],[\"black\",8],[\"black\",9],[\"blue\",1],[\"blue\",5],[\"orange\",1],[\"orange\",5]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-interior-extraction",
+      "difficultyTier": 4,
+      "family": "interior-extraction",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "blue-5-2",
+        "orange-5-2",
+        "blue-6-2",
+        "black-6-2"
+      ],
+      "designPurpose": "Duplicate shortages force the long run to split and every short run to convert.",
+      "parameterInvestigation": "One long source plus three short sources; all starting rows are runs.",
+      "solution": [
+        [
+          "black-6-1",
+          "blue-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-6-2",
+          "blue-6-2",
+          "red-6-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-1",
+          "red-4-2"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-5-2",
+          "orange-5-2",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "interior-extraction",
+      "minimumR": 4,
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "commonPredicates": [
+        "interior-extraction"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]],[\"run\",[[\"red\",4],[\"red\",5],[\"red\",6]]]],[[\"black\",4],[\"black\",5],[\"black\",6],[\"blue\",4],[\"orange\",5],[\"red\",6]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-longer-interior",
+      "difficultyTier": 4,
+      "family": "interior-extraction",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "blue-5-2",
+        "orange-5-2",
+        "blue-6-2",
+        "black-6-2"
+      ],
+      "designPurpose": "A longer surviving upper fragment changes the starting geometry.",
+      "parameterInvestigation": "Long source length 10 instead of 9.",
+      "variantOf": "expert-interior-extraction",
+      "solution": [
+        [
+          "black-6-1",
+          "blue-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-6-2",
+          "blue-6-2",
+          "red-6-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-1",
+          "red-4-2"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-5-2",
+          "orange-5-2",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "interior-extraction",
+      "minimumR": 4,
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "commonPredicates": [
+        "interior-extraction"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9],[\"black\",10]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]],[\"run\",[[\"red\",4],[\"red\",5],[\"red\",6]]]],[[\"black\",4],[\"black\",5],[\"black\",6],[\"blue\",4],[\"orange\",5],[\"red\",6]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-split-and-join",
+      "difficultyTier": 4,
+      "family": "split-and-join",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ],
+        [
+          "blue-10-1",
+          "blue-11-1",
+          "blue-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "blue-5-2",
+        "orange-5-2",
+        "blue-6-2",
+        "black-6-2",
+        "red-12-1",
+        "orange-12-1"
+      ],
+      "designPurpose": "The conversion core must also repair the two-tile tail of a fifth source row.",
+      "parameterInvestigation": "Five necessarily changed rows; tail donation at 12; eight rack tiles.",
+      "solution": [
+        [
+          "blue-12-1",
+          "orange-12-1",
+          "red-12-1"
+        ],
+        [
+          "black-6-1",
+          "blue-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-6-2",
+          "blue-6-2",
+          "red-6-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1",
+          "blue-11-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-1",
+          "red-4-2"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-5-2",
+          "orange-5-2",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "split-and-join",
+      "minimumR": 5,
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "commonPredicates": [
+        "split-and-join"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]],[\"run\",[[\"red\",4],[\"red\",5],[\"red\",6]]]],[[\"black\",4],[\"black\",5],[\"black\",6],[\"blue\",4],[\"blue\",12],[\"orange\",5],[\"orange\",12],[\"red\",6]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-longer-split-join",
+      "difficultyTier": 4,
+      "family": "split-and-join",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ],
+        [
+          "blue-11-1",
+          "blue-12-1",
+          "blue-13-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "blue-5-2",
+        "orange-5-2",
+        "blue-6-2",
+        "black-6-2",
+        "red-13-1",
+        "orange-13-1"
+      ],
+      "designPurpose": "A six-tile shared repair admits different divisions, all still connected.",
+      "parameterInvestigation": "Tail donation at 13; upper retained source fragment length 4 rather than 3.",
+      "variantOf": "expert-split-and-join",
+      "solution": [
+        [
+          "blue-13-1",
+          "orange-13-1",
+          "red-13-1"
+        ],
+        [
+          "black-6-1",
+          "blue-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-6-2",
+          "blue-6-2",
+          "red-6-1"
+        ],
+        [
+          "blue-10-1",
+          "blue-11-1",
+          "blue-12-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-1",
+          "red-4-2"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-5-2",
+          "orange-5-2",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "split-and-join",
+      "minimumR": 5,
+      "physicalPartitions": 128,
+      "minimumPhysicalPartitions": 128,
+      "commonPredicates": [
+        "split-and-join"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",11],[\"black\",12],[\"black\",13]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9],[\"black\",10]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]],[\"run\",[[\"red\",4],[\"red\",5],[\"red\",6]]]],[[\"black\",4],[\"black\",5],[\"black\",6],[\"blue\",4],[\"blue\",13],[\"orange\",5],[\"orange\",13],[\"red\",6]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-groups-to-runs",
+      "difficultyTier": 4,
+      "family": "groups-to-runs",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1"
+        ],
+        [
+          "blue-7-1",
+          "red-7-1",
+          "orange-7-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "blue-8-1",
+        "red-2-1",
+        "red-3-1",
+        "red-8-1",
+        "red-9-1"
+      ],
+      "designPurpose": "Retain the useful four-group chain within the broader release mix.",
+      "parameterInvestigation": "Four source groups; independent long-run divisions are audited, not treated as distinct families.",
+      "solution": [
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1"
+        ],
+        [
+          "red-2-1",
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1",
+          "red-8-1",
+          "red-9-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1",
+          "orange-7-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "groups-to-runs",
+      "minimumR": 4,
+      "physicalPartitions": 8,
+      "minimumPhysicalPartitions": 8,
+      "commonPredicates": [
+        "groups-to-runs"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"group\",[[\"black\",5],[\"blue\",5],[\"orange\",5]]],[\"group\",[[\"black\",6],[\"blue\",6],[\"orange\",6]]]],[[\"black\",1],[\"black\",2],[\"black\",7],[\"black\",8],[\"blue\",2],[\"blue\",7]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-five-group-conversion",
+      "difficultyTier": 4,
+      "family": "groups-to-runs",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1"
+        ],
+        [
+          "blue-7-1",
+          "red-7-1",
+          "orange-7-1"
+        ],
+        [
+          "blue-8-1",
+          "red-8-1",
+          "orange-8-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "blue-9-1",
+        "red-2-1",
+        "red-3-1",
+        "red-9-1",
+        "red-10-1"
+      ],
+      "designPurpose": "Five consecutive groups change, with different possible final run divisions.",
+      "parameterInvestigation": "Five source groups rather than four; same six-tile rack size.",
+      "variantOf": "expert-groups-to-runs",
+      "solution": [
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1",
+          "orange-7-1",
+          "orange-8-1"
+        ],
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1"
+        ],
+        [
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "red-2-1",
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1",
+          "red-8-1",
+          "red-9-1",
+          "red-10-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "groups-to-runs",
+      "minimumR": 5,
+      "physicalPartitions": 18,
+      "minimumPhysicalPartitions": 18,
+      "commonPredicates": [
+        "groups-to-runs"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"group\",[[\"black\",5],[\"blue\",5],[\"orange\",5]]],[\"group\",[[\"black\",6],[\"blue\",6],[\"orange\",6]]],[\"group\",[[\"black\",7],[\"blue\",7],[\"orange\",7]]]],[[\"black\",1],[\"black\",2],[\"black\",8],[\"black\",9],[\"blue\",2],[\"blue\",8]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-duplicate-choice",
+      "difficultyTier": 4,
+      "family": "groups-to-runs",
+      "board": [
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1"
+        ],
+        [
+          "blue-7-1",
+          "red-7-1",
+          "orange-7-1"
+        ],
+        [
+          "red-4-2",
+          "red-5-2",
+          "red-6-2"
+        ]
+      ],
+      "rack": [
+        "blue-3-1",
+        "blue-8-1",
+        "red-2-1",
+        "red-3-1",
+        "red-8-1",
+        "red-9-1"
+      ],
+      "designPurpose": "Duplicate red run offers alternate origins and preservation choices.",
+      "parameterInvestigation": "Duplicate overlay remains in the groups-to-runs family.",
+      "variantOf": "expert-groups-to-runs",
+      "solution": [
+        [
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1"
+        ],
+        [
+          "red-2-1",
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1",
+          "red-8-1",
+          "red-9-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1",
+          "orange-7-1"
+        ],
+        [
+          "red-4-2",
+          "red-5-2",
+          "red-6-2"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "groups-to-runs",
+      "minimumR": 4,
+      "physicalPartitions": 80,
+      "minimumPhysicalPartitions": 16,
+      "commonPredicates": [
+        "groups-to-runs"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"group\",[[\"black\",5],[\"blue\",5],[\"orange\",5]]],[\"group\",[[\"black\",6],[\"blue\",6],[\"orange\",6]]],[\"run\",[[\"black\",3],[\"black\",4],[\"black\",5]]]],[[\"black\",1],[\"black\",2],[\"black\",7],[\"black\",8],[\"blue\",2],[\"blue\",7]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-runs-to-groups",
+      "difficultyTier": 4,
+      "family": "runs-to-groups",
+      "board": [
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "blue-5-2",
+        "orange-5-2",
+        "blue-6-2",
+        "black-6-2"
+      ],
+      "designPurpose": "Four colour runs become two groups at each value; duplicate partners prevent easier run routes.",
+      "parameterInvestigation": "All four colours present as source runs; a shared duplicate colour spans the three rack values.",
+      "solution": [
+        [
+          "black-6-1",
+          "blue-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-6-2",
+          "blue-6-2",
+          "red-6-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-1",
+          "red-4-2"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-5-2",
+          "orange-5-2",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "runs-to-groups",
+      "minimumR": 4,
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "commonPredicates": [
+        "runs-to-groups"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3]]],[\"run\",[[\"orange\",1],[\"orange\",2],[\"orange\",3]]],[\"run\",[[\"red\",1],[\"red\",2],[\"red\",3]]]],[[\"black\",1],[\"black\",2],[\"black\",3],[\"blue\",1],[\"orange\",2],[\"red\",3]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-mixed-exchange",
+      "difficultyTier": 4,
+      "family": "mixed-exchange",
+      "board": [
+        [
+          "blue-3-1",
+          "red-3-1",
+          "orange-3-1"
+        ],
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1"
+        ]
+      ],
+      "rack": [
+        "blue-2-1",
+        "red-2-1",
+        "orange-2-1",
+        "red-7-1",
+        "orange-7-1",
+        "blue-9-1",
+        "blue-10-1"
+      ],
+      "designPurpose": "Three group conversions must repair a split run; tempting rack 2 group has alternate uses.",
+      "parameterInvestigation": "Four changed rows; seven rack tiles; multiple face-level completions.",
+      "solution": [
+        [
+          "blue-7-1",
+          "orange-7-1",
+          "red-7-1"
+        ],
+        [
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "orange-2-1",
+          "orange-3-1",
+          "orange-4-1",
+          "orange-5-1"
+        ],
+        [
+          "red-2-1",
+          "red-3-1",
+          "red-4-1",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "mixed-exchange",
+      "minimumR": 4,
+      "physicalPartitions": 2,
+      "minimumPhysicalPartitions": 2,
+      "commonPredicates": [
+        "mixed-exchange"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",2],[\"blue\",2],[\"orange\",2]]],[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"group\",[[\"black\",4],[\"blue\",4],[\"orange\",4]]],[\"run\",[[\"black\",5],[\"black\",6],[\"black\",7]]]],[[\"black\",1],[\"black\",8],[\"black\",9],[\"blue\",1],[\"blue\",6],[\"orange\",1],[\"orange\",6]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-combined-repair",
+      "difficultyTier": 4,
+      "family": "combined-repair",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ],
+        [
+          "blue-10-1",
+          "red-10-1",
+          "orange-10-1",
+          "black-10-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "blue-5-2",
+        "orange-5-2",
+        "blue-6-2",
+        "black-6-2",
+        "blue-11-1"
+      ],
+      "designPurpose": "Interior conversion and four-colour-group donation are both necessary in one component.",
+      "parameterInvestigation": "The donated blue 10 plus rack 11 cannot stand alone; they must use the upper blue fragment.",
+      "solution": [
+        [
+          "black-10-1",
+          "orange-10-1",
+          "red-10-1"
+        ],
+        [
+          "black-6-1",
+          "blue-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-6-2",
+          "blue-6-2",
+          "red-6-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1",
+          "blue-11-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-1",
+          "red-4-2"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-5-2",
+          "orange-5-2",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "combined-repair",
+      "minimumR": 5,
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "commonPredicates": [
+        "combined-repair",
+        "linked-group-donation",
+        "mixed-exchange"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",10],[\"blue\",10],[\"orange\",10],[\"red\",10]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]],[\"run\",[[\"red\",4],[\"red\",5],[\"red\",6]]]],[[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",11],[\"blue\",4],[\"orange\",5],[\"red\",6]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-longer-combined-repair",
+      "difficultyTier": 4,
+      "family": "combined-repair",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ],
+        [
+          "blue-11-1",
+          "red-11-1",
+          "orange-11-1",
+          "black-11-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "blue-5-2",
+        "orange-5-2",
+        "blue-6-2",
+        "black-6-2",
+        "blue-12-1"
+      ],
+      "designPurpose": "Longer upper fragment allows more final divisions while both mechanisms remain mandatory.",
+      "parameterInvestigation": "Upper source length 4 instead of 3, donor 11 and rack neighbour 12.",
+      "variantOf": "expert-combined-repair",
+      "solution": [
+        [
+          "black-11-1",
+          "orange-11-1",
+          "red-11-1"
+        ],
+        [
+          "black-6-1",
+          "blue-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-6-2",
+          "blue-6-2",
+          "red-6-1"
+        ],
+        [
+          "blue-10-1",
+          "blue-11-1",
+          "blue-12-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-1",
+          "red-4-2"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-5-2",
+          "orange-5-2",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "combined-repair",
+      "minimumR": 5,
+      "physicalPartitions": 128,
+      "minimumPhysicalPartitions": 128,
+      "commonPredicates": [
+        "combined-repair",
+        "linked-group-donation",
+        "mixed-exchange"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",11],[\"blue\",11],[\"orange\",11],[\"red\",11]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9],[\"black\",10]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]],[\"run\",[[\"red\",4],[\"red\",5],[\"red\",6]]]],[[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",12],[\"blue\",4],[\"orange\",5],[\"red\",6]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "expert-compact-combined-repair",
+      "difficultyTier": 4,
+      "family": "combined-repair",
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "blue-10-1",
+          "red-10-1",
+          "orange-10-1",
+          "black-10-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "orange-4-2",
+        "black-5-1",
+        "blue-11-1"
+      ],
+      "solution": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1",
+          "blue-11-1"
+        ],
+        [
+          "red-10-1",
+          "orange-10-1",
+          "black-10-1"
+        ],
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-4-2",
+          "red-4-2",
+          "orange-4-2"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1",
+          "black-5-1"
+        ],
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1"
+        ]
+      ],
+      "variantOf": "expert-combined-repair",
+      "designPurpose": "Compact four-row combined repair retains both the necessary group donation and interior rebuilding.",
+      "parameterInvestigation": "Three central source colours rather than four; one long and two short source runs plus a four-colour group; five rack tiles; exact R=4."
+    },
+    "expected": {
+      "status": "accepted",
+      "family": "combined-repair",
+      "minimumR": 4,
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "commonPredicates": [
+        "combined-repair",
+        "linked-group-donation",
+        "mixed-exchange"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",10],[\"blue\",10],[\"orange\",10],[\"red\",10]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]]],[[\"black\",4],[\"black\",11],[\"blue\",4],[\"orange\",4],[\"red\",5]]]",
+      "minimumOriginKeys": [
+        "[\"origin-v1\",[\"start-v1\",[[\"group\",[[\"black\",10],[\"blue\",10],[\"orange\",10],[\"red\",10]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]]],[[\"black\",4],[\"black\",11],[\"blue\",4],[\"orange\",4],[\"red\",5]]],[[\"group\",[[\"black\",4,\"rack\"],[\"blue\",4,\"rack\"],[\"orange\",4,\"rack\"]]],[\"group\",[[\"black\",4,\"row:1\"],[\"blue\",4,\"row:2\"],[\"orange\",4,\"row:3\"]]],[\"group\",[[\"black\",5,\"row:1\"],[\"blue\",5,\"row:2\"],[\"orange\",5,\"row:3\"],[\"red\",5,\"rack\"]]],[\"group\",[[\"black\",6,\"row:1\"],[\"blue\",6,\"row:2\"],[\"orange\",6,\"row:3\"]]],[\"group\",[[\"blue\",10,\"row:0\"],[\"orange\",10,\"row:0\"],[\"red\",10,\"row:0\"]]],[\"run\",[[\"black\",1,\"row:1\"],[\"black\",2,\"row:1\"],[\"black\",3,\"row:1\"]]],[\"run\",[[\"black\",7,\"row:1\"],[\"black\",8,\"row:1\"],[\"black\",9,\"row:1\"],[\"black\",10,\"row:0\"],[\"black\",11,\"rack\"]]]]]",
+        "[\"origin-v1\",[\"start-v1\",[[\"group\",[[\"black\",10],[\"blue\",10],[\"orange\",10],[\"red\",10]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]]],[[\"black\",4],[\"black\",11],[\"blue\",4],[\"orange\",4],[\"red\",5]]],[[\"group\",[[\"black\",4,\"rack\"],[\"blue\",4,\"rack\"],[\"orange\",4,\"row:3\"]]],[\"group\",[[\"black\",4,\"row:1\"],[\"blue\",4,\"row:2\"],[\"orange\",4,\"rack\"]]],[\"group\",[[\"black\",5,\"row:1\"],[\"blue\",5,\"row:2\"],[\"orange\",5,\"row:3\"],[\"red\",5,\"rack\"]]],[\"group\",[[\"black\",6,\"row:1\"],[\"blue\",6,\"row:2\"],[\"orange\",6,\"row:3\"]]],[\"group\",[[\"blue\",10,\"row:0\"],[\"orange\",10,\"row:0\"],[\"red\",10,\"row:0\"]]],[\"run\",[[\"black\",1,\"row:1\"],[\"black\",2,\"row:1\"],[\"black\",3,\"row:1\"]]],[\"run\",[[\"black\",7,\"row:1\"],[\"black\",8,\"row:1\"],[\"black\",9,\"row:1\"],[\"black\",10,\"row:0\"],[\"black\",11,\"rack\"]]]]]",
+        "[\"origin-v1\",[\"start-v1\",[[\"group\",[[\"black\",10],[\"blue\",10],[\"orange\",10],[\"red\",10]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]]],[[\"black\",4],[\"black\",11],[\"blue\",4],[\"orange\",4],[\"red\",5]]],[[\"group\",[[\"black\",4,\"rack\"],[\"blue\",4,\"row:2\"],[\"orange\",4,\"row:3\"]]],[\"group\",[[\"black\",4,\"row:1\"],[\"blue\",4,\"rack\"],[\"orange\",4,\"rack\"]]],[\"group\",[[\"black\",5,\"row:1\"],[\"blue\",5,\"row:2\"],[\"orange\",5,\"row:3\"],[\"red\",5,\"rack\"]]],[\"group\",[[\"black\",6,\"row:1\"],[\"blue\",6,\"row:2\"],[\"orange\",6,\"row:3\"]]],[\"group\",[[\"blue\",10,\"row:0\"],[\"orange\",10,\"row:0\"],[\"red\",10,\"row:0\"]]],[\"run\",[[\"black\",1,\"row:1\"],[\"black\",2,\"row:1\"],[\"black\",3,\"row:1\"]]],[\"run\",[[\"black\",7,\"row:1\"],[\"black\",8,\"row:1\"],[\"black\",9,\"row:1\"],[\"black\",10,\"row:0\"],[\"black\",11,\"rack\"]]]]]"
+      ],
+      "minimumMechanismProfiles": [
+        {
+          "predicates": [
+            "combined-repair",
+            "linked-group-donation",
+            "mixed-exchange"
+          ],
+          "changedKinds": {
+            "group": 1,
+            "run": 3
+          },
+          "components": [
+            [
+              4,
+              4
+            ]
+          ],
+          "contributions": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ],
+            [
+              3,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              3,
+              2,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              3,
+              1
+            ],
+            [
+              0,
+              4,
+              3
+            ],
+            [
+              1,
+              5,
+              3
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              1,
+              6,
+              3
+            ]
+          ],
+          "splittingSources": 4,
+          "joiningTargets": 4,
+          "directions": [
+            "group-to-group",
+            "group-to-run",
+            "run-to-group",
+            "run-to-run"
+          ]
+        },
+        {
+          "predicates": [
+            "combined-repair",
+            "linked-group-donation",
+            "mixed-exchange"
+          ],
+          "changedKinds": {
+            "group": 1,
+            "run": 3
+          },
+          "components": [
+            [
+              4,
+              4
+            ]
+          ],
+          "contributions": [
+            [
+              3,
+              0,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              3,
+              2,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              3,
+              1
+            ],
+            [
+              0,
+              4,
+              3
+            ],
+            [
+              1,
+              5,
+              3
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              1,
+              6,
+              3
+            ]
+          ],
+          "splittingSources": 4,
+          "joiningTargets": 4,
+          "directions": [
+            "group-to-group",
+            "group-to-run",
+            "run-to-group",
+            "run-to-run"
+          ]
+        },
+        {
+          "predicates": [
+            "combined-repair",
+            "linked-group-donation",
+            "mixed-exchange"
+          ],
+          "changedKinds": {
+            "group": 1,
+            "run": 3
+          },
+          "components": [
+            [
+              4,
+              4
+            ]
+          ],
+          "contributions": [
+            [
+              2,
+              0,
+              1
+            ],
+            [
+              3,
+              0,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              1
+            ],
+            [
+              3,
+              2,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              3,
+              1
+            ],
+            [
+              0,
+              4,
+              3
+            ],
+            [
+              1,
+              5,
+              3
+            ],
+            [
+              0,
+              6,
+              1
+            ],
+            [
+              1,
+              6,
+              3
+            ]
+          ],
+          "splittingSources": 4,
+          "joiningTargets": 4,
+          "directions": [
+            "group-to-group",
+            "group-to-run",
+            "run-to-group",
+            "run-to-run"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "design": {
+      "name": "rejected-optional-join",
+      "difficultyTier": 2,
+      "family": null,
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "blue-9-1",
+          "blue-10-1",
+          "blue-11-1"
+        ],
+        [
+          "orange-1-1",
+          "orange-2-1",
+          "orange-3-1"
+        ]
+      ],
+      "rack": [
+        "blue-8-1",
+        "black-4-1",
+        "red-4-1",
+        "black-11-1",
+        "red-11-1"
+      ],
+      "designPurpose": "Independent repair bypasses the stored connected witness.",
+      "parameterInvestigation": "Extra rack bridge permits disconnected components.",
+      "expectedStatus": "structural-rejection",
+      "claimedFamily": "split-and-join",
+      "solution": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "blue-4-1",
+          "black-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-11-1",
+          "black-11-1",
+          "red-11-1"
+        ],
+        [
+          "orange-1-1",
+          "orange-2-1",
+          "orange-3-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "structural-rejection",
+      "family": null,
+      "minimumR": 2,
+      "physicalPartitions": 2,
+      "minimumPhysicalPartitions": 2,
+      "commonPredicates": [],
+      "optionalPredicates": [
+        "split-and-join"
+      ],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7]]],[\"run\",[[\"black\",9],[\"black\",10],[\"black\",11]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3]]]],[[\"black\",8],[\"orange\",4],[\"orange\",11],[\"red\",4],[\"red\",11]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "rejected-hard-duplicate-core",
+      "difficultyTier": 3,
+      "family": null,
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "blue-11-1",
+          "blue-12-1",
+          "blue-13-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "black-4-1",
+        "black-7-1",
+        "red-7-2",
+        "black-13-1",
+        "orange-13-1",
+        "blue-7-2"
+      ],
+      "designPurpose": "Repairing both red and blue endpoints with duplicates creates a conservative endpoint-only shortcut.",
+      "parameterInvestigation": "Red 7 duplicate is rejected; accepted counterpart uses orange 7.",
+      "expectedStatus": "structural-rejection",
+      "claimedFamily": "split-and-join",
+      "solution": [
+        [
+          "black-13-1",
+          "blue-13-1",
+          "orange-13-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1"
+        ],
+        [
+          "red-5-1",
+          "red-6-1",
+          "red-7-1"
+        ],
+        [
+          "black-7-1",
+          "blue-7-1",
+          "red-7-2"
+        ],
+        [
+          "blue-10-1",
+          "blue-11-1",
+          "blue-12-1"
+        ],
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-2",
+          "blue-8-1",
+          "blue-9-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "structural-rejection",
+      "family": null,
+      "minimumR": 3,
+      "physicalPartitions": 16,
+      "minimumPhysicalPartitions": 16,
+      "commonPredicates": [],
+      "optionalPredicates": [
+        "split-and-join"
+      ],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"blue\",11],[\"blue\",12],[\"blue\",13]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7],[\"blue\",8],[\"blue\",9],[\"blue\",10]]],[\"run\",[[\"orange\",1],[\"orange\",2],[\"orange\",3],[\"orange\",4],[\"orange\",5],[\"orange\",6],[\"orange\",7]]]],[[\"black\",13],[\"blue\",7],[\"orange\",7],[\"red\",4],[\"red\",7],[\"red\",13]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "rejected-expert-two-long-sources",
+      "difficultyTier": 4,
+      "family": null,
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1",
+          "red-4-1",
+          "red-5-1",
+          "red-6-1",
+          "red-7-1",
+          "red-8-1",
+          "red-9-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "blue-5-2",
+        "orange-5-2",
+        "blue-6-2",
+        "black-6-2"
+      ],
+      "designPurpose": "Extending a second short source into a long run admits easier structural alternatives.",
+      "parameterInvestigation": "Two long cores versus one; extra length is not automatically safe.",
+      "expectedStatus": "structural-rejection",
+      "claimedFamily": "interior-extraction",
+      "solution": [
+        [
+          "black-6-1",
+          "blue-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-6-2",
+          "blue-6-2",
+          "red-6-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "red-7-1",
+          "red-8-1",
+          "red-9-1"
+        ],
+        [
+          "red-1-1",
+          "red-2-1",
+          "red-3-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-1",
+          "red-4-2"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-5-2",
+          "orange-5-2",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "structural-rejection",
+      "family": null,
+      "minimumR": 4,
+      "physicalPartitions": 128,
+      "minimumPhysicalPartitions": 128,
+      "commonPredicates": [],
+      "optionalPredicates": [
+        "interior-extraction"
+      ],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7],[\"blue\",8],[\"blue\",9]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]],[\"run\",[[\"red\",4],[\"red\",5],[\"red\",6]]]],[[\"black\",4],[\"black\",5],[\"black\",6],[\"blue\",4],[\"orange\",5],[\"red\",6]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "rejected-expert-duplicate-path",
+      "difficultyTier": 4,
+      "family": null,
+      "board": [
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "black-4-1",
+          "black-5-1",
+          "black-6-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "blue-5-2",
+        "orange-5-2",
+        "red-6-2",
+        "black-6-2"
+      ],
+      "designPurpose": "A different duplicate pairing admits a disconnected solution.",
+      "parameterInvestigation": "Shared duplicate colour pattern is essential; path is not a safe parameter.",
+      "expectedStatus": "structural-rejection",
+      "claimedFamily": "runs-to-groups",
+      "solution": [
+        [
+          "black-6-1",
+          "blue-6-1",
+          "red-6-1"
+        ],
+        [
+          "black-6-2",
+          "orange-6-1",
+          "red-6-2"
+        ],
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-4-2",
+          "orange-4-1",
+          "red-4-2"
+        ],
+        [
+          "black-5-1",
+          "blue-5-1",
+          "orange-5-1"
+        ],
+        [
+          "blue-5-2",
+          "orange-5-2",
+          "red-5-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "structural-rejection",
+      "family": null,
+      "minimumR": 4,
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 64,
+      "commonPredicates": [],
+      "optionalPredicates": [
+        "runs-to-groups"
+      ],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3]]],[\"run\",[[\"orange\",1],[\"orange\",2],[\"orange\",3]]],[\"run\",[[\"red\",1],[\"red\",2],[\"red\",3]]]],[[\"black\",1],[\"black\",2],[\"blue\",1],[\"blue\",3],[\"orange\",2],[\"red\",3]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "rejected-expert-boundary-only",
+      "difficultyTier": 4,
+      "family": null,
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "blue-10-1",
+          "blue-11-1",
+          "blue-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-3-2",
+        "blue-4-2",
+        "blue-9-2",
+        "blue-10-2"
+      ],
+      "designPurpose": "A four-source redistribution witness disguises a zero-change solution that preserves every original row.",
+      "parameterInvestigation": "Pure same-colour boundary redistribution is not sufficient Expert evidence.",
+      "expectedStatus": "wrong-tier",
+      "claimedFamily": "boundary-repair",
+      "solution": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1"
+        ],
+        [
+          "blue-3-2",
+          "blue-4-2",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1"
+        ],
+        [
+          "blue-9-2",
+          "blue-10-2",
+          "blue-11-1",
+          "blue-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "wrong-tier",
+      "family": null,
+      "minimumR": 0,
+      "physicalPartitions": 64,
+      "minimumPhysicalPartitions": 2,
+      "commonPredicates": [],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3]]],[\"run\",[[\"black\",4],[\"black\",5],[\"black\",6]]],[\"run\",[[\"black\",7],[\"black\",8],[\"black\",9]]]],[[\"black\",3],[\"black\",4],[\"black\",9],[\"black\",10]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "rejected-easy-interior",
+      "difficultyTier": 1,
+      "family": null,
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "red-4-1",
+        "black-4-1"
+      ],
+      "designPurpose": "One-row interior extraction is intentionally outside the narrow Easy predicates.",
+      "parameterInvestigation": "R=1 is necessary but not sufficient for Easy.",
+      "expectedStatus": "structural-rejection",
+      "solution": [
+        [
+          "black-4-1",
+          "blue-4-1",
+          "red-4-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "structural-rejection",
+      "family": null,
+      "minimumR": 1,
+      "physicalPartitions": 1,
+      "minimumPhysicalPartitions": 1,
+      "commonPredicates": [],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3],[\"blue\",4],[\"blue\",5],[\"blue\",6],[\"blue\",7]]]],[[\"orange\",4],[\"red\",4]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "rejected-three-colour-donation",
+      "difficultyTier": 1,
+      "family": null,
+      "board": [
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1"
+        ],
+        [
+          "black-10-1",
+          "black-11-1",
+          "black-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-1",
+        "blue-5-1"
+      ],
+      "designPurpose": "A three-colour group cannot donate and retain a valid group.",
+      "parameterInvestigation": "No completion exists for the two stranded 6s.",
+      "expectedStatus": "unsolvable"
+    },
+    "expected": {
+      "status": "unsolvable",
+      "family": null,
+      "minimumR": null,
+      "physicalPartitions": 0,
+      "minimumPhysicalPartitions": 0,
+      "commonPredicates": [],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",3],[\"blue\",3],[\"orange\",3]]],[\"run\",[[\"red\",7],[\"red\",8],[\"red\",9]]]],[[\"black\",1],[\"black\",2]]]"
+    }
+  },
+  {
+    "design": {
+      "name": "rejected-intact-row-extension",
+      "difficultyTier": 2,
+      "family": null,
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ]
+      ],
+      "rack": [
+        "blue-7-1",
+        "blue-8-1",
+        "blue-9-1"
+      ],
+      "designPurpose": "Extending or joining intact rows requires no rearrangement.",
+      "parameterInvestigation": "Whole-row joins give no difficulty credit.",
+      "expectedStatus": "wrong-tier",
+      "solution": [
+        [
+          "orange-10-1",
+          "orange-11-1",
+          "orange-12-1"
+        ],
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ]
+      ]
+    },
+    "expected": {
+      "status": "wrong-tier",
+      "family": null,
+      "minimumR": 0,
+      "physicalPartitions": 6,
+      "minimumPhysicalPartitions": 4,
+      "commonPredicates": [],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"run\",[[\"black\",10],[\"black\",11],[\"black\",12]]],[\"run\",[[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",1],[\"blue\",2],[\"blue\",3]]]],[[\"black\",4],[\"black\",5],[\"black\",6]]]"
+    }
+  },
+  {
+    "design": {
+      "board": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1",
+          "blue-4-1",
+          "blue-5-1",
+          "blue-6-1",
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1"
+        ],
+        [
+          "red-4-1",
+          "red-5-1",
+          "red-6-1"
+        ],
+        [
+          "orange-4-1",
+          "orange-5-1",
+          "orange-6-1"
+        ],
+        [
+          "blue-10-1",
+          "red-10-1",
+          "orange-10-1",
+          "black-10-1"
+        ]
+      ],
+      "rack": [
+        "blue-4-2",
+        "red-4-2",
+        "orange-4-2",
+        "black-5-1",
+        "blue-11-1"
+      ],
+      "solution": [
+        [
+          "blue-1-1",
+          "blue-2-1",
+          "blue-3-1"
+        ],
+        [
+          "blue-7-1",
+          "blue-8-1",
+          "blue-9-1",
+          "blue-10-1",
+          "blue-11-1"
+        ],
+        [
+          "red-10-1",
+          "orange-10-1",
+          "black-10-1"
+        ],
+        [
+          "blue-4-1",
+          "red-4-1",
+          "orange-4-1"
+        ],
+        [
+          "blue-4-2",
+          "red-4-2",
+          "orange-4-2"
+        ],
+        [
+          "blue-5-1",
+          "red-5-1",
+          "orange-5-1",
+          "black-5-1"
+        ],
+        [
+          "blue-6-1",
+          "red-6-1",
+          "orange-6-1"
+        ]
+      ],
+      "parameterInvestigation": "Three central source colours rather than four; one long and two short source runs plus a four-colour group; five rack tiles; exact R=4.",
+      "name": "rejected-hard-combined-promotion",
+      "difficultyTier": 3,
+      "family": null,
+      "expectedStatus": "wrong-tier",
+      "claimedFamily": "combined-repair",
+      "designPurpose": "A plausible Hard combined design necessarily changes four rows, so it is rejected as Hard and separately audited as Expert."
+    },
+    "expected": {
+      "status": "wrong-tier",
+      "family": "combined-repair",
+      "minimumR": 4,
+      "physicalPartitions": 4,
+      "minimumPhysicalPartitions": 4,
+      "commonPredicates": [
+        "combined-repair",
+        "linked-group-donation",
+        "mixed-exchange"
+      ],
+      "optionalPredicates": [],
+      "easyWitnessKinds": [],
+      "geometryKey": "[\"start-v1\",[[\"group\",[[\"black\",10],[\"blue\",10],[\"orange\",10],[\"red\",10]]],[\"run\",[[\"black\",1],[\"black\",2],[\"black\",3],[\"black\",4],[\"black\",5],[\"black\",6],[\"black\",7],[\"black\",8],[\"black\",9]]],[\"run\",[[\"blue\",4],[\"blue\",5],[\"blue\",6]]],[\"run\",[[\"orange\",4],[\"orange\",5],[\"orange\",6]]]],[[\"black\",4],[\"black\",11],[\"blue\",4],[\"orange\",4],[\"red\",5]]]"
+    }
+  }
+]
