@@ -115,6 +115,8 @@ Use **Tile palette → Alternative** with each appearance mode. The legend and t
 
 Open the sample. Click any tile: its selection outline and the selection message should identify it. Click it again or **Cancel selection** to clear selection without moving it. Click a selected tile, then a **+** target before, between, or after tiles, or **New row**. Temporary invalid rows are allowed and their reasons appear beside the row number. Dragging to the same targets is an equivalent move; dropping outside them or cancelling a drag must leave every tile in place.
 
+Placement controls use an 18px **+** inside a 28×36px dashed cue. Each button keeps a 48×48px hit area; adjacent targets touch the tile bounds without overlapping them. The board and rack share this sizing. Board rows have tighter label and tile spacing while tiles remain 64×94px; check that wrapped validity text stays legible in each appearance and palette.
+
 Complete this sample:
 
 1. Move **Blue 6** from the end of row 1 to **New row**.
@@ -126,9 +128,9 @@ Try that sequence once with clicks and once with dragging. Also check **Undo**, 
 
 ## Verify touch play manually
 
-On a tablet, complete the same three-move sample first by tapping a tile and then a **+** or **New row**. Tap the selected tile again to cancel. Insertion targets are at least 48 CSS pixels wide. Try board-to-rack moves, insertion within a row, and creating a row with **New row**.
+On a tablet, complete the same three-move sample first by tapping a tile and then a **+** or **New row**. Tap the selected tile again to cancel. Insertion hit areas are 48×48 CSS pixels; the visible dashed cue is smaller so neighbouring targets remain distinct. Try board-to-rack moves, insertion within a row, and creating a row with **New row**. Compare the tighter vertical row spacing in portrait and landscape, including one/two-tile rows and wrapped validity text. The user reviewed and approved the compact layout on desktop and tablet on 12 October 2026.
 
-Empty several board rows into the rack: emptied rows should disappear and the remaining labels and placement targets should follow their visible numbers. Empty the whole board: only one **New row** target should remain. Create a one-tile row, add a second tile, then try Undo, confirmed Reset and reload/Resume. Saved sessions retain their exact underlying placeholders and undo history. Scroll a long surviving row near its middle/end before emptying an earlier row; its visible tiles should stay in place. Repeat on desktop and tablet. Step 3 device acceptance remains pending; native rendering checks use simulated geometry.
+Empty several board rows into the rack: emptied rows should disappear and the remaining labels and placement targets should follow their visible numbers. Empty the whole board: only one **New row** target should remain. Create a one-tile row, add a second tile, then try Undo, confirmed Reset and reload/Resume. Saved sessions retain their exact underlying placeholders and undo history. Scroll a long surviving row near its middle/end before emptying an earlier row; its visible tiles should stay in place. Repeat on desktop and tablet when reviewing the compact layout; native rendering checks use simulated geometry.
 
 Repeat with touch dragging: hold a tile still for about a quarter of a second until a preview appears, then move the visible tile over a **+** or **New row**. Targeting follows the visible tile rather than your finger. Its centre selects a target directly; overlapping a nearby target, with a small extra margin, selects the nearest visible destination. The chosen destination gets a solid outline; release when the intended destination is highlighted. Holding a playable tile should not open the browser context menu. Release there to place the tile. Move near a row's left/right edge to scroll it, or near the screen's top/bottom edge to scroll the page during dragging. A quick movement before the hold threshold cancels the gesture; it must not select or move a tile. Swipe row labels, gaps, or other whitespace to scroll normally; tile surfaces reserve gestures for selection and dragging.
 

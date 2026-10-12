@@ -101,16 +101,16 @@ h3 { font-size: 13px; margin: 0 0 16px; font-weight: 650; }
 .tile-legend { display: flex; flex-wrap: wrap; gap: 12px; padding: 0; margin: 0; list-style: none; }
 .legend-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--tile-border); border-radius: 6px; background: var(--tile); font-size: 14px; font-weight: 650; }
 .legend-item > span:first-child { font-family: Arial, sans-serif; }
-.board-row { overflow-x: auto; padding: 8px 4px 16px; }
+.board-row { overflow-x: auto; padding: 4px 4px 10px; }
 .tile-scroll-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .tile-scroll-controls > .board-row, .tile-scroll-controls > .rack-scroll { flex: 1 1 auto; min-width: 0; }
 .scroll-arrow { flex: 0 0 48px; width: 48px; min-height: 48px; padding: 0; font-size: 32px; line-height: 1; }
 .board .scroll-arrow { color: var(--board); background: var(--board-text); }
 .board .scroll-arrow:hover { color: var(--board); background: var(--board-text); }
 .board .scroll-arrow:focus-visible { outline-color: var(--board-text); }
-.board-row-label { margin: 0 0 8px; font-size: 12px; font-weight: 650; }
+.board-row-label { margin: 0 0 4px; font-size: 12px; font-weight: 650; line-height: 1.35; }
 .board-row:focus-visible, .rack-scroll:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
-.tile-row { display: flex; gap: 8px; list-style: none; padding: 4px; margin: 0; width: max-content; min-width: 100%; }
+.tile-row { display: flex; gap: 4px; list-style: none; padding: 4px; margin: 0; width: max-content; min-width: 100%; }
 .tile { flex: 0 0 64px; width: 64px; height: 94px; background: var(--tile); border: 1px solid var(--tile-border); border-radius: 6px; box-shadow: var(--tile-shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
 .tile-value { font-size: 34px; font-weight: 750; line-height: 1.1; font-variant-numeric: lining-nums tabular-nums; }
 .tile-symbol { font-family: Arial, sans-serif; font-size: 20px; line-height: 1; }
@@ -127,17 +127,26 @@ button.tile:disabled { opacity: 1; cursor: default; }
 button.tile[aria-pressed="true"] { outline: 3px solid var(--selection); outline-offset: -5px; }
 button.tile:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .board button.tile:focus-visible { outline-color: var(--board-text); }
-.placement-slot { display: flex; align-items: center; flex: 0 0 48px; }
-.placement { padding: 0; min-width: 48px; min-height: 56px; border: 2px dashed var(--board-text); background: var(--board); color: var(--board-text); font-size: 22px; }
-.placement:hover { background: var(--board); }
-.placement:disabled { opacity: 1; cursor: default; border-style: dotted; }
-.board .placement:focus-visible { outline-color: var(--board-text); }
-.rack .placement { background: var(--rack); color: var(--text); border-color: var(--text); }
-.new-row { margin-top: 16px; padding: 8px 16px; font-size: 16px; }
+/* Allow the slot to be narrower than its centered hit area. The extra 4px on
+   each side uses the row gaps without overlapping neighbouring tiles. */
+.placement-slot { display: flex; align-items: center; justify-content: center; flex: 0 0 40px; min-width: 0; }
+.placement-slot > .placement { position: relative; flex: 0 0 48px; width: 48px; min-width: 48px; min-height: 48px; padding: 0; border: 0; background: transparent; color: var(--board-text); font-size: 18px; line-height: 1; }
+.placement-slot > .placement::after { content: ""; position: absolute; inset: 6px 10px; border: 2px dashed currentColor; border-radius: 5px; pointer-events: none; }
+.placement-slot > .placement:hover { background: var(--board); }
+.placement-slot > .placement:disabled { opacity: 1; cursor: default; }
+.placement-slot > .placement:disabled::after { border-style: dotted; }
+.board .placement-slot > .placement:focus-visible { outline-color: var(--board-text); }
+.rack .placement-slot > .placement { background: var(--rack); color: var(--text); }
+.new-row { margin-top: 10px; min-width: 48px; min-height: 48px; padding: 8px 16px; border: 2px dashed var(--board-text); background: var(--board); color: var(--board-text); font-size: 16px; }
+.new-row:hover { background: var(--board); }
+.new-row:disabled { opacity: 1; border-style: dotted; }
+.board .new-row:focus-visible { outline-color: var(--board-text); }
 .touch-source { cursor: grabbing; }
 .touch-preview { position: fixed; z-index: 1000; pointer-events: none; transform: translate(-50%, calc(-100% - 24px)); }
 .board .touch-destination { outline: 4px solid var(--board-text); outline-offset: 3px; border-style: solid; }
 .rack .touch-destination { outline: 4px solid var(--text); outline-offset: 3px; border-style: solid; }
+.board .placement-slot > .placement.touch-destination::after,
+.rack .placement-slot > .placement.touch-destination::after { border-style: solid; }
 .play-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 #selection-status { line-height: 1.5; }
 #load-status { font-size: clamp(20px, 2.4vw, 26px); font-weight: 750; line-height: 1.4; padding: 16px 20px; border-left: 4px solid var(--accent); background: var(--rack); color: var(--text); }
@@ -205,6 +214,7 @@ footer { padding-block: 28px; }
 :root[data-theme="high-contrast"] .legend-item { border-width: 2px; border-radius: 0; }
 :root[data-theme="high-contrast"] .tile-value { font-weight: 900; }
 :root[data-theme="high-contrast"] button { border: 2px solid var(--line); border-radius: 0; }
+:root[data-theme="high-contrast"] .placement-slot > .placement { border: 0; }
 :root[data-theme="high-contrast"] :focus-visible { outline-width: 4px; }
 
 /* Puzzle preparation controls share the existing typography and palette. */

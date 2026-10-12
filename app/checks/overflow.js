@@ -7,7 +7,7 @@ export function runOverflowChecks() {
     passed.push(name);
   };
   function harness({ width = 300, extent = 600, reduced = false, observer = true,
-    tileCount = 5, markers = true, stride = 128, trailing = 0, leading = 0, animated = false } = {}) {
+    tileCount = 5, markers = true, stride = 112, trailing = 0, leading = 0, animated = false } = {}) {
     const events = (properties = {}) => {
       const listeners = new Map();
       return Object.assign(properties, {
@@ -31,7 +31,7 @@ export function runOverflowChecks() {
       setTimeout(fn) { timers.set(++id, fn); return id; },
       clearTimeout(key) { timers.delete(key); },
       matchMedia: () => ({ matches: reduced }),
-      getComputedStyle: () => ({ columnGap: '8px' }),
+      getComputedStyle: (element) => ({ columnGap: element?.className === 'tile-scroll-controls' ? '8px' : '4px' }),
       ResizeObserver: observer ? class {
         constructor(fn) { this.callback = fn; this.observed = []; resizeObserver = this; }
         observe(node) { this.observed.push(node); }
@@ -55,7 +55,7 @@ export function runOverflowChecks() {
       before(node) { wrapper = node; },
       querySelector(selector) {
         if (selector === '.tile-row') return list;
-        if (selector === '.placement-slot') return markers ? { getBoundingClientRect: () => ({ width: 48 }) } : null;
+        if (selector === '.placement-slot') return markers ? { getBoundingClientRect: () => ({ width: 40 }) } : null;
         return null;
       },
       querySelectorAll() {
@@ -102,7 +102,7 @@ export function runOverflowChecks() {
   assert(h.later.attributes['aria-label'] === 'Show more tiles in row 2' && h.earlier.attributes['aria-hidden'] === 'true',
     'Directional cues have row-specific labels and hidden cues are excluded from accessibility');
   assert(h.wrapper.children[1] === h.scroller, 'Arrow buttons sit outside the tile scroll region');
-  assert(h.later.emit('click').stopped && h.scroller.calls[0].left === 128 && h.scroller.calls[0].behavior === 'smooth',
+  assert(h.later.emit('click').stopped && h.scroller.calls[0].left === 112 && h.scroller.calls[0].behavior === 'smooth',
     'Arrow activation includes the tile, placement marker and spacing without bubbling into game controls');
   assert(h.earlier.style.visibility === 'visible' && h.later.style.visibility === 'visible',
     'Scrolling away from the start exposes both directions');
@@ -115,7 +115,7 @@ export function runOverflowChecks() {
   assert(h.later.hidden && !h.earlier.hidden && h.scroller.clientWidth === 244,
     'At the end the unavailable forward arrow consumes no space and remains hidden after remeasurement');
   h.earlier.emit('click');
-  assert(h.scroller.calls.at(-1).left === -128 && !h.later.disabled, 'Backward scrolling uses the same full tile interval and reveals the forward cue again');
+  assert(h.scroller.calls.at(-1).left === -112 && !h.later.disabled, 'Backward scrolling uses the same full tile interval and reveals the forward cue again');
   h.scroller.scrollLeft = 0; h.scroller.emit('scroll');
   assert(h.earlier.disabled && !h.later.disabled, 'Swipe or drag scrolling also refreshes directional cues');
   h.resize(650); h.frame();
@@ -186,13 +186,13 @@ export function runOverflowChecks() {
     assert(smooth.scroller.scrollLeft === offset,
       `Smooth right scrolling through the leading + at ${offset}px is not reset`);
   }
-  smooth.scroller.scrollLeft = 128; smooth.scroller.emit('scroll'); smooth.frame();
-  assert(smooth.scroller.scrollLeft === 128 && !smooth.earlier.hidden,
+  smooth.scroller.scrollLeft = 112; smooth.scroller.emit('scroll'); smooth.frame();
+  assert(smooth.scroller.scrollLeft === 112 && !smooth.earlier.hidden,
     'A right-arrow animation completes its full tile interval before marker snapping resumes');
   smooth.controls.dispose();
   for (const [options, expected, name] of [
-    [{ tileCount: 1 }, 128, 'A single tile includes its placement marker and both gaps'],
-    [{ tileCount: 1, markers: false }, 72, 'Completed rows without placement markers scroll by tile and gap'],
+    [{ tileCount: 1 }, 112, 'A single tile includes its placement marker slot and both gaps'],
+    [{ tileCount: 1, markers: false }, 68, 'Completed rows without placement markers scroll by tile and gap'],
     [{ stride: 143 }, 143, 'Adjacent tile positions determine the step when displayed spacing changes'],
   ]) {
     const sized = harness(options); sized.frame(); sized.later.emit('click');

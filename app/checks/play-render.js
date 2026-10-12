@@ -29,7 +29,7 @@ export function runPlayRenderChecks(sample) {
       requestAnimationFrame(fn) { frames.set(++sequence, fn); return sequence; },
       cancelAnimationFrame(id) { frames.delete(id); },
       setTimeout() { return ++sequence; }, clearTimeout() {},
-      getComputedStyle: () => ({ columnGap: '8px' }),
+      getComputedStyle: (element) => ({ columnGap: element?.className === 'tile-scroll-controls' ? '8px' : '4px' }),
     });
     const document = events({ defaultView: view, activeElement: null });
     class Element {
@@ -83,16 +83,16 @@ export function runPlayRenderChecks(sample) {
       get clientWidth() { return 300; }
       get scrollWidth() {
         return Math.max(this.clientWidth, (this.querySelector('.tile-row')?.children ?? [])
-          .reduce((sum, child) => sum + child.width + 8, 0));
+          .reduce((sum, child) => sum + child.width + 4, 0));
       }
       get scrollLeft() { return this.offset; }
       set scrollLeft(value) { this.offset = Math.max(0, Math.min(value, this.scrollWidth - this.clientWidth)); }
-      get width() { return this.matches('.placement-slot') ? 48 : 64; }
+      get width() { return this.matches('.placement-slot') ? 40 : 64; }
       getBoundingClientRect() {
         const slot = this.closest('.tile-slot, .placement-slot');
         const scroller = this.closest('.board-row, .rack-scroll');
         const left = slot ? slot.parent.children.slice(0, slot.parent.children.indexOf(slot))
-          .reduce((sum, sibling) => sum + sibling.width + 8, 0) - scroller.scrollLeft : 0;
+          .reduce((sum, sibling) => sum + sibling.width + 4, 0) - scroller.scrollLeft : 0;
         return { left, right: left + this.width, width: this.width, top: 0, bottom: 100 };
       }
     }

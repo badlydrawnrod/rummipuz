@@ -102,6 +102,8 @@ export function createOverflowControls(scroller, label) {
     const list = scroller.querySelector('.tile-row');
     const gap = list ? parseFloat(view.getComputedStyle(list).columnGap) || 0 : 0;
     const tileWidth = tiles[0]?.getBoundingClientRect().width || 64;
+    // The button hit area can extend beyond its narrower flex slot. Scrolling
+    // follows the allocated slot so a one-tile row advances by its real stride.
     const marker = scroller.querySelector('.placement-slot');
     const step = measured || tileWidth + gap + (marker ? marker.getBoundingClientRect().width + gap : 0);
     const reduced = view.matchMedia?.('(prefers-reduced-motion: reduce)').matches;

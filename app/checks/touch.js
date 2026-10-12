@@ -197,8 +197,9 @@ export function runTouchChecks(sample, styles) {
     const h = harness(); const node = h.tile('blue-6-1');
     const left = h.destination({ area: 'new-row' });
     const right = h.destination({ area: 'rack', index: 0 });
-    left.bounds = { left: 176, right: 224, top: 151, bottom: 207 };
-    right.bounds = { left: 240, right: 288, top: 151, bottom: 207 };
+    // 48px hit areas at the compact 112px stride, with a 64px tile between.
+    left.bounds = { left: 176, right: 224, top: 151, bottom: 199 };
+    right.bounds = { left: 288, right: 336, top: 151, bottom: 199 };
     const hit = (x, y) => [left, right].find(({ bounds }) =>
       x >= bounds.left && x <= bounds.right && y >= bounds.top && y <= bounds.bottom) || null;
     h.document.hit = scenario === 'covered' ? () => null : hit;
@@ -206,8 +207,8 @@ export function runTouchChecks(sample, styles) {
     let x = 200; let y = 250;
     let expected = left;
     if (scenario === 'overlap') y = 300;
-    if (scenario === 'nearest-left') x = 231;
-    if (scenario === 'nearest-right') { x = 239; expected = right; }
+    if (scenario === 'nearest-left') x = 255;
+    if (scenario === 'nearest-right') { x = 257; expected = right; }
     if (scenario === 'outside') { y = 400; expected = null; }
     if (scenario === 'disabled') { left.disabled = true; right.disabled = true; expected = null; }
     if (scenario === 'clipped') {
@@ -220,7 +221,7 @@ export function runTouchChecks(sample, styles) {
     h.pointer('pointermove', node, { clientX: x, clientY: y });
     assert([left, right].every((target) => target.classList.contains('touch-destination') === (target === expected)),
       `${scenario}: geometry highlights the destination nearest the visible tile`);
-    if (scenario === 'release-position') { x = 264; expected = right; }
+    if (scenario === 'release-position') { x = 312; expected = right; }
     h.pointer('pointerup', node, { clientX: x, clientY: y });
     const state = h.session.snapshot().state;
     assert(expected === left ? state.board[2]?.[0] === 'blue-6-1'
@@ -308,6 +309,19 @@ export function runTouchChecks(sample, styles) {
   complete.controls.dispose();
   assert(/button\.tile\s*\{[^}]*touch-action: none/.test(styles) && !/\.board-row\s*\{[^}]*touch-action: none/.test(styles),
     'Touch-action reserves tile gestures while leaving row whitespace available for native scrolling');
-  assert(/\.placement\s*\{[^}]*min-width: 48px/.test(styles), 'Insertion targets are at least 48 CSS pixels wide');
+  assert(/\.placement-slot > \.placement\s*\{[^}]*width: 48px/.test(styles) &&
+    /\.placement-slot > \.placement\s*\{[^}]*min-height: 48px/.test(styles),
+    'Insertion hit areas remain at least 48 by 48 CSS pixels');
+  assert(/\.placement-slot\s*\{[^}]*flex: 0 0 40px[^}]*min-width: 0/.test(styles) &&
+    /\.placement-slot > \.placement::after\s*\{[^}]*inset: 6px 10px/.test(styles),
+    'Compact placement cues sit inside larger touch hit areas and narrower row slots');
+  assert(/\.new-row\s*\{[^}]*padding: 8px 16px[^}]*border: 2px dashed[^}]*font-size: 16px/.test(styles) &&
+    /^button\s*\{[^}]*min-height: 48px/m.test(styles) &&
+    !/(^|\n)\.placement\s*\{/.test(styles) && !/(^|\n)\.placement::after/.test(styles),
+    'New row keeps a text-sized padded button without the insertion cue');
+  assert(/:root\[data-theme="high-contrast"\] \.placement-slot > \.placement\s*\{[^}]*border: 0/.test(styles),
+    'High-contrast global button borders do not expand the compact placement cue');
+  assert(/\.board \.placement-slot > \.placement\.touch-destination::after,\s*\.rack \.placement-slot > \.placement\.touch-destination::after\s*\{[^}]*border-style: solid/.test(styles),
+    'Board and rack touch highlights change the compact insertion cue to a solid outline');
   return passed;
 }
