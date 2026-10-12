@@ -21,8 +21,8 @@ export async function runPuzzleFlowChecks(sample) {
     assert(rejected, `Invalid replay rejected: ${code.slice(0, 45)}`);
   }
   for (let tier = 1; tier <= 4; tier += 1) {
-    assert(nextDifficulty({ chosenDifficultyTier: tier, credits: [2, 2, 2, 2] }) === tier, `Two credits stay at tier ${tier}`);
-    assert(nextDifficulty({ chosenDifficultyTier: tier, credits: [3, 3, 3, 3] }) === Math.min(4, tier + 1), `Three credits propose one tier from ${tier}`);
+    assert(nextDifficulty({ chosenDifficultyTier: tier, credits: [3, 3, 3, 3] }) === tier,
+      `Completed puzzles never promote the selected tier ${tier}`);
   }
   const progress = store();
   for (let i = 0; i < 3; i += 1) {
@@ -42,10 +42,11 @@ export async function runPuzzleFlowChecks(sample) {
   const flow = createPuzzleFlow({ service, progress, loadSample: async () => sample, newSeed: () => `fresh-${seed++}` });
   const before = JSON.stringify(progress.snapshot());
   let ready = await flow.prepare({ kind: 'next' });
-  assert(ready.chosenTier === 2 && ready.state.difficultyTier === 2 && ready.state.generatorVersion === 6, 'Next uses revision 6 and chosen-tier credit to propose Medium');
-  assert(JSON.stringify(progress.snapshot()) === before, 'Preparation alone never replaces progress or commits promotion');
+  assert(ready.chosenTier === 1 && ready.state.difficultyTier === 1 && ready.state.generatorVersion === 6,
+    'Next stays at the selected tier after three distinct completions');
+  assert(JSON.stringify(progress.snapshot()) === before, 'Preparation alone never replaces progress or chosen tier');
   ready = await flow.prepare({ kind: 'start', tier: 1 });
-  assert(ready.chosenTier === 1 && ready.state.generatorVersion === 6, 'Manual Easy uses revision 6 and overrides its earned promotion');
+  assert(ready.chosenTier === 1 && ready.state.generatorVersion === 6, 'Manual Easy starts at the selected tier');
   ready = await flow.prepare({ kind: 'start', tier: 4 });
   assert(ready.state.difficultyTier === 4, 'Expert is immediately selectable');
   progress.setChosenDifficulty(4);

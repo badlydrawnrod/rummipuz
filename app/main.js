@@ -67,11 +67,8 @@ function refreshNavigation() {
   find('.preview-note').textContent = active
     ? `${TIER_NAMES[active.state.difficultyTier - 1]} · ${active.state.rack.length} tiles in rack · ${active.completed ? 'Completed' : 'Saved puzzle'}`
     : 'Select and place, or drag tiles.';
-  const tier = Number(difficulty.value);
-  const credit = saved.credits[tier - 1];
-  find('#difficulty-credit').textContent = `${TIER_NAMES[tier - 1]} · ${credit} of 3 completed${credit === 3 && tier < 4 ? ' · Ready to move up on Next' : ''}`;
   const next = nextDifficulty(saved);
-  find('#next-description').textContent = `Next puzzle: ${TIER_NAMES[next - 1]}${next !== saved.chosenDifficultyTier ? ` — 3 ${TIER_NAMES[saved.chosenDifficultyTier - 1]} puzzles completed` : ''}.`;
+  find('#next-description').textContent = `Next puzzle: ${TIER_NAMES[next - 1]}.`;
   find('#next-puzzle').hidden = !active?.completed;
   find('#next-description').hidden = !active?.completed;
   for (const selector of ['#open-sample', '#start-puzzle', '#next-puzzle', '#play-replay', '#difficulty-choice', '#replay-input', '#change-difficulty', '#open-replay']) {

@@ -1,4 +1,4 @@
-# Rummipuz difficulty and progression — initial policy
+# Rummipuz difficulty policy
 
 The first version has four selectable tiers. A new device defaults to **Tier 1 — Easy**. Every tier is available immediately; players do not have to unlock them. Later visits retain the chosen tier, and Resume keeps the current puzzle's recorded tier.
 
@@ -37,7 +37,7 @@ An **Expert structural example** has board rows blue 1–6, red 1–6, orange 8�
 
 ## Revision-5 structural difficulty policy
 
-Phase 6 adds structural requirements for newly generated revision-5 puzzles. These are implemented in `rateStructuralPuzzle`; revision 5 was the approved Phase 6 default and is preserved for explicit replay; approved revision 6 now supplies fresh Start and Next puzzles. Revisions 1–4 retain their existing identities and rating behaviour. The four tiers, exact minimum `R` requirements, full rack/board-size bounds above, and three-completion progression policy remain unchanged. The user approved the revision-5 sample set on 11 October 2026 without requesting tuning. Existing saved sessions keep their recorded revision. The additional thresholds below are an initial design policy, not a measured human-difficulty scale; tuning them before publication must be recorded here and in the implementation plan.
+Phase 6 adds structural requirements for newly generated revision-5 puzzles. These are implemented in `rateStructuralPuzzle`; revision 5 was the approved Phase 6 default and is preserved for explicit replay; approved revision 6 now supplies fresh Start and Next puzzles. Revisions 1–4 retain their existing identities and rating behaviour. The four tiers, exact minimum `R` requirements, and full rack/board-size bounds above remain unchanged. Automatic difficulty promotion has been removed: fresh Start and Next use the player's saved selection. The user approved the revision-5 sample set on 11 October 2026 without requesting tuning. Existing saved sessions keep their recorded revision. The additional thresholds below are an initial design policy, not a measured human-difficulty scale; tuning them before publication must be recorded here and in the implementation plan.
 
 ### Features of a complete solution
 
@@ -108,37 +108,23 @@ Revision 6 retains the same inclusive rack/board bounds, exact minimum `R` tier 
 
 Family eligibility and variety are separate from difficulty. Higher-tier core mechanisms must be present in every minimum-`R` solution before their labels count towards output quotas; tier gates still cover every complete solution, including higher-change alternatives. Required proofs remain exhaustive or soundly equivalent, with inconclusive outcomes rejected. See the specification for exact witness predicates, family matrix/dispositions, semantic canonicalisation, fixed sampling gates, and independent fixture deliverables. [Independent physical fixture audits](archive/rummipuz-revision-6-patterns.md) now pass for 36 accepted designs across 3/5/5/6 tier cores. Expert's unproved boundary-repair target is explicitly replaced by a joint interior-rebuilding/four-colour-group-donation core, with unchanged gates. Explicit generation and worker rating now enforce these predicates with a fixed shared proof budget; see [the generation contract](rummipuz-generator.md#revision-6--explicit-variety-generation-12-october-2026). Both fixed accepted-output blocks passed quotas and preparation checks on native runtime, laptop and user-reported tablet. The user approved the family/sequence review without tuning on 12 October 2026. This records player acceptance, not a measured human-difficulty scale.
 
-## Completion credit and promotion
+## Fixed selected difficulty
 
-Keep a completed-identity set and a completion-credit counter for each tier on the device. Identity is the full `(version, generatorVersion, difficultyTier, seed)` tuple. Each counter starts at zero and is capped at three.
+All four tiers remain immediately selectable. A new device defaults to Easy. The selected tier is stored in the existing progress record and remains the tier for every fresh **Next puzzle**, regardless of how many puzzles have been completed. Only a successful fresh Start at a different picker selection changes the saved tier; cancelling or failing preparation preserves the prior selection and active session.
 
-1. On the first successful Check for an identity, record it and add one credit to its recorded tier's counter, capped at three. Generated puzzles and first-time replays are treated equally. Undo count, resets, elapsed time, and temporary invalid rows do not reduce credit.
-2. Replaying or reloading an already completed identity adds no credit. Checking an unfinished puzzle, skipping it, failed generation, and opening a picker add no credit.
-3. For **Next puzzle**, use the chosen tier for future generated puzzles. With fewer than three credits at that tier, keep it. With three credits and a higher tier available, propose exactly one tier up. Show, for example, “Next puzzle: Medium — 3 Easy puzzles completed.”
-4. Commit the proposed tier change only when its new puzzle is ready. Cancel or failure leaves the chosen tier unchanged. Counters are cumulative and retained across promotion, manual changes, replay, and reload; there is no consecutive-win streak to lose. Starting again at a previously completed lower tier may therefore already qualify for promotion on Next, which the completion panel must make clear.
-5. At Expert, remain at Expert and continue producing fresh puzzles without a limit. Its counter stays capped at three; no fifth tier is implied.
+Completion identities remain saved using the full `(version, generatorVersion, difficultyTier, seed)` tuple to prevent the same puzzle from being counted or finalized twice. They do not drive difficulty selection. Older schema-version-1 saves remain readable: any legacy completion records are retained for duplicate protection, and any extra legacy credit fields are ignored. No save migration or generator revision change is needed.
 
-The difficulty picker shows each tier's credit count, such as “2 of 3 completed”, or “Ready to move up”; Expert shows its name without promising a further promotion. Selecting any tier manually overrides the next puzzle's proposed promotion and starts directly at that chosen tier. It neither erases credit nor automatically redirects that explicit selection to a higher tier.
-
-A replay never changes the chosen tier for future generated puzzles. It may earn a first-completion credit at its own tier. After replay, Next evaluates the chosen tier's counter, not necessarily the replay's tier. The Completed panel labels both the finished puzzle's tier and the proposed next tier so this difference is visible.
-
-If storage is unavailable, apply the same rules in memory for the current session and show the existing unsaved-progress notice. Do not imply that credits will survive a reload.
-
-## Progression examples for later verification
+Replay and Resume preserve the puzzle's recorded tier. Replaying at a different tier does not change the saved selection for future fresh puzzles; **Next puzzle** continues at that saved selection. If storage is unavailable, the selection remains in memory for the current session and the existing unsaved-progress notice is shown.
 
 | Action | Expected result |
 | --- | --- |
-| New player starts without changing the picker | Easy, with zero credits. |
-| Complete two distinct Easy puzzles | Next stays Easy; Easy has two credits. |
-| Complete a third distinct Easy puzzle | Next proposes Medium; accepting a ready puzzle selects Medium. |
-| Cancel or fail preparation of that Medium puzzle | Keep the completed puzzle and Easy selection; Next still proposes Medium. |
-| Complete the same Easy seed again with the same full identity | No additional credit. |
-| Select Hard manually on a new device | Start Hard immediately, without unlocking earlier tiers. |
-| Complete three distinct Hard puzzles | Next proposes Expert; accepting a ready puzzle selects Expert. |
-| Select Expert manually on a new device | Start Expert immediately, without unlocking earlier tiers. |
-| Complete three distinct Expert puzzles | Next remains Expert; more puzzles remain available. |
-| With Easy selected and two Easy credits, complete a first-time Medium replay | Medium earns one credit; next generated puzzle stays Easy. |
-| With Medium selected, manually choose Easy after earning three Easy credits | The explicit new puzzle is Easy; its Completed panel proposes Medium for Next. |
+| New player starts without changing the picker | Easy is selected. |
+| Complete any number of distinct Easy puzzles | Next remains Easy. |
+| Select Hard and successfully Start a fresh puzzle | Hard becomes the saved tier for future Next puzzles. |
+| Cancel or fail preparation after selecting another tier | The previous active puzzle and saved tier remain unchanged. |
+| Replay a Medium puzzle while Hard is selected | The replay opens at Medium; future fresh puzzles remain Hard. |
+| Reload after choosing and starting Expert | Expert remains selected, and Next continues at Expert. |
+| Load an older save with three Easy completion records | The records remain valid; Next stays at the saved chosen tier. |
 
 ## Implemented rating proof
 

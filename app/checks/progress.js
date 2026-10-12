@@ -55,8 +55,8 @@ export function runProgressChecks(sample) {
   assert(store.snapshot().completedIdentities.length === 0 && !store.snapshot().active.completed,
     'An empty rack with valid rows earns no completion before explicit Check');
   session.check();
-  assert(store.snapshot().completedIdentities.join() === puzzleIdentity(initial)
-    && store.snapshot().credits.join() === '1,0,0,0', 'First Check earns one credit at the puzzle tier');
+  assert(store.snapshot().completedIdentities.join() === puzzleIdentity(initial),
+    'First Check records the full puzzle identity for duplicate protection');
   const completedSave = storage.raw;
   session.check();
   assert(storage.raw === completedSave, 'Repeated Check does not rewrite or recount completion');
@@ -67,7 +67,8 @@ export function runProgressChecks(sample) {
     'Reloading a completed puzzle restores locked editing');
   completed.reset();
   assert(store.snapshot().active.state.history.length === 0 && !store.snapshot().active.completed
-    && store.snapshot().credits[0] === 1, 'Replay saves the initial layout but preserves completion credit');
+    && store.snapshot().completedIdentities.length === 1,
+  'Replay saves the initial layout and preserves its recorded identity');
   function solve(play) {
     play.select('blue-6-1'); play.place({ area: 'new-row' });
     play.select('red-6-1'); play.place({ area: 'board', row: 2, index: 1 });
@@ -75,15 +76,15 @@ export function runProgressChecks(sample) {
     play.check();
   }
   solve(completed);
-  assert(store.snapshot().completedIdentities.length === 1 && store.snapshot().credits[0] === 1,
-    'Completing a replay does not add credit');
+  assert(store.snapshot().completedIdentities.length === 1,
+    'Completing a replay does not duplicate its recorded identity');
   for (let index = 0; index < 4; index++) {
     const next = createPlaySession(createGameState({ ...sample, seed: `progress-${index}` }),
       { onChange: (snapshot) => store.saveSession(snapshot) });
     store.saveSession(next.snapshot()); solve(next);
   }
-  assert(store.snapshot().completedIdentities.length === 5 && store.snapshot().credits[0] === 3,
-    'Distinct completion records are retained while tier credit is capped at three');
+  assert(store.snapshot().completedIdentities.length === 5,
+    'All distinct completion identities are retained without a credit cap');
   assert(store.snapshot().chosenDifficultyTier === 3,
     'Playing or replaying another tier preserves the chosen difficulty');
   const generationVariant = createPlaySession(createGameState({ ...sample, generatorVersion: 2 }),
@@ -94,8 +95,9 @@ export function runProgressChecks(sample) {
   const tierVariant = createPlaySession(createGameState({ ...sample, difficultyTier: 2 }),
     { onChange: (snapshot) => store.saveSession(snapshot) });
   solve(tierVariant);
-  assert(store.snapshot().credits[1] === 1 && store.snapshot().chosenDifficultyTier === 3,
-    'Replay credit goes to the recorded tier independently of chosen difficulty');
+  assert(store.snapshot().completedIdentities.includes(puzzleIdentity(tierVariant.snapshot().state))
+    && store.snapshot().chosenDifficultyTier === 3,
+  'A replay identity retains its recorded tier independently of chosen difficulty');
   tierVariant.reset(); tierVariant.select('blue-6-1'); tierVariant.place({ area: 'rack', index: 0 });
   tierVariant.reset();
   assert(JSON.stringify(store.snapshot().active.state.rack) === JSON.stringify(initial.rack)
@@ -146,9 +148,9 @@ export function runProgressChecks(sample) {
     }, onNotice: (text) => { notice = text; } });
     const playable = createPlaySession(initial, { onChange: (snapshot) => unavailable.saveSession(snapshot) });
     solve(playable); playable.reset(); solve(playable);
-    assert(playable.snapshot().completed && unavailable.snapshot().credits[0] === 1
+    assert(playable.snapshot().completed && unavailable.snapshot().completedIdentities.includes(puzzleIdentity(initial))
       && notice === 'Progress cannot be saved on this device.',
-      `${failure} storage failure keeps play and duplicate protection working in memory`);
+      `${failure} storage failure keeps play and completion identity protection working in memory`);
   }
   const writesBeforeFailedCheck = storage.writes;
   tierVariant.check();

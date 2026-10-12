@@ -1,4 +1,4 @@
-// Offline support is independent of game state, preferences, and progression.
+// Offline support is independent of game state, preferences, and tier choice.
 export async function initialiseOffline({
   serviceWorker = globalThis.navigator?.serviceWorker,
   secure = globalThis.isSecureContext,

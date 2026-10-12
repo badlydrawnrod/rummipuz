@@ -45,8 +45,8 @@ function restoreSession(saved, identities) {
   return { state, completed: saved.completed };
 }
 
-// One atomic record keeps the active session and completion credit consistent.
-// Selection, dragging and transient panels never enter the saved data.
+// One atomic record keeps the chosen tier, active session and completion
+// identities consistent. Selection, dragging and transient panels are omitted.
 export function createProgressStore({ getStorage = () => globalThis.localStorage, onNotice = () => {} } = {}) {
   let chosenDifficultyTier = 1;
   let completedIdentities = [];
@@ -90,8 +90,7 @@ export function createProgressStore({ getStorage = () => globalThis.localStorage
   return {
     snapshot() {
       return freeze({ chosenDifficultyTier, completedIdentities: [...completedIdentities],
-        credits: [1, 2, 3, 4].map((tier) => Math.min(3,
-          completedIdentities.filter((code) => Number(code.split(':')[3]) === tier).length)), active });
+        active });
     },
     setChosenDifficulty(tier) {
       if (!tierValid(tier)) throw new Error('Unknown difficulty tier.');

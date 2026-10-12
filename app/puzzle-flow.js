@@ -3,8 +3,8 @@ import { puzzleIdentity } from './progress.js';
 import { RATED_GENERATOR_VERSION } from './rated-generator.js';
 
 export const TIER_NAMES = ['Easy', 'Medium', 'Hard', 'Expert'];
-export function nextDifficulty({ chosenDifficultyTier: tier, credits }) {
-  return credits[tier - 1] >= 3 ? Math.min(4, tier + 1) : tier;
+export function nextDifficulty({ chosenDifficultyTier }) {
+  return chosenDifficultyTier;
 }
 export function parseReplayCode(code) {
   const match = typeof code === 'string' && /^rummipuz:1:([1-9][0-9]*):([1-4]):([A-Za-z0-9_-]{1,64})$/.exec(code.trim());

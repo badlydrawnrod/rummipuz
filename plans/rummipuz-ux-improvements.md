@@ -80,7 +80,7 @@ Add a pure operation in `app/state.js`, exposed through the play session. Treat 
 
 ## 5 — Keep the chosen difficulty until the player changes it
 
-- [ ] Remove automatic promotion and its interface prompts. **Done when:** Next stays at Easy/Medium/Hard/Expert after any number of completions; all tiers remain immediately selectable. The chosen tier survives reload and offline play. Replays and resuming an old puzzle retain that puzzle's recorded tier without silently changing the chosen tier for future fresh puzzles.
+- [x] Remove automatic promotion and its interface prompts. **Done when:** Next stays at Easy/Medium/Hard/Expert after any number of completions; all tiers remain immediately selectable. The chosen tier survives reload and offline play. Replays and resuming an old puzzle retain that puzzle's recorded tier without silently changing the chosen tier for future fresh puzzles.
 
 Change `nextDifficulty`/fresh generation policy in `app/puzzle-flow.js` and the credit/promotion text in `app/main.js` and HTML. Keep completion identity deduplication and compatible existing saves; old credit records must not trigger promotion. No generator revision change is needed because explicit tier/seed generation is unchanged. Remove progression from the player-flow/difficulty specifications and launch/gameplay copy when implementing this step.
 
@@ -119,4 +119,4 @@ Release each practical UX fix for review as it becomes ready. Do not hold scroll
 
 ## Current position
 
-Plan prepared; implementation has not started. Next: step 1, preserve horizontal position. Step 2 and step 5 are independent of row movement/assistance and can be brought forward at the user's direction. Steps 3–4 must share a row identity/targeting policy; steps 6–7 must share cancellation, solution validation and current-position semantics.
+Steps 2 and 5 are implemented and user-approved. Step 1 has runtime changes in place; desktop/tablet verification remains. Next: step 3, collapse empty rows. Steps 3–4 must share a row identity/targeting policy; steps 6–7 must share cancellation, solution validation and current-position semantics.
