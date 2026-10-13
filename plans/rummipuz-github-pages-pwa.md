@@ -47,6 +47,8 @@ Check that repository Actions settings allow the official actions used below, an
 
 **Done when:** repository/branch are confirmed, the executor can manage Pages and push a branch or open a PR, and existing settings will not be accidentally overwritten.
 
+**Execution record (13 October 2026):** `gh auth status`, `gh repo view --json nameWithOwner,defaultBranchRef,visibility,url`, `gh api repos/badlydrawnrod/rummipuz --jq '{has_pages: .has_pages, permissions: .permissions}'`, and the Pages endpoint were checked. The authenticated `badlydrawnrod` account has admin and push permission; the public repository's default branch is `develop`. The clean local branch is `feat/pwa`, tracking `origin/feat/pwa`. `has_pages` is false and the Pages endpoint returns the expected 404. Actions are enabled and allow all actions and workflows. `develop` has no branch protection or applicable rulesets, and no `github-pages` environment exists. No repository settings were changed.
+
 ## 2. Implement reproducible staging and artifact verification
 
 Create these repository files:
@@ -292,7 +294,7 @@ If publication fails, inspect the failed job first. Common causes are Pages stil
 
 ## Completion checklist
 
-- [ ] Prerequisites and remote settings confirmed.
+- [x] Prerequisites and remote settings confirmed.
 - [ ] Reproducible staging excludes `app/checks/` and fails closed on invalid output.
 - [ ] Source/native and staged package checks pass; exclusion failure probes pass.
 - [ ] Local `/rummipuz/` browser smoke test passes.
