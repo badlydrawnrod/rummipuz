@@ -233,6 +233,8 @@ If certificate provisioning is still pending, wait for readiness and retry. GitH
 
 **Done when:** Pages uses `workflow`, HTTPS is available/enforced, and the environment permits the deployment branch.
 
+**Execution record (13 October 2026):** Rechecked repository access and settings: `develop` remains the default branch, the account has admin/push permission, Pages did not exist (`has_pages: false`, endpoint 404), Actions are enabled and allow all actions, and there are no branch protection rules or repository rulesets. Created Pages with `gh api --method POST repos/badlydrawnrod/rummipuz/pages -f build_type=workflow`; the response and follow-up query confirm `build_type: workflow`, the expected URL, and `https_enforced: true`. Created the `github-pages` environment with custom deployment branch policies and added only the `develop` branch. No environment approval rules existed to retain. No site deployment was triggered by this settings change.
+
 ## 6. Merge and publish the first release
 
 Review the scripts, workflow, and documentation on a working branch. Commit only intended files, push that branch, and open a PR targeting `develop`; use `gh pr create --base develop` if following the CLI route. Run the checks and review the artifact exclusion before merging through the repository's normal process.
@@ -249,6 +251,8 @@ gh api repos/badlydrawnrod/rummipuz/pages --jq .html_url
 Replace `RUN_ID` with the intended run's ID. Inspect failures with `gh run view RUN_ID --log-failed`. Use the deployment's reported URL as authoritative if it differs from the expected URL.
 
 **Done when:** validation/upload/deploy jobs succeed and a fresh online browser loads the HTTPS site without console errors, missing assets, or worker registration failures.
+
+**Execution record (13 October 2026):** PR #1 merged to `develop` as `3085b578e6faa58351e26ed610e3c859ff6a9253`. Push workflow run [38420707916](https://github.com/badlydrawnrod/rummipuz/actions/runs/38420707916) succeeded: native checks, staging/package verification, artifact upload, Pages configuration, and deployment all passed. The Pages API reports `https://badlydrawnrod.github.io/rummipuz/` with HTTPS enforced. The user reports checking the published site in a browser and on a tablet with PWA installation.
 
 ## 7. Verify the public artifact and installed PWA
 
@@ -275,6 +279,8 @@ Perform acceptance on a desktop browser with PWA installation support and the ac
 7. Reconnect and test the release-update procedure in step 9. Do not call installed offline acceptance complete until real device testing passes.
 
 **Done when:** public checks URLs are absent, desktop/tablet installation and offline acceptance pass, and any remaining device limitations are explicitly recorded.
+
+**Execution record (13 October 2026):** Live HTTP checks returned 200 with expected content types for the site root, manifest, service worker, entry/offline modules, stylesheet, sample puzzle, and PNG icons. `/checks/`, `/checks/index.html`, and `/checks/fixtures/generated-v6.json` each returned 404. Full installed/offline acceptance is marked verified per the user's confirmation, covering browser and tablet PWA installation. No issue is currently reported; the user will open an issue if a problem is found. Device/browser versions and per-scenario results were not recorded.
 
 ## 8. Update contributor and player documentation
 
