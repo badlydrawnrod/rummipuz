@@ -2,6 +2,8 @@
 
 Rummipuz is a Rummikub-style tile puzzle for a computer or tablet. Rearrange the board, use every tile, and empty your rack. You can play a sample or generate puzzles at four difficulty levels. Rummipuz saves your current puzzle in browser storage when it is available.
 
+**Play online:** [Open Rummipuz over HTTPS](https://badlydrawnrod.github.io/rummipuz/). You can install it from a supported browser and use it offline after setup completes.
+
 This guide is organised so you can start playing first, then look up specific tasks and details. It follows the four-part Diataxis structure: tutorial, how-to guides, reference, and explanation. The writing uses the plain-language aims of ISO 24495-1: help readers find, understand, and use the information they need.
 
 ## Tutorial: Play your first puzzle
@@ -96,7 +98,7 @@ If the page does not load, check that both devices are on the same network and t
 
 Offline setup needs a secure address. On the same computer, `localhost` is secure. A tablet needs an HTTPS address with a certificate it trusts. The local-network HTTP address above is for play and preview; it is not enough to install the app for offline use.
 
-1. Open Rummipuz from its secure address while connected to the internet.
+1. Open [Rummipuz over HTTPS](https://badlydrawnrod.github.io/rummipuz/) while connected to the internet.
 2. Wait for **Ready for offline use on this device**.
 3. Use the browser's **Install app** command or install icon if available. On an iPad, use Safari's Share menu and choose **Add to Home Screen**.
 4. Start a puzzle and make a move so there is progress to resume. Close every Rummipuz tab and app window.
@@ -175,7 +177,40 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory app
 
 Then open [http://127.0.0.1:8000/checks/](http://127.0.0.1:8000/checks/). The page runs the dependency-free checks in the browser and reports failures. It is not included in the offline app cache.
 
-The checks cover rules, state, generation, replay, worker cancellation, saving, appearance, input handling, and offline packaging. Simulated touch and layout checks do not replace review in a real browser on a computer and tablet.
+The checks cover rules, state, generation, replay, worker cancellation, saving, appearance, input handling, and offline packaging. Simulated touch and layout checks do not replace review in a real browser on a computer and tablet. The `checks/` directory remains in the repository and is omitted from the published site.
+
+### Verify and publish the Pages site
+
+Run the native suite and verify the exact staged runtime before proposing a deployment:
+
+```bash
+node plans/checks/run_native.mjs
+pages_preview_root=$(mktemp -d /tmp/rummipuz-pages-preview.XXXXXX)
+python3 scripts/stage-pages.py "$pages_preview_root/rummipuz"
+node scripts/check-pages-package.mjs "$pages_preview_root/rummipuz"
+```
+
+To preview the project-site path locally, serve the temporary web root and open `http://127.0.0.1:8000/rummipuz/`:
+
+```bash
+python3 -m http.server 8000 --bind 127.0.0.1 --directory "$pages_preview_root"
+```
+
+Stop the server and remove the temporary directory when finished:
+
+```bash
+rm -r -- "$pages_preview_root"
+```
+
+Open a pull request targeting `develop` to run validation without publishing. Merging to `develop` runs the Pages workflow, which uploads the verified stage and deploys it. A maintainer can deliberately redeploy with GitHub CLI:
+
+```bash
+gh workflow run pages.yml --ref develop
+gh run list --workflow pages.yml --branch develop --limit 5
+gh run watch RUN_ID --exit-status
+```
+
+Replace `RUN_ID` with the intended run ID. The published site excludes `app/checks/`; contributors can run its browser checks using the local server instructions above.
 
 ### Find the code for a task
 

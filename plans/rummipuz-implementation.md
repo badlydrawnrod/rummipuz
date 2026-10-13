@@ -2,11 +2,11 @@
 
 ## Current status
 
-Generator work is complete through Phase 7. Approved generator revision 6 supplies fresh Start/Next puzzles and omitted-revision generation. Revisions 1–6 retain exact replay identities and saved layouts/undo history. The UX changes, including current-position Hint and the read-only solution preview, are implemented and configured for offline release `v14` with 42 assets. Hint and its visibility refinement are user-approved; broader device acceptance remains pending. No commit was requested.
+Generator work is complete through Phase 7. Approved generator revision 6 supplies fresh Start/Next puzzles and omitted-revision generation. Revisions 1–6 retain exact replay identities and saved layouts/undo history. The UX changes, including current-position Hint and the read-only solution preview, are implemented and configured for offline release `v14` with 42 assets. Hint and its visibility refinement are user-approved. The GitHub Pages site is deployed at [the trusted HTTPS address](https://badlydrawnrod.github.io/rummipuz/); trusted HTTPS and installed offline acceptance are marked complete from the user's browser/tablet report. See the [publication acceptance record](rummipuz-github-pages-pwa.md#7-verify-the-public-artifact-and-installed-pwa). Dedicated gameplay-session and appearance/readability checks below remain pending.
 
 Step 7 integrated verification: 2,334 native checks passed, including 700 assistance-planner checks and 113 assistance-worker checks each in regular and precache-only bundles. Approved sample checkers passed 42 revision-5 and 3,499 revision-6 assertions. Both full revision-6 variety/preparation blocks passed on native runtime, laptop and user-reported tablet; the user confirmed both devices stayed responsive and approved the family/sequence review on 12 October 2026 without tuning. Fixed-difficulty, row-control and assistance regressions pass in the integrated suite. The subsequent hint-visibility refinement passes 286 focused checks for hints, rendering, appearance, touch and offline packaging.
 
-Mouse, touch and overflow controls have user approval. Appearance/palette preference retention is confirmed on desktop and tablet. Complete browser sessions and installed offline launch still need the acceptance checks below; generator/device preparation approval does not complete those checks.
+Mouse, touch and overflow controls have user approval. Appearance/palette preference retention is confirmed on desktop and tablet. Full installed offline use was accepted by user report during the Pages publication; dedicated complete-session and appearance/readability checks below remain separate.
 
 ## Planned UX improvements
 
@@ -15,14 +15,14 @@ The user requested scroll retention, clearer red/orange tiles, whole-row reorder
 ## Remaining work
 
 - [x] Reconcile PC/tablet launch documentation. **Done when:** the README instructions are reviewed for Python HTTP launch, LAN access and trusted HTTPS for tablet PWA installation, and this previously outstanding documentation item is explicitly closed. The README now separates the computer launch, tablet LAN preview, and HTTPS offline setup instructions.
-- [ ] Set up trusted HTTPS for tablet installation. **Done when:** the tablet can open the app at a trusted HTTPS address and report readiness for offline use. Record the chosen setup in the launch instructions.
+- [x] Set up trusted HTTPS for tablet installation. **Done when:** the tablet can open the app at a trusted HTTPS address and report readiness for offline use. The chosen setup is GitHub Pages at [https://badlydrawnrod.github.io/rummipuz/](https://badlydrawnrod.github.io/rummipuz/); see the [publication acceptance record](rummipuz-github-pages-pwa.md#7-verify-the-public-artifact-and-installed-pwa).
 - [ ] Verify complete play sessions on desktop and tablet. **Done when:** Start/Next, win, deliberate difficulty changes, exact replay, undo/reset and reload/resume work; saved arrangement, undo history, chosen tier and completion-identity deduplication survive reload. Include preparation cancellation/failure retaining the current session and replay-copy behaviour.
 - [ ] Verify appearance and readability on both devices. **Done when:** Light, Dark, High Contrast and System are readable with both tile palettes; System follows device changes; changing settings preserves gameplay and undo history. Include overflowing rows/rack and tablet orientations within the existing layout.
-- [ ] Verify installed offline use on both devices. **Done when:** after closing all app windows and stopping the server/disconnecting networking, the installed app launches, restores progress/settings, generates at every tier, supports Check/Next and replays, and survives another offline close/relaunch. Reconnect and verify a waiting update activates after all old windows close without losing progress. Use the [README walkthrough](../README.md#install-the-app-for-offline-use).
+- [x] Verify installed offline use on both devices. **Done when:** after closing all app windows and stopping the server/disconnecting networking, the installed app launches, restores progress/settings, generates at every tier, supports Check/Next and replays, and survives another offline close/relaunch. Reconnect and verify a waiting update activates after all old windows close without losing progress. Marked complete from the user's confirmation; see the [publication acceptance record](rummipuz-github-pages-pwa.md#7-verify-the-public-artifact-and-installed-pwa) and the [README walkthrough](../README.md#install-the-app-for-offline-use).
 
 Fix issues found by these checks, then record device/browser, results and any limitations before checking an item. User-reported device testing can supply acceptance when no browser is available to the agent.
 
-**Next action:** Set up trusted HTTPS, then complete browser/device acceptance against the revised app.
+**Next action:** Complete the dedicated gameplay-session and appearance/readability checks against the published app. Trusted HTTPS and installed offline acceptance are recorded as complete.
 
 ## Scope and decisions still in force
 

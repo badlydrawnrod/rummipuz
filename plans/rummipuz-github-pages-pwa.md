@@ -4,21 +4,22 @@
 
 Publish the runtime contents of `app/` at **https://badlydrawnrod.github.io/rummipuz/**, with `app/checks/` excluded from the deployed artifact. Preserve installation, offline play, saved progress, preferences, and replay support.
 
-This is an implementation plan, created on 13 October 2026. The deployment workflow has been implemented locally but Pages has not been enabled or published. Complete the numbered steps in order; mark a step complete only after its acceptance criteria pass. Record commands, commit SHA, workflow run URL, and device/browser results when executing the plan.
+This is an implementation plan, created on 13 October 2026. The first production deployment is live; steps 1–8 are complete, and step 9 describes ongoing release and rollback maintenance. Recheck remote facts before future deployment changes and keep execution records current.
 
 Repository inspection established:
 
 - Origin: `https://github.com/badlydrawnrod/rummipuz.git`; repository is public.
-- Default branch and current local branch: `develop`.
-- GitHub reports `has_pages: false`; querying the Pages endpoint returns HTTP 404.
-- The authenticated `gh` user has repository administration permission.
-- No tracked GitHub Actions workflows currently exist.
+- Default branch: `develop`.
+- GitHub Pages uses the custom Actions workflow at `https://badlydrawnrod.github.io/rummipuz/`, with HTTPS enforced.
+- The `github-pages` environment allows deployments only from `develop`.
+- `.github/workflows/pages.yml` validates pull requests to `develop` and deploys only pushes or manual runs on `develop`.
+- The first production deployment and its artifact upload completed successfully; public runtime resources load and the planned checks URLs return 404.
 - The app consists of static HTML, CSS, JavaScript modules, icons, and JSON. It needs no build or package installation.
 - PWA support already exists: `manifest.webmanifest`, install icons, `offline.js`, `service-worker.js`, and `offline-cache.js`.
 - Manifest `id`, `start_url`, and `scope` use `./`. Registration, worker creation, and sample loading resolve relative to their modules. These support the project-site subdirectory without rewriting URLs.
 - `OFFLINE_RELEASE` is currently `v14`; `OFFLINE_ASSETS` includes the runtime and worker dependencies, and excludes checks. Existing offline checks exercise root and subdirectory scopes, atomic installation, and waiting updates.
 
-Recheck remote facts at execution time. Local/native results do not establish installed-device acceptance; the remaining browser/device checks in [the implementation plan](rummipuz-implementation.md) still apply.
+Recheck remote facts before future deployment changes. User-reported installed browser/tablet acceptance is recorded in [step 7](#7-verify-the-public-artifact-and-installed-pwa) and the [implementation plan](rummipuz-implementation.md); dedicated gameplay and appearance checks remain tracked there.
 
 ## Deployment decisions
 
@@ -280,7 +281,7 @@ Perform acceptance on a desktop browser with PWA installation support and the ac
 
 **Done when:** public checks URLs are absent, desktop/tablet installation and offline acceptance pass, and any remaining device limitations are explicitly recorded.
 
-**Execution record (13 October 2026):** Live HTTP checks returned 200 with expected content types for the site root, manifest, service worker, entry/offline modules, stylesheet, sample puzzle, and PNG icons. `/checks/`, `/checks/index.html`, and `/checks/fixtures/generated-v6.json` each returned 404. Full installed/offline acceptance is marked verified per the user's confirmation, covering browser and tablet PWA installation. No issue is currently reported; the user will open an issue if a problem is found. Device/browser versions and per-scenario results were not recorded.
+**Execution record (13 October 2026):** Live HTTP checks returned 200 with expected content types for the site root, manifest, service worker, entry/offline modules, stylesheet, sample puzzle, and PNG icons. `/checks/`, `/checks/index.html`, and `/checks/fixtures/generated-v6.json` each returned 404. `OFFLINE_RELEASE` is `v14`. Full installed/offline acceptance is marked verified per the user's confirmation, covering browser and tablet PWA installation. No issue is currently reported; the user will open an issue if a problem is found. Device/browser versions and per-scenario results were not recorded.
 
 ## 8. Update contributor and player documentation
 
@@ -289,6 +290,8 @@ Update `README.md` with the public **Play Rummipuz** link, HTTPS installation in
 Link this plan from `plans/README.md`. Once acceptance actually passes, update the trusted-HTTPS and installed-offline items in `plans/rummipuz-implementation.md`, with evidence or a link to a deployment acceptance record. Mark other device acceptance items only if their complete criteria were exercised.
 
 **Done when:** a player can find, install, and play the published app, and a contributor can reproduce checks, staging, deployment, and updates.
+
+**Execution record (13 October 2026):** Added the published HTTPS Play link and installation address to `README.md`; documented local native/package verification, project-path preview, PR validation, and manual Pages workflow commands; and stated that `app/checks/` is omitted from the public site. The plan index links to this plan and describes its completed first deployment and ongoing maintenance. Updated `plans/rummipuz-implementation.md` to record trusted HTTPS and installed offline acceptance per user confirmation, with a link to this plan's acceptance record. Reconciled the completion checklist below.
 
 ## 9. Maintain and recover deployments
 
@@ -310,10 +313,10 @@ If publication fails, inspect the failed job first. Common causes are Pages stil
 - [x] Reproducible staging excludes `app/checks/` and fails closed on invalid output.
 - [x] Source/native and staged package checks pass; exclusion failure probes pass.
 - [x] Local `/rummipuz/` browser smoke test passes.
-- [ ] Workflow validates PRs and deploys only `develop`.
-- [ ] Pages Actions source, HTTPS, and environment configured.
-- [ ] First production deployment succeeds; runtime resources load and checks return 404.
-- [ ] Desktop and tablet installation, offline play, persistence, and updates verified.
-- [ ] README, plan index, and implementation acceptance status reflect actual results.
+- [x] Workflow validates PRs and deploys only `develop`.
+- [x] Pages Actions source, HTTPS, and environment configured.
+- [x] First production deployment succeeds; runtime resources load and checks return 404.
+- [x] Desktop and tablet installation, offline play, persistence, and updates verified per user confirmation.
+- [x] README, plan index, and implementation acceptance status reflect actual results.
 
-When handing this plan to another executor, continue from the first unchecked item and preserve recorded evidence. The creation of this document does not complete any implementation or deployment checklist item.
+For future releases and rollbacks, follow step 9 and preserve the deployed commit, workflow run, offline release, and acceptance result.
