@@ -4,7 +4,7 @@
 
 Publish the runtime contents of `app/` at **https://badlydrawnrod.github.io/rummipuz/**, with `app/checks/` excluded from the deployed artifact. Preserve installation, offline play, saved progress, preferences, and replay support.
 
-This is an implementation plan, created on 13 October 2026. Deployment has not been implemented or enabled. Complete the numbered steps in order; mark a step complete only after its acceptance criteria pass. Record commands, commit SHA, workflow run URL, and device/browser results when executing the plan.
+This is an implementation plan, created on 13 October 2026. The deployment workflow has been implemented locally but Pages has not been enabled or published. Complete the numbered steps in order; mark a step complete only after its acceptance criteria pass. Record commands, commit SHA, workflow run URL, and device/browser results when executing the plan.
 
 Repository inspection established:
 
@@ -196,6 +196,8 @@ GitHub's [workflow requirements](https://docs.github.com/en/pages/getting-starte
 If branch protection makes this validation job a required check, remove path filters or use a separate always-triggered validation workflow; skipped workflows can leave required checks pending. Include source checks in the trigger because a checks-only change can affect validation.
 
 **Done when:** a PR run validates without uploading/deploying; only `develop` can publish; failure of either validation command prevents deployment; and the uploaded artifact path points to the verified stage.
+
+**Execution record (13 October 2026):** Added `.github/workflows/pages.yml` with `develop` push publishing, `develop` pull-request validation, and a manual dispatch whose upload/deploy jobs are guarded to `develop`. The deploy job depends on validation and uses the scoped Pages and OIDC permissions. Verified all referenced official action tags (`checkout@v6`, `setup-node@v6`, `upload-pages-artifact@v4`, `configure-pages@v5`, `deploy-pages@v4`) resolve. `node plans/checks/run_native.mjs` passed 2,336 checks (42 offline assets, release `v14`); fresh staging produced 41 files and `node scripts/check-pages-package.mjs` passed all 11 assertions. YAML parsed and `git diff --check` passed. A hosted PR run is pending because this change has not been committed or pushed; no commit or workflow run was created.
 
 ## 5. Enable GitHub Pages for Actions
 

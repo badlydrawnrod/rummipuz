@@ -1,0 +1,64 @@
+name: Publish Rummipuz to GitHub Pages
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - 'app/**'
+      - 'scripts/stage-pages.py'
+      - 'scripts/check-pages-package.mjs'
+      - 'plans/checks/run_native.mjs'
+      - '.github/workflows/pages.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'app/**'
+      - 'scripts/stage-pages.py'
+      - 'scripts/check-pages-package.mjs'
+      - 'plans/checks/run_native.mjs'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Run native checks
+        run: node plans/checks/run_native.mjs
+      - name: Stage and verify runtime
+        run: |
+          python3 scripts/stage-pages.py "$RUNNER_TEMP/rummipuz-pages"
+          node scripts/check-pages-package.mjs "$RUNNER_TEMP/rummipuz-pages"
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/develop'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/rummipuz-pages
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/develop'
+    needs: validate-and-package
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
