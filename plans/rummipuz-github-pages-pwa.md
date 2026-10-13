@@ -85,6 +85,8 @@ Verification requirements:
 
 **Done when:** staging matches the intended runtime exactly; package verification passes; and verification demonstrably fails for a missing runtime asset and an injected `checks/` file. Perform failure probes only on disposable copies, not on source files.
 
+**Execution record (13 October 2026):** `python3 scripts/stage-pages.py /tmp/rummipuz-pages-step2-final.E7FzET` staged 41 files. `node scripts/check-pages-package.mjs /tmp/rummipuz-pages-step2-final.E7FzET` matched staged paths and bytes to `app/` with `checks/` excluded, and passed all 11 existing offline package assertions using staged bytes. On disposable copies, the verifier rejected a removed `styles.css`, an injected `checks/injected.txt`, and an empty `checks/` directory. No source files were altered by the probes.
+
 ## 3. Validate locally at the actual project path
 
 Run the existing checks against the source tree before packaging:
@@ -295,7 +297,7 @@ If publication fails, inspect the failed job first. Common causes are Pages stil
 ## Completion checklist
 
 - [x] Prerequisites and remote settings confirmed.
-- [ ] Reproducible staging excludes `app/checks/` and fails closed on invalid output.
+- [x] Reproducible staging excludes `app/checks/` and fails closed on invalid output.
 - [ ] Source/native and staged package checks pass; exclusion failure probes pass.
 - [ ] Local `/rummipuz/` browser smoke test passes.
 - [ ] Workflow validates PRs and deploys only `develop`.
