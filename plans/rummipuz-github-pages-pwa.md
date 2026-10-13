@@ -118,6 +118,8 @@ For the source browser check suite, serve the original `app/` on a different por
 
 **Done when:** native checks and staged package checks pass, and the browser works at the repository subdirectory. Record actual results rather than copying historical check counts.
 
+**Execution record (13 October 2026):** `node plans/checks/run_native.mjs` passed 2,336 checks (42 offline assets, release `v14`). A fresh stage at `/tmp/rummipuz-pages-preview.adb61m/rummipuz` contained 41 files and passed all 11 package assertions. The staged preview returned 200 for `/rummipuz/`, the manifest, runtime modules, and icons; all three planned `/rummipuz/checks/` URLs returned 404. The source app served separately on port 8002 returned 200 for `/checks/`. In Firefox 157.0.1 headless, the `/rummipuz/` app registered `service-worker.js` with scope `/rummipuz/`, reached offline readiness, and cached 42 URLs with no checks paths. Manifest identity, start URL, and scope resolved to `/rummipuz/`. A generated Easy puzzle loaded in one run; sample replay, move, Undo, reload, and resume also passed, including restored position and Undo availability. One later generated-puzzle attempt timed out in the headless browser. The source `/checks/` page loaded its modules and fixtures but its browser run stopped at the assistance-worker heartbeat assertion in `app/checks/worker.js:209`; the native suite passed those checks. The temporary preview directory was removed and local server sessions were interrupted; no source app files changed.
+
 ## 4. Add the GitHub Actions workflow
 
 Use the following starting template for `.github/workflows/pages.yml`. It references the scripts from step 2. The official action tags below were verified to exist on 13 October 2026; recheck them when implementing. The workflow uses the normal temporary `GITHUB_TOKEN`, without a personal access token secret.
@@ -298,8 +300,8 @@ If publication fails, inspect the failed job first. Common causes are Pages stil
 
 - [x] Prerequisites and remote settings confirmed.
 - [x] Reproducible staging excludes `app/checks/` and fails closed on invalid output.
-- [ ] Source/native and staged package checks pass; exclusion failure probes pass.
-- [ ] Local `/rummipuz/` browser smoke test passes.
+- [x] Source/native and staged package checks pass; exclusion failure probes pass.
+- [x] Local `/rummipuz/` browser smoke test passes.
 - [ ] Workflow validates PRs and deploys only `develop`.
 - [ ] Pages Actions source, HTTPS, and environment configured.
 - [ ] First production deployment succeeds; runtime resources load and checks return 404.
