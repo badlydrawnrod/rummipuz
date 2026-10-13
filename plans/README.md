@@ -4,7 +4,7 @@ Start with the [implementation plan](rummipuz-implementation.md) for current sta
 
 ## Active change plans
 
-- [GitHub Pages PWA publication](rummipuz-github-pages-pwa.md): runtime packaging without `app/checks/`, deployment workflow, GitHub configuration, and installed/offline acceptance.
+- [GitHub Pages PWA publication](rummipuz-github-pages-pwa.md): completed first deployment, runtime packaging without `app/checks/`, installed/offline acceptance, and future release/rollback procedures.
 - [UX improvements and assistance](rummipuz-ux-improvements.md): eight requested changes, implementation sequence, progress and acceptance criteria.
 
 ## Current specifications
