@@ -47,13 +47,13 @@ Extra rows and extension tiles can create alternative solutions, so motifs alone
 
 Revision 4 uses the identical candidate construction/traversal algorithm with three explicit changes: hash `rummipuz:1:4:<tier>:<seed>`, sample rack/row counts from Easy 2–3/2–3, Medium 4–5/3–4, Hard 4–6/4–5, and Expert 5–7/4–5, and use 64 maximum attempts with 20,000 proof nodes per attempt. All sampled counts remain inside the unchanged tier policy. Exact minimum-R proofs and requested-tier acceptance still apply. Revision-3 branches retain their original hash, bounds, and budgets.
 
-The source and `app/checks/fixtures/generated-v4.json` define replay ordering. `app/checks/fixtures/reviewed-v4.json` stores independent hand-derived solutions for eight reviewed samples. See [the sample review](archive/rummipuz-sample-review.md) for reasoning, measured generation cost, limitations, and the rationale for reducing extra rows. Future changes affecting candidate acceptance or ordering require another revision. Revision 4 was the default before the approved revision-5 switch; it remains supported for explicit replay. Replay must always supply the recorded version.
+The source and `app/checks/fixtures/generated-v4.json` define replay ordering. `app/checks/fixtures/reviewed-v4.json` stores independent hand-derived solutions for reviewed samples. Future changes affecting candidate acceptance or ordering require another revision. Revision 4 was the default before the approved revision-5 switch; it remains supported for explicit replay. Replay must always supply the recorded version.
 
 ## Revision 5: structural generation (approved default)
 
 `generatePuzzle({ generatorVersion: 5, difficultyTier, seed })` dispatches to `app/generator-v5.js`. Explicit revision-5 requests retain this contract. Omitted generator versions and fresh Start/Next requests now use approved revision 6 through the shared `RATED_GENERATOR_VERSION` constant. Explicit revision-5 replay is supported through the existing preparation controller and dedicated worker; revision 1 fixture loading and revision-2/3/4 algorithms remain unchanged. The user approved the eight-puzzle sample set on 11 October 2026; the default switch changes no revision-specific generation algorithm, traversal, seed mapping, or proof budget.
 
-The revision-5 source, [hand-authored designs](archive/rummipuz-revision-5-patterns.md), and `app/checks/fixtures/generated-v5.json` define its deterministic contract. It returns `ready` with an immutable, verified puzzle or `exhausted` with a null puzzle after at most **32 attempts**. Each attempt has **100,000 proof nodes total**, shared by minimum-`R` search, physical candidate expansion, and structural partition search. These are work limits, never elapsed-time cutoffs. Rejected attempts continue the same random stream. Reject `unsolvable`, `limit`, `excluded`, and requested-tier mismatches separately. Exhaustion remains a preparation failure and cannot replace saved play or commit a chosen-tier change.
+The revision-5 source and `app/checks/fixtures/generated-v5.json` define its deterministic contract. It returns `ready` with an immutable, verified puzzle or `exhausted` with a null puzzle after at most **32 attempts**. Each attempt has **100,000 proof nodes total**, shared by minimum-`R` search, physical candidate expansion, and structural partition search. These are work limits, never elapsed-time cutoffs. Rejected attempts continue the same random stream. Reject `unsolvable`, `limit`, `excluded`, and requested-tier mismatches separately. Exhaustion remains a preparation failure and cannot replace saved play or commit a chosen-tier change.
 
 ### Construction and random draws
 
@@ -97,7 +97,7 @@ Revision 6 is supported explicitly through `generatePuzzle`, worker generation/r
 
 ### Finite construction envelope and draw order
 
-`app/patterns-v6.js` contains exactly the 36 independently audited inventories in `revision-6-patterns.json`, in their original file order, retaining only name, tier, family, board and rack. This is the finite permitted parameter envelope, including named noncosmetic variants. No intermediate lengths, added support rows, extra rack neighbours or new duplicate allocations are inferred safe. Colour bijections, reflection, legal global translations and face-wide copy swaps are the only additional transformations, and every transformed inventory is proved again.
+`app/patterns-v6.js` contains the finite permitted parameter envelope of 36 independently audited inventories, retaining name, tier, family, board and rack. It includes named noncosmetic variants. No intermediate lengths, added support rows, extra rack neighbours or new duplicate allocations are inferred safe. Colour bijections, reflection, legal global translations and face-wide copy swaps are the only additional transformations, and every transformed inventory is proved again.
 
 Hash `rummipuz:1:6:<tier>:<seed>` with FNV-1a and use the fixed Mulberry32, inclusive integer and descending Fisher–Yates implementations in `generator-v6.js`. Each attempt draws, in this order:
 
@@ -148,7 +148,7 @@ Offline release **`v4`** precaches **39 assets**, adding the six revision-6 runt
 
 Both initial device runs and the native run prepared all 2,048 prescribed outputs, but Hard/Expert failed the group-only floor in both blocks. The user explicitly authorised retuning unreleased revision 6 and allowing its existing regenerated replay layouts to change. The family and pattern weights above are the revised contract; earlier revision-6 golden outputs have been replaced. Revisions 1–5 retain exact replay, and saved revision-6 sessions resume their stored layouts. Revision 5 remained the default during this tuning; the subsequent approved revision-6 switch is recorded below.
 
-The signature optimisation changes performance without changing canonical results, proof predicates, traversal, budgets or diagnostic completeness. Runtime changes require offline release `v5`, with 39 assets. All 1,284 native checks pass. Accepted-output quotas and renewed device performance review are recorded in [the verification report](archive/rummipuz-revision-6-verification.md); the full named blocks are rerun rather than substituting seeds or reducing quotas.
+The signature optimisation changes performance without changing canonical results, proof predicates, traversal, budgets or diagnostic completeness. Runtime changes require offline release `v5`, with 39 assets. All 1,284 native checks pass. Accepted-output quotas and renewed device performance review were completed on the fixed named blocks; reruns retain the full seed blocks rather than substituting seeds or reducing quotas.
 
 
 ### Variety/preparation verification complete — 12 October 2026

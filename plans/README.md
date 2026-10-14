@@ -16,19 +16,12 @@ Start with the [implementation plan](rummipuz-implementation.md) for current sta
 - [Versioned generator contract](rummipuz-generator.md)
 - [Revision-6 family/difficulty specification](rummipuz-revision-6-specification.md)
 
-## Completed work and repeatable evidence
+## Verification
 
-Completed plans, pattern designs, sample reviews and verification reports are in the [archive](archive/README.md). Their historical status statements do not add work to the current checklist.
-
-JSON files remain here because native checkers, independent audits and review-generation tools use these stable paths. They include physical construction fixtures, exact replay/hand-solution sets, native/device measurements, initial failures, tuned reruns and independent audit reports. Scripts remain in `checks/`; runtime golden fixtures remain in `app/checks/fixtures/`.
-
-Common verification commands, where Node is available:
+The one-off sample review workflow has been removed. Runtime golden fixtures remain in `app/checks/fixtures/`. The repeatable native check command, where Node is available, is:
 
 ```bash
 node plans/checks/run_native.mjs
-node plans/checks/review_v5_samples.mjs
-node plans/checks/review_v6_samples.mjs
-PYTHONDONTWRITEBYTECODE=1 python3 plans/checks/review_v6_samples.py
 ```
 
 The native runner can also be imported through the connected native Node runtime. Browser/device acceptance remains separate from these checks.

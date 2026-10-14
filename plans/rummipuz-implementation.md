@@ -43,14 +43,13 @@ Fix issues found by these checks, then record device/browser, results and any li
 | [Difficulty policy](rummipuz-difficulty.md) | Tier bounds, proof gates and fixed selected tier |
 | [Generator contract](rummipuz-generator.md) | Revision-specific algorithms, traversal and work limits |
 | [Revision-6 specification](rummipuz-revision-6-specification.md) | Family certification, semantics and release quotas |
-| [Documentation index](README.md) | Current references, historical records and check data |
-| [Archive](archive/README.md) | Completed plans, designs, reviews and verification reports |
+| [Documentation index](README.md) | Current references and repeatable checks |
 
-Exact JSON fixtures, evidence and audit scripts remain at their existing paths under `plans/` and `plans/checks/` so repeatable checks continue to work. The [previous full plan](archive/rummipuz-implementation-history.md) preserves the detailed phase history and decision log.
+Runtime golden fixtures remain under `app/checks/fixtures/`; reusable native and independent audit scripts remain under `plans/checks/`.
 
 ## Resuming work
 
-Work from the first unchecked item unless the user directs otherwise. Check an item only when its acceptance condition is met. Update current status, next action and relevant decisions at the end of a session; put detailed completed evidence in the archive rather than expanding this checklist. Record scope changes before implementing them.
+Work from the first unchecked item unless the user directs otherwise. Check an item only when its acceptance condition is met. Update current status, next action and relevant decisions at the end of a session. Record scope changes before implementing them.
 
 ## Deferred ideas
 
