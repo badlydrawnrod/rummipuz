@@ -1,9 +1,9 @@
 /** Run portable suites in native modules, without npm or changing app module setup.
- * node plans/checks/run_native.mjs (also importable through node_repl).
+ * node scripts/run_native.mjs (also importable through node_repl).
  */
 import fs from 'node:fs/promises';
 import { Worker } from 'node:worker_threads';
-const root = new URL('../../', import.meta.url);
+const root = new URL('../', import.meta.url);
 const staging = await fs.mkdtemp('/tmp/rummipuz-native-');
 await fs.writeFile(staging + '/package.json', '{"type":"module"}');
 await fs.cp(new URL('app/', root), staging + '/app', { recursive: true });

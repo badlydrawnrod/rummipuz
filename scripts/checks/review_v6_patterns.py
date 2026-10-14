@@ -419,12 +419,21 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, help='Write complete audit evidence as JSON')
     args = parser.parse_args()
-    source = Path(__file__).resolve().parents[1] / 'revision-6-patterns.json'
-    data = json.loads(source.read_text())
+    source = Path(__file__).resolve().parents[2] / 'app/checks/fixtures/structural-v6.json'
+    fixtures = json.loads(source.read_text())
+    data = [fixture['design'] for fixture in fixtures]
+    expected_by_name = {fixture['design']['name']: fixture['expected'] for fixture in fixtures}
+    accepted_patterns = [pattern for pattern in data
+                         if pattern.get('expectedStatus', 'accepted') == 'accepted']
+    rejected_patterns = [pattern for pattern in data
+                         if pattern.get('expectedStatus', 'accepted') != 'accepted']
     results = []
-    for pattern in data['patterns'] + data.get('rejectedPatterns', []):
+    for pattern in data:
         result = audit(pattern)
         results.append(result)
+        expected = expected_by_name[pattern['name']]
+        for key, value in expected.items():
+            assert result[key] == value, (pattern['name'], key)
         print(encoded({key: result[key] for key in ('name', 'status', 'family', 'minimumR', 'physicalPartitions', 'nodes')}), flush=True)
     by_name = {result['name']: result for result in results}
     coverage = {tier: sorted({result['family'] for result in results
@@ -432,15 +441,15 @@ def main():
                 for tier in range(1, 5)}
     assert all(len(coverage[tier]) >= required for tier, required in enumerate((0, 3, 4, 5, 6)) if tier)
     # A counted parameter variant must actually differ after cosmetic normalisation.
-    for pattern in data['patterns']:
+    for pattern in accepted_patterns:
         if 'variantOf' in pattern:
             assert by_name[pattern['name']]['geometryKey'] != by_name[pattern['variantOf']]['geometryKey'], pattern['name']
-    parameter_families = {pattern['family'] for pattern in data['patterns'] if 'variantOf' in pattern}
-    assert parameter_families == {pattern['family'] for pattern in data['patterns']}
+    parameter_families = {pattern['family'] for pattern in accepted_patterns if 'variantOf' in pattern}
+    assert parameter_families == {pattern['family'] for pattern in accepted_patterns}
     # Check the canonical definition under simultaneous colour, reflection,
     # row/group-order, rack-order, and face-wide copy-label changes.
     representatives = {}
-    for pattern in data['patterns']:
+    for pattern in accepted_patterns:
         representatives.setdefault(pattern['family'], pattern)
     for pattern in representatives.values():
         colour_map = dict(zip(COLOURS, COLOURS[1:] + COLOURS[:1]))
@@ -485,7 +494,7 @@ def main():
     assert by_name['expert-mixed-exchange']['deadPreservedPlacements']
     assert any(result['facePartitions'] == 1 for result in results if result['tier'] >= 2 and result['status'] == 'accepted')
     assert any(result['facePartitions'] > 1 for result in results if result['tier'] >= 2 and result['status'] == 'accepted')
-    summary = {'acceptedFixtures': len(data['patterns']), 'rejectedFixtures': len(data.get('rejectedPatterns', [])),
+    summary = {'acceptedFixtures': len(accepted_patterns), 'rejectedFixtures': len(rejected_patterns),
                'acceptedPhysicalPartitions': sum(result['physicalPartitions'] for result in results if result['status'] == 'accepted'),
                'allPhysicalPartitions': sum(result['physicalPartitions'] for result in results),
                'coreCoverage': coverage, 'symmetryCheckedFamilies': len(representatives),

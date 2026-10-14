@@ -7,7 +7,7 @@ on:
       - 'app/**'
       - 'scripts/stage-pages.py'
       - 'scripts/check-pages-package.mjs'
-      - 'plans/checks/run_native.mjs'
+      - 'scripts/run_native.mjs'
       - '.github/workflows/pages.yml'
   pull_request:
     branches: [develop]
@@ -15,7 +15,7 @@ on:
       - 'app/**'
       - 'scripts/stage-pages.py'
       - 'scripts/check-pages-package.mjs'
-      - 'plans/checks/run_native.mjs'
+      - 'scripts/run_native.mjs'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: '24'
       - name: Run native checks
-        run: node plans/checks/run_native.mjs
+        run: node scripts/run_native.mjs
       - name: Stage and verify runtime
         run: |
           python3 scripts/stage-pages.py "$RUNNER_TEMP/rummipuz-pages"

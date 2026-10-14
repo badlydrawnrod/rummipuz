@@ -1,6 +1,6 @@
 """Exhaustive physical-tile audit of hand-authored designs, using Python only.
 
-Run from any directory: python3 plans/checks/review_v5_patterns.py
+Run from any directory: python3 scripts/checks/review_v5_patterns.py
 No production solver, generation code, or browser is used.
 """
 import json
@@ -149,7 +149,9 @@ def audit(pattern):
 
 
 if __name__ == '__main__':
-    source = Path(__file__).resolve().parents[1] / 'revision-5-patterns.json'
-    data = json.loads(source.read_text())
-    for item in data['patterns'] + data.get('rejectedPatterns', []):
-        print(json.dumps(audit(item)))
+    source = Path(__file__).resolve().parents[2] / 'app/checks/fixtures/structural-v5.json'
+    fixtures = json.loads(source.read_text())
+    for item in fixtures:
+        result = audit(item)
+        assert result['solutions'] == item['expectedPartitions'], (item['name'], result['solutions'])
+        print(json.dumps(result))
