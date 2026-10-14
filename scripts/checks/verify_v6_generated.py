@@ -1,5 +1,5 @@
 """Audit actual revision-6 outputs independently of production JavaScript.
-Usage: python3 plans/checks/verify_v6_generated.py [sample-json] [--no-signatures] [--output report-json]
+Usage: python3 scripts/checks/verify_v6_generated.py [sample-json] [--no-signatures] [--output report-json]
 Default: the eight golden replay outputs. Also accepts native smoke output.
 """
 import json

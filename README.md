@@ -179,12 +179,22 @@ Then open [http://127.0.0.1:8000/checks/](http://127.0.0.1:8000/checks/). The pa
 
 The checks cover rules, state, generation, replay, worker cancellation, saving, appearance, input handling, and offline packaging. Simulated touch and layout checks do not replace review in a real browser on a computer and tablet. The `checks/` directory remains in the repository and is omitted from the published site.
 
+Independent Python audits use the retained fixtures without loading the production JavaScript:
+
+```bash
+python3 scripts/checks/review_v5_patterns.py
+python3 scripts/checks/review_v6_patterns.py
+python3 scripts/checks/verify_v6_generated.py
+```
+
+The first two audit all accepted and rejected design fixtures. The third audits the eight golden revision-6 generated outputs; it also accepts a generated sample JSON path and `--output REPORT_JSON`.
+
 ### Verify and publish the Pages site
 
 Run the native suite and verify the exact staged runtime before proposing a deployment:
 
 ```bash
-node plans/checks/run_native.mjs
+node scripts/run_native.mjs
 pages_preview_root=$(mktemp -d /tmp/rummipuz-pages-preview.XXXXXX)
 python3 scripts/stage-pages.py "$pages_preview_root/rummipuz"
 node scripts/check-pages-package.mjs "$pages_preview_root/rummipuz"
@@ -226,18 +236,21 @@ Replace `RUN_ID` with the intended run ID. The published site excludes `app/chec
 
 The app uses plain JavaScript modules and static files. Puzzle generation, solving, and assistance run in module workers so they do not block the interface. Pure game rules and state operations are kept separate from browser storage and display code.
 
-### Update the offline package
+### Update or roll back the offline package
 
 When you change a file served to players, increase `OFFLINE_RELEASE` in `app/offline-cache.js`. Add any new runtime file to `OFFLINE_ASSETS`, including its worker imports. Deploy all app files together. The service worker stages the new cache before it activates the update.
 
-### Read the specifications
+Run the native checks and staged package validation before merging to `develop`. In a client using the previous release, reopen online and confirm the waiting-update notice while the current game remains usable. Close every tab and installed window in the app's scope, then reopen to activate the update. Verify progress, preferences and replay, followed by another offline launch. Keep this waiting-update behaviour; do not add `skipWaiting()` merely to accelerate deployment.
 
-- [Current implementation plan](plans/rummipuz-implementation.md): remaining device and offline acceptance work.
-- [Player flow](plans/rummipuz-player-flow.md): screen behavior and interactions.
-- [Rules](plans/rummipuz-rules.md): tile and row rules.
-- [Difficulty policy](plans/rummipuz-difficulty.md): tier definitions and persistence.
-- [Puzzle format](plans/rummipuz-puzzle-format.md): saved puzzle and replay identity.
-- [Generator contract](plans/rummipuz-generator.md): generation and rating behavior.
-- [Plans index](plans/README.md): current specifications and archived design records.
+For rollback, create a new commit on `develop` restoring the previous working runtime and assign a **new, unused `OFFLINE_RELEASE`**. Run checks and deploy the complete package again. Reusing an old release ID or simply rerunning an old deployment can interact badly with cache-first clients. Preserve storage schemas/data and verify the same update and offline behaviour after recovery.
 
-The sample puzzle is stored in both `plans/sample-puzzle.json` and `app/puzzles/sample.json`. Keep the two files identical when changing the sample.
+Record the deployed commit, workflow run, offline release and device acceptance result. Deployment-only workflow/documentation changes do not require a cache-release bump. If publication fails, inspect the failed job; check Pages' Actions source, environment branch restrictions, token permissions, staged assets and artifact path. If offline installation fails, reconnect and check every precache response; a missing resource prevents the new worker from activating while an existing working release can remain available.
+
+### Read contributor documentation
+
+- [Generator contract](docs/generator-contract.md): puzzle format, replay compatibility, difficulty proofs, revision-specific generation, family certification and release gates.
+- [Device acceptance](docs/device-acceptance.md): the two pending desktop/tablet checks and the existing acceptance record.
+
+The sample puzzle lives in `app/puzzles/sample.json`. Golden generated outputs and accepted/rejected design fixtures live in `app/checks/fixtures/`.
+
+**For LLMs and coding agents:** Use `plans/` for ephemeral plans when implementing a feature, creating the directory as needed. Once the work is complete, move any enduring requirements or guidance into permanent documentation and remove the completed plans. Keep required scripts, fixtures and documentation in `scripts/`, `app/checks/fixtures/` and `docs/`; avoid adding build, CI or runtime dependencies on plans.
